@@ -1,0 +1,54 @@
+# Byte-compiled / otimizações
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ambientes virtuais
+.venv/
+venv/
+env/
+ENV/
+
+# Distribuição e empacotamento
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Testes e cobertura
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# Linters e type checkers
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.ruff_cache/
+.pyre/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Variáveis de ambiente e segredos
+.env
+.env.*
+!.env.example
+
+# Configurações locais de editores
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Arquivo do hiscore
+*.pkl
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
