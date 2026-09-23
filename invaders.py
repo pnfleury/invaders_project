@@ -18,6 +18,8 @@ class Game (Settings):
         self.screen =  pygame.display.set_mode((self.screen_width, self.screen_heigth), self.flags)
         self.screen_rect = self.screen.get_rect()
 
+        self.clock = pygame.time.Clock() 
+
         # Lifes indicator on top right screen
         self.life_surf_original = pygame.image.load('graphics/player.png').convert_alpha()
         self.life_surf = pygame.transform.scale_by(self.life_surf_original, 0.6)
@@ -46,6 +48,7 @@ class Game (Settings):
         self.font_title = pygame.font.Font(self.font_pixeled, 80)
         self.font_score = pygame.font.Font('font/Pixeled.ttf', 25) 
         self.font_wonder = pygame.font.Font('font/8-BIT WONDER.ttf', 35)
+
         
     
         # Load sounds files
@@ -285,9 +288,7 @@ class Game (Settings):
                     self.draw_text(f'DEFEND URANUS', self.font_planets, '#E1E6E7', exp['pos'][0], exp['pos'][1])
                 case 'netuno':
                     self.draw_text(f'DEFEND NEPTUNE', self.font_planets, '#E1E6E7', exp['pos'][0], exp['pos'][1])
-                #case 'finished':
-                    #self.curr_menu = self.beatgame_menu
-                    #self.playing = False           
+            
                        
     def collision_checks(self):
         """Check all the sprites collisons"""
@@ -438,7 +439,7 @@ class Game (Settings):
                     self.level_up_active = True
                     self.finish_initial_planet_animation = True
 
-          
+
     def planet_animation(self):
         if not self.finish_planet_animation:
             if self.level in (3, 6, 9, 12, 15, 18, 21) and not (self.aliens):
@@ -484,6 +485,7 @@ class Game (Settings):
     def reset_game(self):
         """Reset the game settings"""
         #self.active_explosions = []
+
         self.hiscore_menu.hiscore_initialize()
         self.aliens.empty()
         self.alien_lasers.empty()
@@ -500,7 +502,8 @@ class Game (Settings):
         self.level_up_active = False
         self.planet.execute_show_planet = True
         self.finish_initial_planet_animation = False
-        Settings.moving_stars = True
+        Settings.moving_stars = False
+        Settings.menu_stars = True
         self.create_obstacle_flag = True
         self.alien_bullets_allowed = 1
         self.shoots_allowed = 1
@@ -600,12 +603,7 @@ class Game (Settings):
             self.shoots_allowed = 3
 
         elif self.level == 22:
-            self.finish_planet_hide_animation = False
-            #self.save_hiscore()
-            #self.extra.empty()
-            #self.playing = False
-            #self.curr_menu = self.beatgame_menu
-              
+            self.finish_planet_hide_animation = False     
           
 
     def choose_level(self):
@@ -760,7 +758,7 @@ class Game (Settings):
                 self.pause_time(self.time, self.start)
 
                 pygame.display.flip()
-                self.dt = clock.tick(60)
+                self.dt = self.clock.tick(60)
             else:
                 self.check_events_paused()
                 self.screen.blit(self.pause_menu, self.pause_menu_rect)  
@@ -773,14 +771,14 @@ if __name__ == '__main__':
     pygame.init()
     pygame.font.init()
     pygame.mixer.init()
-    clock = pygame.time.Clock()
-    # create a instance for game class
+    #clock = pygame.time.Clock()
     invaders = Game()
    
 
     while invaders.running:
         invaders.curr_menu.display_menu()
         invaders.game_loop()
+       
         
         
     

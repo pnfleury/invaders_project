@@ -5,7 +5,7 @@ from random import randint
 class Settings:
     """ Global game settings class"""
 
-
+    
     # Screen resolution
     flags = pygame.SCALED | pygame.FULLSCREEN
     screen_width = 1200
@@ -28,7 +28,7 @@ class Settings:
     hi_score = 0
 
     # Initialize level and lives variables
-    level = 0  
+    level = 0 
     lives = 2
     
     # Flags for the new_life function on the main program
@@ -41,6 +41,10 @@ class Settings:
     x = y = 0
     num_stars = 200 # numbers of stars on screen
     moving_stars = True # flag for moving start or not
+
+    menu_stars = False
+
+    ship_up = False
 
     # Obstacle setup
     block_size = 6

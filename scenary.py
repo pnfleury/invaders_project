@@ -38,19 +38,22 @@ class Stars(Sprite):
         self.rect = self.image.get_rect(center = (x,y))
 
     def update(self):
+        if self.settings.menu_stars:
+            self.red = randint(0, 255)
+            self.green = randint(0, 255)
+            self.blue = randint(0, 255)
+            self.image.fill((self.red, self.green, self.blue))
+            self.rect.y -=  1
+            if self.rect.y < 0:
+                self.rect.y = self.settings.screen_heigth
 
-            #  self.red = randint(0, 255)
-            #  self.green = randint(0, 255)
-            #  self.blue = randint(0, 255)
-            #  self.image.fill((self.red, self.green, self.blue))
-
-        # # else:
-        self.color = randint(0 ,255)
-        self.image.fill((self.color, self.color, self.color))   
-        if self.settings.moving_stars:
-            self.rect.y +=  6
-            if self.rect.y > self.settings.screen_heigth:
-                self.rect.y = 0
+        else:
+            self.color = randint(0 ,255)
+            self.image.fill((self.color, self.color, self.color))   
+            if self.settings.moving_stars:
+                self.rect.y +=  6
+                if self.rect.y > self.settings.screen_heigth:
+                    self.rect.y = 0
         
 
 class Planet(Sprite):

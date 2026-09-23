@@ -1,9 +1,12 @@
 import pygame, sys
 from settings import Settings
 
+
 class Menu():
 
     def __init__(self, game):
+
+        #self.clock = pygame.time.Clock() 
         self.game = game
         self.s = Settings()
         self.earth_view = pygame.image.load('graphics/planets/earth_view.png').convert_alpha()
@@ -21,7 +24,8 @@ class Menu():
         self.x = 250
         self.speed = 1
         self.hi_color = 'red'
-
+        Settings.menu_stars = True
+        
 
     def draw_text(self, text, font, text_col, x, y):
         img = font.render (text, False, text_col)
@@ -30,7 +34,7 @@ class Menu():
         self.game.screen.blit(img, img_rect)
 
     def blink_text (self):
-        self.blink_time += 0.01 
+        self.blink_time += 0.1 
         if self.blink_time >= 3:
             self.blink_time = 0
         
@@ -118,36 +122,29 @@ class Menu():
             self.draw_text (f'HI-SCORE: {self.game.hi_score}', self.game.font_text, 'white', self.s.screen_width / 2, 20)
             self.draw_text("INVADERS", self.game.font_title, '#00ff00', self.s.screen_width / 2, self.s.screen_heigth / 4)
 
-            self.game.screen.blit(self.left_arrow, (100, 400)) 
-            self.game.screen.blit(self.right_arrow, (160, 400))
+            self.game.screen.blit(self.left_arrow, (220, 600)) 
+            self.game.screen.blit(self.right_arrow, (280, 600))
 
-      
-            self.game.screen.blit(self.ship_image, (self.x, 420))
-            if self.blink_time > 1:
-                self.x = 280
-            if self.blink_time < 1:
-                self.x = 250
-           
-
-            self.game.screen.blit( self.ctrl_key, (100, 460)) 
-            self.game.screen.blit(self.esc_key, (100, 520))  
+            self.game.screen.blit( self.ctrl_key, (160, 600)) 
+            self.game.screen.blit(self.esc_key, (100, 600))  
             
-            if self.blink_time > 1.5:
+            if self.blink_time > 1:
                 self.draw_text("Press [ENTER] to play", self.game.font_text, 'white', self.s.screen_width /2, self.s.screen_heigth - 50)
 
-            if self.game.pause_time(160, True):
+            if self.game.pause_time(50, True):
                 self.title_active = False
 
         else:
 
             self.draw_text("HIGH SCORES", self.game.font_wonder, 'green', self.s.screen_width /2, 40)
+            
             self.show_hiscore_list()
 
             # give a pause before changing to title game screen
-            if self.game.pause_time(120, True):
+            if self.game.pause_time(25, True):
                 self.title_active = True
-                
-            
+
+
     def check_input(self):
         """Check player input events"""
         for event in pygame.event.get():
@@ -157,6 +154,8 @@ class Menu():
             if event.type == pygame.KEYDOWN:
                 if self.title_active:
                     if event.key == pygame.K_RETURN:
+                        Settings.menu_stars = False
+                        Settings.moving_stars = True
                         self.run_display = False
                         self.game.playing = True
 
@@ -168,9 +167,14 @@ class Menu():
         while self.run_display:
             self.check_input()
             self.game.screen.fill('black')
+            self.game.extra_alien_timer()  
             self.game.stars.draw(self.game.screen)
-            self.title_menu()
+            self.game.extra.update()
+            self.game.extra.draw(self.game.screen)
+            self.game.stars.update()
+            self.title_menu()   
             pygame.display.flip()
+            self.game.clock.tick(60)
 
 
 class GameOver (Menu):
@@ -189,7 +193,7 @@ class GameOver (Menu):
         self.game.aliens.draw(self.game.screen)
         self.game.screen.blit(self.game.explosion_player, (self.game.player_sprite.rect.x, self.game.player_sprite.rect.y))
         self.draw_text("GAME OVER", self.game.font_title, self.s.text_col, self.game.screen_rect.centerx, self.game.screen_rect.centery)
-        if self.game.pause_time(160, True):
+        if self.game.pause_time(80, True):
             self.run_display = False
             if self.game.score > 0:
                 self.game.verify_score()  
@@ -204,6 +208,7 @@ class GameOver (Menu):
             self.game.screen.fill('black')
             self.game_over_menu()
             pygame.display.flip()
+            self.game.clock.tick(60)
 
 
 class Hiscore (Menu):
@@ -218,7 +223,7 @@ class Hiscore (Menu):
         self.alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O',
              'P','Q','R','S','T','U','V','W','X','Y','Z','DEL','END']
         self.alphabet_copy = self.alphabet[:]
-        
+     
         self.hiscore_initialize()
     
     def hiscore_initialize (self):
@@ -275,15 +280,15 @@ class Hiscore (Menu):
         # If the first letter is chosen, display it on the screen.
         if len(self.player_name) > 0:
             first_letter = self.base_font.render(self.player_name[0], True, self.score_name)
-            self.game.screen.blit(first_letter, (self.s.screen_width / 2 - 50, self.s.screen_heigth / 3))
+            self.game.screen.blit(first_letter, (550, self.s.screen_heigth / 3))
         # If the second letter is chosen, display it on the screen.
         if len(self.player_name) > 1:
             second_letter = self.base_font.render(self.player_name[1], True, self.score_name)
-            self.game.screen.blit(second_letter, (self.s.screen_width / 2, self.s.screen_heigth / 3))
+            self.game.screen.blit(second_letter, (600, self.s.screen_heigth / 3))
         # If the third letter is chosen, display it on the screen.
         if len(self.player_name) > 2:
             last_letter = self.base_font.render(self.player_name[2], True, self.score_name)
-            self.game.screen.blit(last_letter, (self.s.screen_width / 2 + 50, self.s.screen_heigth / 3))
+            self.game.screen.blit(last_letter, (650, self.s.screen_heigth / 3))
         # if three letters are choosen shrink the alphabet list to two options, 'end' or 'del'.
             self.alphabet = ['DEL', 'END']
         else:
@@ -293,9 +298,9 @@ class Hiscore (Menu):
         # displays the letter on the screen for the player to choose using the arrow keys.
         #self.draw_text (f'NAME', self.base_font, 'white', self.s.screen_width / 2, self.s.screen_heigth /2 - 50)
         choose_letters = self.base_font.render(self.alphabet[self.i], True, self.score_name)
-        self.game.screen.blit(choose_letters, (self.s.screen_width / 2 + self.space, self.s.screen_heigth / 3))
+        self.game.screen.blit(choose_letters, (600 + self.space, self.s.screen_heigth / 3))
         traces = self.base_font.render("___", True, self.score_name)  
-        self.game.screen.blit(traces, (self.s.screen_width / 2 - 50, self.s.screen_heigth / 3 + 15))
+        self.game.screen.blit(traces, (550, self.s.screen_heigth / 3 + 15))
         self.game.screen.blit(self.left_arrow, (self.s.screen_width /2 - 70, self.s.screen_heigth / 3 + 130)) 
         self.game.screen.blit(self.right_arrow, (self.s.screen_width /2, self.s.screen_heigth / 3 + 130)) 
         self.game.screen.blit( self.ctrl_key, (self.s.screen_width /2 + 70, self.s.screen_heigth / 3 + 130)) 
@@ -316,6 +321,7 @@ class Hiscore (Menu):
             self.check_input()
             self.display_letters()             
             pygame.display.flip()
+            self.game.clock.tick(60)
 
 class BeatGame (Menu):
     def __init__(self, game):
@@ -323,34 +329,47 @@ class BeatGame (Menu):
 
         self.game = game
         self.s = Settings()
+        self.unlock_input = False
+
 
     def end_game(self):
-        self.draw_text("CONGRATULATIONS", self.game.font_wonder, 'white', self.s.screen_width /2, self.s.screen_heigth / 3)
+        self.blink_text()
+        self.draw_text("CONGRATULATIONS", self.game.font_wonder, '#fff01f', self.s.screen_width /2, self.s.screen_heigth / 3)
         self.draw_text("You defended our entire solar system", self.game.font_extra_points, 'white', self.s.screen_width /2, self.s.screen_heigth / 3 + 60)
         self.draw_text("and drove the alien armada back", self.game.font_extra_points, 'white', self.s.screen_width /2, self.s.screen_heigth / 3 + 120)
         self.draw_text("to the far reaches of the universe", self.game.font_extra_points, 'white', self.s.screen_width /2, self.s.screen_heigth / 3 + 180)
         self.draw_text("Your job is done", self.game.font_extra_points, 'white', self.s.screen_width /2, self.s.screen_heigth / 3 + 240)
         self.draw_text("you can now return to Earth", self.game.font_extra_points, 'white', self.s.screen_width /2, self.s.screen_heigth / 3 + 300)
-      
+        if self.game.pause_time(50, True):
+            self.unlock_input = True
+            
+            
 
     def check_input(self):
         """Check player input events"""
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()              
+        if self.unlock_input:
+            if self.blink_time > 1:
+                self.draw_text("Press [ENTER] to continue", self.game.font_text, 'white', self.s.screen_width /2, self.s.screen_heigth - 50)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()              
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    self.run_display = False
-                    self.game.verify_score()  
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        self.run_display = False
+                        self.game.verify_score()  
 
 
     def display_menu(self):
         self.run_display = True
+        Settings.ship_up = True
         while self.run_display:
             self.game.screen.fill('black')
-            self.game.stars.draw(self.game.screen)
             self.game.stars.update()
+            self.game.player.update()
+            self.game.stars.draw(self.game.screen)
+            self.game.player.draw(self.game.screen)
             self.end_game()
             self.check_input()
             pygame.display.flip()
+            self.game.clock.tick(60)

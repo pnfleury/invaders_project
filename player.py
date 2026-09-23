@@ -6,15 +6,17 @@ from settings import Settings
 class Player (Sprite):
     """ Player ship class """
 
-    def __init__(self, invaders_game):
+    def __init__(self, game):
         super().__init__()
         self.settings = Settings()
-        self.screen = invaders_game.screen
-        self.screen_rect = invaders_game.screen_rect
+        self.game = game
+        #self.screen = invaders_game.screen
+        self.screen_rect = game.screen_rect
         self.image = pygame.image.load('graphics/player.png')
         self.x_pos = self.image.get_width()
         self.y_pos = self.settings.screen_heigth - self.image.get_height()
         self.rect = self.image.get_rect(midleft = (self.x_pos , self.y_pos))
+        self.speed_up = 1
             
     def get_input(self):
         
@@ -26,9 +28,21 @@ class Player (Sprite):
             
     def restart_player_location (self):
         self.rect = self.image.get_rect(midleft = (self.x_pos , self.y_pos))
-    
+
+    def move_up (self):
+        self.rect.y -= 1 * self.speed_up
+        self.speed_up += 0.1
+        if self.rect.y < 0:
+            self.game.player.empty()
+            Settings.ship_up = False
+             
     def update (self):
-        self.get_input()
+        if self.settings.ship_up:
+            self.move_up()
+        else:
+            self.get_input()
+        
+        
            
 
 
