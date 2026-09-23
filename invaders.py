@@ -450,13 +450,12 @@ class Game (Settings):
                 self.planet.execute_hide_planet = True
                 if self.pause_time(10, True):
                     if self.level == 21:
-                        self.finish_planet_animation = True
                         self.extra.empty()
+                        self.finish_planet_animation = True
                         Settings.moving_stars = False
                         self.playing = False
                         self.curr_menu = self.beatgame_menu
                         
-                        #self.finish_initial_planet_animation = False
                     else:
                         self.i += 1
                         self.planet.image = self.planet.list[self.i] 

@@ -325,7 +325,13 @@ class BeatGame (Menu):
         self.s = Settings()
 
     def end_game(self):
-        self.draw_text("YOU BEAT THE GAME", self.game.font_wonder, 'white', self.s.screen_width /2, self.s.screen_heigth / 2)   
+        self.draw_text("CONGRATULATIONS", self.game.font_wonder, 'white', self.s.screen_width /2, self.s.screen_heigth / 3)
+        self.draw_text("You defended our entire solar system", self.game.font_extra_points, 'white', self.s.screen_width /2, self.s.screen_heigth / 3 + 60)
+        self.draw_text("and drove the alien armada back", self.game.font_extra_points, 'white', self.s.screen_width /2, self.s.screen_heigth / 3 + 120)
+        self.draw_text("to the far reaches of the universe", self.game.font_extra_points, 'white', self.s.screen_width /2, self.s.screen_heigth / 3 + 180)
+        self.draw_text("Your job is done", self.game.font_extra_points, 'white', self.s.screen_width /2, self.s.screen_heigth / 3 + 240)
+        self.draw_text("you can now return to Earth", self.game.font_extra_points, 'white', self.s.screen_width /2, self.s.screen_heigth / 3 + 300)
+      
 
     def check_input(self):
         """Check player input events"""
@@ -336,11 +342,8 @@ class BeatGame (Menu):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     self.run_display = False
-                    self.game.curr_menu = self.game.main_menu
-                    self.game.reset_game()
+                    self.game.verify_score()  
 
-                if event.key == pygame.K_ESCAPE:
-                    sys.exit()
 
     def display_menu(self):
         self.run_display = True

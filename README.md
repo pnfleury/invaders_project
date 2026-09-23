@@ -1,7 +1,12 @@
 #  📊INVADERS
 ## A Space Invaders-style game built in Python using the Pygame module.
 
-## Licença / License
+### Development stage
+
+- The game is playable, but it still needs lots of work.
+
+
+### Licença / License
 
 © 2026 Paulo Nobrega Fleury Todos os direitos reservados / All rights reserved.
 
