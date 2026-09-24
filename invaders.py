@@ -13,12 +13,12 @@ from scenary import Planet
 class Game (Settings):
     """ Principal class of Invader-X game"""
     def __init__(self):
+
+        self.clock = pygame.time.Clock()
         
         # initialize screen
         self.screen =  pygame.display.set_mode((self.screen_width, self.screen_heigth), self.flags)
         self.screen_rect = self.screen.get_rect()
-
-        self.clock = pygame.time.Clock() 
 
         # Lifes indicator on top right screen
         self.life_surf_original = pygame.image.load('graphics/player.png').convert_alpha()
@@ -33,10 +33,11 @@ class Game (Settings):
         self.explosion_player = pygame.image.load('graphics/player_explosion.png').convert_alpha()
         self.block_hit = pygame.image.load('graphics/block_hit.png').convert_alpha()
         self.laser_miss = pygame.image.load('graphics/laser_miss.png').convert_alpha()
-        self.pause_menu = pygame.image.load('graphics/pause_menu.png').convert_alpha()
-        self.pause_menu_rect = self.pause_menu.get_rect(center = (self.screen_width /2, self.screen_heigth / 2))
 
-        
+        # Load pause buttons images
+        self.play_image = pygame.image.load('graphics/play.png')
+        self.big_pause_image = pygame.image.load('graphics/pause_big.png')
+        self.big_pause_image_rect = self.big_pause_image.get_rect(midtop = (self.screen_width /2, self.screen_heigth /3))
        
         # Create Font objects from files
         self.font_text = pygame.font.Font(self.font_pixeled, 15)
@@ -49,8 +50,6 @@ class Game (Settings):
         self.font_score = pygame.font.Font('font/Pixeled.ttf', 25) 
         self.font_wonder = pygame.font.Font('font/8-BIT WONDER.ttf', 35)
 
-        
-    
         # Load sounds files
         self.music = pygame.mixer.Sound('audio/music.wav')
         self.laser_sound = pygame.mixer.Sound('audio/shoot.wav')
@@ -79,19 +78,19 @@ class Game (Settings):
         #self.music.play(loops= -1)
 
 
-        # Create sprite instances and sprite groups
+        ## Create instances
         self.crt = CRT(self)
-
         self.main_menu = Menu(self)
         self.game_over_menu = GameOver(self)
         self.hiscore_menu = Hiscore(self)
         self.beatgame_menu = BeatGame(self)
+        self.shape = scenary.shape
+        # sprites
         self.planet = Planet(self)
         self.alien = Alien('red',0,0)
         self.extra_sprite = Extra('left')
-        self.shape = scenary.shape
         self.player_sprite = Player(self)
-        
+        # sprite groups
         self.planets = pygame.sprite.Group(self.planet)
         self.player = pygame.sprite.GroupSingle(self.player_sprite)
         self.extra = pygame.sprite.GroupSingle()
@@ -101,7 +100,6 @@ class Game (Settings):
         self.lasers = pygame.sprite.Group()
         self.stars = pygame.sprite.Group()
 
-        
 
         """ initialize variables """
         # Menu inicial
@@ -117,27 +115,26 @@ class Game (Settings):
         self.initial_time = 0
         # flag variable for pause function
         self.start = False
-
-        # OBSTACLE 
+        ## OBSTACLE 
         # flag variable for create obstacles blocks
         self.create_obstacle_flag = True
         # flag variable for rebuild obstacles blocks
         self.block_rebuild = False
         # increment variable used on redraw blocks function
         self.block_count = 0
-
+        ## Planets animation
         # Flag for start/stop initial planet animation
         self.finish_initial_planet_animation = False
-
         # Flag for start/stop planet animation
         self.finish_planet_animation = False
-        
         # variable used on leave_planet_animation function
         self.i = 0
+        ## Start game flags
         # Flag for start the game
         self.running = True
         # Flag for start/ stop the game_loop function
         self.playing = False
+        
         # explosion time function variable
         self.dt = 0   
 
@@ -708,7 +705,16 @@ class Game (Settings):
                   
                 if event.key == pygame.K_LCTRL or event.key == pygame.K_RCTRL:
                     self.game_paused = False
-   
+
+    def pause_menu(self):
+        self.check_events_paused()
+        self.screen.blit(self.big_pause_image, self.big_pause_image_rect)
+        self.screen.blit(self.main_menu.esc_key, (self.screen_width / 2 - 60, self.screen_heigth / 2 + 10))
+        self.screen.blit(self.main_menu.exit_image, (self.screen_width /2 + 20, self.screen_heigth /2 + 20))
+        self.screen.blit(self.main_menu.ctrl_key, (self.screen_width / 2 - 60, self.screen_heigth / 2 + 80))
+        self.screen.blit(self.play_image, (self.screen_width /2 + 20, self.screen_heigth /2 + 90))        
+        pygame.display.flip()
+
 
     def game_loop(self):
         """Run all the critical functions for the game """
@@ -752,7 +758,7 @@ class Game (Settings):
                 self.aliens.draw(self.screen)
                 self.alien_lasers.draw(self.screen)
                 self.extra.draw(self.screen)
-                self.crt.draw()
+                #self.crt.draw()
                 self.level_up()
                 self.new_life()
                 self.pause_time(self.time, self.start)
@@ -760,11 +766,8 @@ class Game (Settings):
                 pygame.display.flip()
                 self.dt = self.clock.tick(60)
             else:
-                self.check_events_paused()
-                self.screen.blit(self.pause_menu, self.pause_menu_rect)  
-                pygame.display.flip()
-                
-           
+                self.pause_menu()
+               
 
 if __name__ == '__main__':
     

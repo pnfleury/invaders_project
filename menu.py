@@ -14,7 +14,9 @@ class Menu():
         self.right_arrow = pygame.image.load('graphics/keys/right_arrow.png')
         self.ctrl_key = pygame.image.load('graphics/keys/ctrl_key.png')
         self.esc_key = pygame.image.load('graphics/keys/esc_key.png')
-        self.ship_image = pygame.image.load('graphics/player.png')
+        self.exit_image = pygame.image.load('graphics/exit.png')
+        self.pause_image = pygame.image.load('graphics/pause.png')
+        self.player_image = pygame.image.load('graphics/player_image.png')        
        
         # variable for blinking text used on blink function
         self.blink_time = 0
@@ -121,12 +123,16 @@ class Menu():
                             
             self.draw_text (f'HI-SCORE: {self.game.hi_score}', self.game.font_text, 'white', self.s.screen_width / 2, 20)
             self.draw_text("INVADERS", self.game.font_title, '#00ff00', self.s.screen_width / 2, self.s.screen_heigth / 4)
-
-            self.game.screen.blit(self.left_arrow, (220, 600)) 
-            self.game.screen.blit(self.right_arrow, (280, 600))
-
-            self.game.screen.blit( self.ctrl_key, (160, 600)) 
-            self.game.screen.blit(self.esc_key, (100, 600))  
+            
+            self.game.screen.blit(self.esc_key, (140, 490))  
+            self.game.screen.blit(self.exit_image, (220, 500)) 
+            self.game.screen.blit(self.pause_image, (290, 500)) 
+            
+            self.game.screen.blit( self.ctrl_key, (140, 560)) 
+            self.game.screen.blit(self.left_arrow, (200, 560)) 
+            self.game.screen.blit(self.right_arrow, (260, 560))
+            self.game.screen.blit(self.player_image, (340, 570))
+           
             
             if self.blink_time > 1:
                 self.draw_text("Press [ENTER] to play", self.game.font_text, 'white', self.s.screen_width /2, self.s.screen_heigth - 50)
@@ -296,7 +302,6 @@ class Hiscore (Menu):
             self.alphabet = self.alphabet_copy
 
         # displays the letter on the screen for the player to choose using the arrow keys.
-        #self.draw_text (f'NAME', self.base_font, 'white', self.s.screen_width / 2, self.s.screen_heigth /2 - 50)
         choose_letters = self.base_font.render(self.alphabet[self.i], True, self.score_name)
         self.game.screen.blit(choose_letters, (600 + self.space, self.s.screen_heigth / 3))
         traces = self.base_font.render("___", True, self.score_name)  

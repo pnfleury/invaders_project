@@ -79,7 +79,6 @@ class Planet(Sprite):
         self.divisor = 3
 
     def show_planet(self):
-           
             self.rect.y -= 2
             if self.image == self.list[5]: 
                 self.divisor = 7 
