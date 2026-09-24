@@ -33,8 +33,8 @@ Inserir musica durante o jogo e refazer todos os efeitos sonoros.
 - Modulo Pygame versão 2.6.1
 
 ### Screenshots
-![Tela inicial](screenshots/tela_principal.png)  
-![Tela jogo](screenshots/tela1_jogo.png)  
+![Tela inicial](screenshots/tela_principal.jpg)  
+![Tela jogo](screenshots/tela1_jogo.jpg)  
 
 
 ### Créditos
