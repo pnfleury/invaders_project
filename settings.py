@@ -14,8 +14,8 @@ class Settings:
     game_paused = False
     
     # Font settings
-    font_pixeled = 'font/Pixeled.ttf'
-    font_wonder = 'font/8-BIT WONDER.ttf'
+    font_pixeled = 'assets/font/Pixeled.ttf'
+    font_wonder = 'assets/font/8-BIT WONDER.ttf'
     text_col = ('white') # font color
     
    

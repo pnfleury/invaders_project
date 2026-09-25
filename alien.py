@@ -8,24 +8,24 @@ class Alien(Sprite):
     def __init__(self, color, x, y):
         super().__init__()
        
-        file_path = 'graphics/' + color + '.png'
+        file_path = 'assets/graphics/' + color + '.png'
         self.sprites = []
         self.value = 0
         self.sprites.append(pygame.image.load(file_path).convert_alpha())
 
         if color == 'red': 
-            self.sprites.append(pygame.image.load('graphics/alien_red/sprite_1.png').convert_alpha())
-            self.sprites.append(pygame.image.load('graphics/alien_red/sprite_2.png').convert_alpha())
-            self.sprites.append(pygame.image.load('graphics/alien_red/sprite_3.png').convert_alpha())
-            self.sprites.append(pygame.image.load('graphics/alien_red/sprite_4.png').convert_alpha())
+            self.sprites.append(pygame.image.load('assets/graphics/alien_red/sprite_1.png').convert_alpha())
+            self.sprites.append(pygame.image.load('assets/graphics/alien_red/sprite_2.png').convert_alpha())
+            self.sprites.append(pygame.image.load('assets/graphics/alien_red/sprite_3.png').convert_alpha())
+            self.sprites.append(pygame.image.load('assets/graphics/alien_red/sprite_4.png').convert_alpha())
             self.value = 100
         elif color == "green": 
-            self.sprites.append(pygame.image.load('graphics/alien_green/sprite_1.png').convert_alpha())
-            self.sprites.append(pygame.image.load('graphics/alien_green/sprite_2.png').convert_alpha())
+            self.sprites.append(pygame.image.load('assets/graphics/alien_green/sprite_1.png').convert_alpha())
+            self.sprites.append(pygame.image.load('assets/graphics/alien_green/sprite_2.png').convert_alpha())
             self.value = 200
         else: 
-            self.sprites.append(pygame.image.load('graphics/alien_prata/sprite_1.png').convert_alpha())
-            self.sprites.append(pygame.image.load('graphics/alien_prata/sprite_2.png').convert_alpha())
+            self.sprites.append(pygame.image.load('assets/graphics/alien_prata/sprite_1.png').convert_alpha())
+            self.sprites.append(pygame.image.load('assets/graphics/alien_prata/sprite_2.png').convert_alpha())
             
             
             self.value = 300
@@ -55,12 +55,12 @@ class Extra(Sprite):
         super().__init__()
         self.settings = Settings()
         self.sprites = []
-        self.sprites.append(pygame.image.load('graphics/alien_extra/extra.png').convert_alpha())
-        self.sprites.append(pygame.image.load('graphics/alien_extra/extra1.png').convert_alpha())
-        self.sprites.append(pygame.image.load('graphics/alien_extra/extra2.png').convert_alpha())
-        self.sprites.append(pygame.image.load('graphics/alien_extra/extra3.png').convert_alpha())
-        self.sprites.append(pygame.image.load('graphics/alien_extra/extra4.png').convert_alpha())
-        self.sprites.append(pygame.image.load('graphics/alien_extra/extra5.png').convert_alpha())
+        self.sprites.append(pygame.image.load('assets/graphics/alien_extra/extra.png').convert_alpha())
+        self.sprites.append(pygame.image.load('assets/graphics/alien_extra/extra1.png').convert_alpha())
+        self.sprites.append(pygame.image.load('assets/graphics/alien_extra/extra2.png').convert_alpha())
+        self.sprites.append(pygame.image.load('assets/graphics/alien_extra/extra3.png').convert_alpha())
+        self.sprites.append(pygame.image.load('assets/graphics/alien_extra/extra4.png').convert_alpha())
+        self.sprites.append(pygame.image.load('assets/graphics/alien_extra/extra5.png').convert_alpha())
        
         self.current_sprite = 0
         self.image = self.sprites[self.current_sprite]

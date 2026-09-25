@@ -12,7 +12,7 @@ class Player (Sprite):
         self.game = game
         #self.screen = invaders_game.screen
         self.screen_rect = game.screen_rect
-        self.image = pygame.image.load('graphics/player.png')
+        self.image = pygame.image.load('assets/graphics/player.png')
         self.x_pos = self.image.get_width()
         self.y_pos = self.settings.screen_heigth - self.image.get_height()
         self.rect = self.image.get_rect(midleft = (self.x_pos , self.y_pos))

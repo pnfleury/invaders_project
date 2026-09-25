@@ -9,7 +9,7 @@ class CRT():
     def __init__(self, game):
         self.settings = Settings()
         self.game = game
-        self.tv = pygame.image.load('graphics/tv.png').convert_alpha()
+        self.tv = pygame.image.load('assets/graphics/tv.png').convert_alpha()
         self.tv = pygame.transform.scale(self.tv, (self.settings.screen_width, self.settings.screen_heigth))
 
     def create_crt_lines(self):

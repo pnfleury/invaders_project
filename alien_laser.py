@@ -9,8 +9,8 @@ class AlienLaser (Sprite):
         super().__init__()
         self.settings = Settings()
         self.sprites = []
-        self.sprites.append (pygame.image.load('graphics/alien_laser_0.png'))
-        self.sprites.append (pygame.image.load('graphics/alien_laser_1.png'))
+        self.sprites.append (pygame.image.load('assets/graphics/alien_laser_0.png'))
+        self.sprites.append (pygame.image.load('assets/graphics/alien_laser_1.png'))
         self.current_sprite = 0
         self.image = self.sprites[self.current_sprite]
         self.rect = self.image.get_rect(center = pos)

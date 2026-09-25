@@ -62,13 +62,13 @@ class Planet(Sprite):
         self.settings = Settings()
         self.game = game
         self.list = []
-        self.list.append(pygame.image.load('graphics/planets/earth.png').convert_alpha())
-        self.list.append(pygame.image.load('graphics/planets/moon.png').convert_alpha())
-        self.list.append(pygame.image.load('graphics/planets/mars.png').convert_alpha())
-        self.list.append(pygame.image.load('graphics/planets/jupiter.png').convert_alpha())
-        self.list.append(pygame.image.load('graphics/planets/saturn.png').convert_alpha())
-        self.list.append(pygame.image.load('graphics/planets/uranus.png').convert_alpha())
-        self.list.append(pygame.image.load('graphics/planets/netuno.png').convert_alpha())
+        self.list.append(pygame.image.load('assets/graphics/planets/earth.png').convert_alpha())
+        self.list.append(pygame.image.load('assets/graphics/planets/moon.png').convert_alpha())
+        self.list.append(pygame.image.load('assets/graphics/planets/mars.png').convert_alpha())
+        self.list.append(pygame.image.load('assets/graphics/planets/jupiter.png').convert_alpha())
+        self.list.append(pygame.image.load('assets/graphics/planets/saturn.png').convert_alpha())
+        self.list.append(pygame.image.load('assets/graphics/planets/uranus.png').convert_alpha())
+        self.list.append(pygame.image.load('assets/graphics/planets/netuno.png').convert_alpha())
         self.current_planet = 0
         self.image = self.list[self.current_planet]
         self.image_height = self.image.get_height()

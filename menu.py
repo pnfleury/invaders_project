@@ -9,14 +9,14 @@ class Menu():
         #self.clock = pygame.time.Clock() 
         self.game = game
         self.s = Settings()
-        self.earth_view = pygame.image.load('graphics/planets/earth_view.png').convert_alpha()
-        self.left_arrow = pygame.image.load('graphics/keys/left_arrow.png')
-        self.right_arrow = pygame.image.load('graphics/keys/right_arrow.png')
-        self.ctrl_key = pygame.image.load('graphics/keys/ctrl_key.png')
-        self.esc_key = pygame.image.load('graphics/keys/esc_key.png')
-        self.exit_image = pygame.image.load('graphics/exit.png')
-        self.pause_image = pygame.image.load('graphics/pause.png')
-        self.player_image = pygame.image.load('graphics/player_image.png')        
+        self.earth_view = pygame.image.load('assets/graphics/planets/earth_view.png').convert_alpha()
+        self.left_arrow = pygame.image.load('assets/graphics/keys/left_arrow.png')
+        self.right_arrow = pygame.image.load('assets/graphics/keys/right_arrow.png')
+        self.ctrl_key = pygame.image.load('assets/graphics/keys/ctrl_key.png')
+        self.esc_key = pygame.image.load('assets/graphics/keys/esc_key.png')
+        self.exit_image = pygame.image.load('assets/graphics/exit.png')
+        self.pause_image = pygame.image.load('assets/graphics/pause.png')
+        self.player_image = pygame.image.load('assets/graphics/player_image.png')        
        
         # variable for blinking text used on blink function
         self.blink_time = 0
@@ -223,7 +223,7 @@ class Hiscore (Menu):
 
         self.game = game
         self.s = Settings()
-        self.base_font = pygame.font.Font('font/Pixeled.ttf', 45) 
+        self.base_font = pygame.font.Font('assets/font/Pixeled.ttf', 45) 
         #self.font_score
         # alphabet list.
         self.alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O',
