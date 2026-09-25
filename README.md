@@ -1,4 +1,4 @@
-#  📊INVADERS
+# <img src="screenshots/extra.png" alt="Logo" width="60" height=""> INVADERS
 ## Um jogo no estilo do antigo arcade "space invaders".
 
 ### Objetivo
@@ -12,8 +12,10 @@ No momento esta em fase beta, mas esta jogável com todos os estagios e funciona
 - Ultima atualização em 24/09/2026.
 
 ### Gameplay
-- O objetivo do jogo é destruir todos os alienigenas que estão nos atacando e expulsa-los de vez do nosso sistema solar. Começando pela Terra e depois Lua, Marte, Jupiter, Saturno, Urano, Netuno. Cada planeta e satelite natural possui tres estagios, totalizando vinte e um estagios.
-- As seguintes teclas são usadas:  
+- O objetivo do jogo é destruir todos os alienigenas invasores e expulsa-los de vez do nosso sistema solar. Começando pela Terra e depois Lua, Marte, Jupiter, Saturno, Urano, Netuno. Cada planeta e satelite natural possui tres estagios, totalizando vinte e um estagios.
+- O jogo acaba quando você perder suas 3 vidas ou quando a frota alienigena alcançar a parte inferior da tela.
+- Você ganha novas vidas extras conforme sua pontuação aumenta.
+- Controle do jogo:   
 SETAS para controlar sua nave.  
 CTRL (esquerdo ou direito) para atirar.  
 ESC para dar pausa e sair do jogo.  
@@ -26,6 +28,8 @@ A maioria das funcionalidades, como graficos, menus, estagios, progressão de di
 - Em andamento:  
 No momento estou aprimorando a jogabilidade adicionando outras implementações que um jogo deste tipo normalmente não possui, para deixa-lo mais interessante.  
 - Futuro:  
+Aprimorar o menu principal  
+Aprimorar a jogabilidade  
 Inserir musica durante o jogo e refazer todos os efeitos sonoros.
 
 ### Tecnologias usadas
@@ -34,7 +38,8 @@ Inserir musica durante o jogo e refazer todos os efeitos sonoros.
 
 ### Screenshots
 ![Tela inicial](screenshots/tela_principal.jpg)  
-![Tela jogo](screenshots/tela1_jogo.jpg)  
+![Tela 1 jogo](screenshots/tela1_jogo.jpg)  
+![Tela 2 jogo](screenshots/tela2_jogo.jpg)  
 
 
 ### Créditos
@@ -43,7 +48,8 @@ Paulo Fleury
 
 ### Observaçoes
 - Nenhuma IA ajudou no desenvolvimento deste jogo.
-- Aceito colaboração se for de interesse.
+- Muitos detalhes ainda vão ser implementados.
+
 ### Contato
 - email: pnfleury@gmail.com  
 - github: https://github.com/pnfleury
