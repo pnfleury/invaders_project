@@ -1,31 +1,31 @@
 import pygame
 from pygame.sprite import Sprite
-from settings import Settings
 
 class Alien(Sprite):
     """ Alien class """
     
-    def __init__(self, color, x, y):
+    def __init__(self, color, x, y, game):
         super().__init__()
-       
+        
+        self.game = game
         file_path = 'assets/graphics/' + color + '.png'
         self.sprites = []
         self.value = 0
-        self.sprites.append(pygame.image.load(file_path).convert_alpha())
+        self.sprites.append(pygame.image.load(self.game.resource_path(file_path)).convert_alpha())
 
         if color == 'red': 
-            self.sprites.append(pygame.image.load('assets/graphics/alien_red/sprite_1.png').convert_alpha())
-            self.sprites.append(pygame.image.load('assets/graphics/alien_red/sprite_2.png').convert_alpha())
-            self.sprites.append(pygame.image.load('assets/graphics/alien_red/sprite_3.png').convert_alpha())
-            self.sprites.append(pygame.image.load('assets/graphics/alien_red/sprite_4.png').convert_alpha())
+            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_red/sprite_1.png')).convert_alpha())
+            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_red/sprite_2.png')).convert_alpha())
+            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_red/sprite_3.png')).convert_alpha())
+            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_red/sprite_4.png')).convert_alpha())
             self.value = 100
         elif color == "green": 
-            self.sprites.append(pygame.image.load('assets/graphics/alien_green/sprite_1.png').convert_alpha())
-            self.sprites.append(pygame.image.load('assets/graphics/alien_green/sprite_2.png').convert_alpha())
+            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_green/sprite_1.png')).convert_alpha())
+            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_green/sprite_2.png')).convert_alpha())
             self.value = 200
         else: 
-            self.sprites.append(pygame.image.load('assets/graphics/alien_prata/sprite_1.png').convert_alpha())
-            self.sprites.append(pygame.image.load('assets/graphics/alien_prata/sprite_2.png').convert_alpha())
+            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_prata/sprite_1.png')).convert_alpha())
+            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_prata/sprite_2.png')).convert_alpha())
             
             
             self.value = 300
@@ -51,26 +51,26 @@ class Alien(Sprite):
 class Extra(Sprite):
     """ Extra alien ship class"""
     
-    def __init__(self, side):
+    def __init__(self, side, game):
         super().__init__()
-        self.settings = Settings()
+        self.game = game
         self.sprites = []
-        self.sprites.append(pygame.image.load('assets/graphics/alien_extra/extra.png').convert_alpha())
-        self.sprites.append(pygame.image.load('assets/graphics/alien_extra/extra1.png').convert_alpha())
-        self.sprites.append(pygame.image.load('assets/graphics/alien_extra/extra2.png').convert_alpha())
-        self.sprites.append(pygame.image.load('assets/graphics/alien_extra/extra3.png').convert_alpha())
-        self.sprites.append(pygame.image.load('assets/graphics/alien_extra/extra4.png').convert_alpha())
-        self.sprites.append(pygame.image.load('assets/graphics/alien_extra/extra5.png').convert_alpha())
+        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/extra.png')).convert_alpha())
+        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/extra1.png')).convert_alpha())
+        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/extra2.png')).convert_alpha())
+        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/extra3.png')).convert_alpha())
+        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/extra4.png')).convert_alpha())
+        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/extra5.png')).convert_alpha())
        
         self.current_sprite = 0
         self.image = self.sprites[self.current_sprite]
     
         if side == 'right':
-            x = self.settings.screen_width + 50
-            self.speed = - self.settings.extra_speed 
+            x = self.game.s.screen_width + 50
+            self.speed = - self.game.s.extra_speed 
         else:
             x = -50
-            self.speed = self.settings.extra_speed
+            self.speed = self.game.s.extra_speed
         
         self.rect = self.image.get_rect(topleft = (x, 60))
 

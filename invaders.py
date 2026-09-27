@@ -10,58 +10,60 @@ from menu import *
 import scenary
 from scenary import Planet
 
-class Game (Settings):
+class Game:
     """ Principal class of Invader-X game"""
     def __init__(self):
+
+        self.s = Settings()
 
         self.clock = pygame.time.Clock()
         
         # initialize screen
-        self.screen =  pygame.display.set_mode((self.screen_width, self.screen_heigth), self.flags)
+        self.screen =  pygame.display.set_mode((self.s.screen_width, self.s.screen_heigth), self.s.flags)
         self.screen_rect = self.screen.get_rect()
 
         # Lifes indicator on top right screen
-        self.life_surf_original = pygame.image.load('assets/graphics/player.png').convert_alpha()
+        self.life_surf_original = pygame.image.load(self.resource_path('assets/graphics/player.png')).convert_alpha()
         self.life_surf = pygame.transform.scale_by(self.life_surf_original, 0.6)
-        self.live_x_start_pos = self.screen_width - (self.life_surf.get_size()[0] * 2.3 + 65)
+        self.live_x_start_pos = self.s.screen_width - (self.life_surf.get_size()[0] * 2.3 + 65)
         self.life_x = self.live_x_start_pos + ((self.life_surf.get_size()[0]))  
 
         # Load explosions images
-        self.explosion_alien = pygame.image.load('assets/graphics/alien_explosion.png').convert_alpha() 
-        self.explosion_extra = pygame.image.load('assets/graphics/extra_explosion.png').convert_alpha()
-        self.laser_hit = pygame.image.load('assets/graphics/laser_hit.png').convert_alpha()
-        self.explosion_player = pygame.image.load('assets/graphics/player_explosion.png').convert_alpha()
-        self.block_hit = pygame.image.load('assets/graphics/block_hit.png').convert_alpha()
-        self.laser_miss = pygame.image.load('assets/graphics/laser_miss.png').convert_alpha()
+        self.explosion_alien = pygame.image.load(self.resource_path('assets/graphics/alien_explosion.png')).convert_alpha() 
+        self.explosion_extra = pygame.image.load(self.resource_path('assets/graphics/extra_explosion.png')).convert_alpha()
+        self.laser_hit = pygame.image.load(self.resource_path('assets/graphics/laser_hit.png')).convert_alpha()
+        self.explosion_player = pygame.image.load(self.resource_path('assets/graphics/player_explosion.png')).convert_alpha()
+        self.block_hit = pygame.image.load(self.resource_path('assets/graphics/block_hit.png')).convert_alpha()
+        self.laser_miss = pygame.image.load(self.resource_path('assets/graphics/laser_miss.png')).convert_alpha()
 
         # Load pause buttons images
-        self.play_image = pygame.image.load('assets/graphics/play.png')
-        self.big_pause_image = pygame.image.load('assets/graphics/pause_big.png')
-        self.big_pause_image_rect = self.big_pause_image.get_rect(midtop = (self.screen_width /2, self.screen_heigth /3))
+        self.play_image = pygame.image.load(self.resource_path('assets/graphics/play.png')).convert_alpha()
+        self.big_pause_image = pygame.image.load(self.resource_path('assets/graphics/pause_big.png')).convert_alpha()
+        self.big_pause_image_rect = self.big_pause_image.get_rect(midtop = (self.s.screen_width /2, self.s.screen_heigth /3))
        
         # Create Font objects from files
-        self.font_text = pygame.font.Font(self.font_pixeled, 15)
-        self.font_title_2 = pygame.font.Font('assets/font/Pixeled.ttf', 40)
-        self.font_scoreboard = pygame.font.Font('assets/font/Pixeled.ttf', 15)
-        self.font_extra_points = pygame.font.Font('assets/font/8-BIT WONDER.ttf', 20)
-        self.font_finish = pygame.font.Font('assets/font/Pixeled.ttf', 25) 
-        self.font_planets = pygame.font.Font('assets/font/8-BIT WONDER.ttf', 40)
-        self.font_title = pygame.font.Font(self.font_pixeled, 80)
-        self.font_score = pygame.font.Font('assets/font/Pixeled.ttf', 25) 
-        self.font_wonder = pygame.font.Font('assets/font/8-BIT WONDER.ttf', 35)
+        self.font_text = pygame.font.Font(self.resource_path('assets/font/Pixeled.ttf'), 15)
+        self.font_title_2 = pygame.font.Font(self.resource_path('assets/font/Pixeled.ttf'), 40)
+        self.font_scoreboard = pygame.font.Font(self.resource_path('assets/font/Pixeled.ttf'), 15)
+        self.font_extra_points = pygame.font.Font(self.resource_path('assets/font/8-BIT WONDER.ttf'), 20)
+        self.font_finish = pygame.font.Font(self.resource_path('assets/font/Pixeled.ttf'), 25) 
+        self.font_planets = pygame.font.Font(self.resource_path('assets/font/8-BIT WONDER.ttf'), 40)
+        self.font_title = pygame.font.Font(self.resource_path('assets/font/Pixeled.ttf'), 80)
+        self.font_score = pygame.font.Font(self.resource_path('assets/font/Pixeled.ttf'), 25)
+        self.font_wonder = pygame.font.Font(self.resource_path('assets/font/8-BIT WONDER.ttf'), 35)
 
         # Load sounds files
-        self.music = pygame.mixer.Sound('assets/audio/music.wav')
-        self.laser_sound = pygame.mixer.Sound('assets/audio/shoot.wav')
-        self.alien_laser_sound = pygame.mixer.Sound('assets/audio/laser.wav')
-        self.extra_alien_sound = pygame.mixer.Sound('assets/audio/ufo_lowpitch.wav')
-        self.new_life_sound = pygame.mixer.Sound('assets/audio/life.mp3')
-        self.explosion_sound = pygame.mixer.Sound('assets/audio/explosion.wav')
-        self.player_explosion_sound = pygame.mixer.Sound('assets/audio/player_explosion.wav')
-        self.extra_explosion_sound = pygame.mixer.Sound('assets/audio/ufo_highpitch.wav')
-        self.block_rebuild_sound = pygame.mixer.Sound('assets/audio/block_rebuild.wav')
-        self.warp_sound = pygame.mixer.Sound('assets/audio/warp.mp3')
-        self.warp_exit_sound = pygame.mixer.Sound('assets/audio/warp_exit.mp3')
+        self.music = pygame.mixer.Sound(self.resource_path('assets/audio/music.wav'))
+        self.laser_sound = pygame.mixer.Sound(self.resource_path('assets/audio/shoot.wav'))
+        self.alien_laser_sound = pygame.mixer.Sound(self.resource_path('assets/audio/laser.wav'))
+        self.extra_alien_sound = pygame.mixer.Sound(self.resource_path('assets/audio/ufo_lowpitch.wav'))
+        self.new_life_sound = pygame.mixer.Sound(self.resource_path('assets/audio/life.mp3'))
+        self.explosion_sound = pygame.mixer.Sound(self.resource_path('assets/audio/explosion.wav'))
+        self.player_explosion_sound = pygame.mixer.Sound(self.resource_path('assets/audio/player_explosion.wav'))
+        self.extra_explosion_sound = pygame.mixer.Sound(self.resource_path('assets/audio/ufo_highpitch.wav'))
+        self.block_rebuild_sound = pygame.mixer.Sound(self.resource_path('assets/audio/block_rebuild.wav'))
+        self.warp_sound = pygame.mixer.Sound(self.resource_path('assets/audio/warp.mp3'))
+        self.warp_exit_sound = pygame.mixer.Sound(self.resource_path('assets/audio/warp_exit.mp3'))
 
         # Set volume
         self.music.set_volume(0.1)
@@ -77,7 +79,6 @@ class Game (Settings):
         self.warp_exit_sound.set_volume(0.2)
         #self.music.play(loops= -1)
 
-
         ## Create instances
         self.crt = CRT(self)
         self.main_menu = Menu(self)
@@ -85,10 +86,11 @@ class Game (Settings):
         self.hiscore_menu = Hiscore(self)
         self.beatgame_menu = BeatGame(self)
         self.shape = scenary.shape
+       
         # sprites
         self.planet = Planet(self)
-        self.alien = Alien('red',0,0)
-        self.extra_sprite = Extra('left')
+        self.alien = Alien('red',0,0, self)
+        self.extra_sprite = Extra('left', self)
         self.player_sprite = Player(self)
         # sprite groups
         self.planets = pygame.sprite.Group(self.planet)
@@ -115,6 +117,7 @@ class Game (Settings):
         self.initial_time = 0
         # flag variable for pause function
         self.start = False
+        
         ## OBSTACLE 
         # flag variable for create obstacles blocks
         self.create_obstacle_flag = True
@@ -122,6 +125,7 @@ class Game (Settings):
         self.block_rebuild = False
         # increment variable used on redraw blocks function
         self.block_count = 0
+        
         ## Planets animation
         # Flag for start/stop initial planet animation
         self.finish_initial_planet_animation = False
@@ -129,6 +133,7 @@ class Game (Settings):
         self.finish_planet_animation = False
         # variable used on leave_planet_animation function
         self.i = 0
+        
         ## Start game flags
         # Flag for start the game
         self.running = True
@@ -139,24 +144,30 @@ class Game (Settings):
         self.dt = 0   
 
         # Call functions for create stars
-        self.create_stars(self.x, self.y)
+        self.create_stars(self.s.x, self.s.y)
 
         
-     
     """ GAME FUNCTIONS """
+
+    def resource_path(self,relative_path):
+        """ Retorna o caminho correto para o arquivo, funcionando no script ou no .exe """
+        if hasattr(sys, '_MEIPASS'):
+            return os.path.join(sys._MEIPASS, relative_path)
+        return os.path.join(os.path.abspath("."), relative_path)
+
 
     def create_stars(self, x, y):
 
-        for value in range(self.num_stars):
-            rand_x = randint(0, self.screen_width)
-            rand_y =  randint (0, self.screen_heigth)
+        for value in range(self.s.num_stars):
+            rand_x = randint(0, self.s.screen_width)
+            rand_y =  randint (0, self.s.screen_heigth)
             if x == rand_x:
-                rand_x = randint(0, self.screen_width)
+                rand_x = randint(0, self.s.screen_width)
             if y == rand_y:
-                rand_y = randint(0, self.screen_heigth)
+                rand_y = randint(0, self.s.screen_heigth)
             x = rand_x
             y = rand_y
-            self.star_sprite = scenary.Stars('white', x, y)
+            self.star_sprite = scenary.Stars('white', x, y, self)
             self.stars.add(self.star_sprite)
 
 
@@ -169,36 +180,35 @@ class Game (Settings):
         for row_index, row in enumerate(self.shape):
             for col_index, col in enumerate(row):
                 if col == 'x':
-                    x = self.obstacle_x_start + col_index * self.block_size + offset_x
-                    y = self.obstacle_y_start + row_index * self.block_size        
-                    self.block = scenary.Block(self.block_size, self.obstacle_color, x, y)
+                    x = self.s.obstacle_x_start + col_index * self.s.block_size + offset_x
+                    y = self.s.obstacle_y_start + row_index * self.s.block_size        
+                    self.block = scenary.Block(self.s.block_size, self.s.obstacle_color, x, y)
 
                     self.blocks.add(self.block)
-        
-
+                         
    
     def create_multiple_obstacles(self):
         """Create multiples obstacles defined on obstacle_x_positions list"""
-        for offset_x in self.obstacle_x_positions:
+        for offset_x in self.s.obstacle_x_positions:
             self.create_obstacle(offset_x)
                         
     
     def alien_setup(self):
         """Create the aliens fleet"""
-        for row_index, row in enumerate(range(self.alien_rows)):
-            for col_index, col in enumerate(range(self.alien_cols)):
-                x = col_index * self.alien_x_distance + self.aliens_x_offset
-                y = row_index * self.alien_y_distance + self.aliens_y_offset
+        for row_index, row in enumerate(range(self.s.alien_rows)):
+            for col_index, col in enumerate(range(self.s.alien_cols)):
+                x = col_index * self.s.alien_x_distance + self.s.aliens_x_offset
+                y = row_index * self.s.alien_y_distance + self.s.aliens_y_offset
                 
-                if row_index == 0: alien_sprite = Alien('yellow', x, y)
-                elif 1 <= row_index <=2: alien_sprite = Alien('green', x, y)
-                else: alien_sprite = Alien('red', x, y)
+                if row_index == 0: alien_sprite = Alien('yellow', x, y, self)
+                elif 1 <= row_index <=2: alien_sprite = Alien('green', x, y, self)
+                else: alien_sprite = Alien('red', x, y, self)
                 self.aliens.add(alien_sprite)    
            
     def alien_position_checker(self):
         """Check if the alien fleet had reach the side edge of the screen"""
         for alien in self.aliens:
-            if alien.rect.right >= self.screen_width or alien.rect.left <= 0:
+            if alien.rect.right >= self.s.screen_width or alien.rect.left <= 0:
                 self.alien_move_down()
                 break
 
@@ -207,47 +217,47 @@ class Game (Settings):
         and force to the oposite direction"""
         if self.aliens:
             for alien in self.aliens:
-                alien.rect.y += self.alien_distance
+                alien.rect.y += self.s.alien_distance
             lowest_alien_sprite = max (self.aliens, key=lambda a: a.rect.bottom)
             pos_y = lowest_alien_sprite.rect.bottom
             
-            if pos_y >= self.screen_heigth :
+            if pos_y >= self.s.screen_heigth:
                 self.player_explosion_sound.play()
-                self.lives = 0
-                self.active_explosions.append({"pos" : (self.player_sprite.rect.x, self.player_sprite.rect.y), "time" : 800, "hit" : "fleet_bottom"})
-                
-            else: self.alien_direction *= -1 
+                self.s.lives = 0
+                self.playing = False
+                self.curr_menu = self.game_over_menu
+            else: self.s.alien_direction *= -1 
                
     
     def alien_shoot(self):
         """ Create the aliens shoot"""
         if self.aliens:
             random_alien = choice(self.aliens.sprites())
-            if len (self.alien_lasers) < self.alien_bullets_allowed:
-                laser_sprite = AlienLaser (random_alien.rect.midbottom)
+            if len (self.alien_lasers) < self.s.alien_bullets_allowed:
+                laser_sprite = AlienLaser (random_alien.rect.midbottom, self)
                 self.alien_lasers.add(laser_sprite)
 
     def extra_alien_timer (self):
         """Spawns an extra alien as soon as the cooldown ends"""
         if self.extra_sprite.execute == True:
-            self.extra_spawn_time -= 1
-            if self.extra_spawn_time <= 0:
-                self.extra.add(Extra(choice(['right','left'])))
+            self.s.extra_spawn_time -= 1
+            if self.s.extra_spawn_time <= 0:
+                self.extra.add(Extra(choice(['right','left']), self))
                 self.extra_alien_sound.play()
-                self.extra_spawn_time = randint (self.range_a, self.range_b)  
+                self.s.extra_spawn_time = randint (self.s.range_a, self.s.range_b)  
 
 
     def explosion_time(self):   
         """Duration of the explosions shown on the screen"""     
-        for exp in self.active_explosions[:]:  
+        for exp in self.s.active_explosions[:]:  
             exp["time"] -= self.dt
             if exp["time"] <= 0:
-                self.active_explosions.remove(exp)
+                self.s.active_explosions.remove(exp)
 
 
     def draw_explosion(self):
         """Draws images of the explosions on the screen if there are any in the list"""
-        for exp in self.active_explosions:
+        for exp in self.s.active_explosions:
             match exp['hit']:
                 case 'extra_explosion':
                     self.screen.blit(self.explosion_extra,  exp["pos"])
@@ -269,7 +279,7 @@ class Game (Settings):
                     self.screen.blit(self.laser_miss, exp["pos"])
                 case 'fleet_bottom':
                     self.screen.blit(self.explosion_player, exp["pos"])
-                    self.active_explosions.append({"time" : 8000, "hit" : "game_over"})            
+                    self.s.active_explosions.append({"time" : 8000, "hit" : "game_over"})            
 
                 case 'earth':
                     self.draw_text(f'DEFEND EARTH', self.font_planets, '#E1E6E7', exp['pos'][0], exp['pos'][1])
@@ -299,27 +309,27 @@ class Game (Settings):
                 aliens_hit = pygame.sprite.spritecollide(laser, self.aliens, True)
                 if aliens_hit:
                     for alien in aliens_hit:  
-                        self.active_explosions.append({"pos" : (alien.rect.x, alien.rect.y), "time" : 100, "hit" : "alien"})                       
-                        self.score += alien.value 
+                        self.s.active_explosions.append({"pos" : (alien.rect.x, alien.rect.y), "time" : 100, "hit" : "alien"})                       
+                        self.s.score += alien.value 
                     laser.kill()
-                    self.alien_speed *= self.alien_speedup_scale
+                    self.s.alien_speed *= self.s.alien_speedup_scale
                     self.explosion_sound.play()
                 
                 # Extra alien
                 extra_hit = pygame.sprite.spritecollide(laser, self.extra, True)
                 if extra_hit:
                     for extra in extra_hit:
-                        self.extra_point = choice (self.extra_list_points)
-                        self.active_explosions.append({"pos" : (extra.rect.x, extra.rect.y), "time" : 300, "hit" : "extra_explosion"})
-                        self.active_explosions.append({"pos" : (extra.rect.x, extra.rect.y), "time" : 1300, "hit" : "extra", "points" : self.extra_point})
+                        self.s.extra_point = choice (self.s.extra_list_points)
+                        self.s.active_explosions.append({"pos" : (extra.rect.x, extra.rect.y), "time" : 300, "hit" : "extra_explosion"})
+                        self.s.active_explosions.append({"pos" : (extra.rect.x, extra.rect.y), "time" : 1300, "hit" : "extra", "points" : self.s.extra_point})
                         self.extra_explosion_sound.play()
-                        self.score += self.extra_point
+                        self.s.score += self.s.extra_point
                     laser.kill()
                      
                 # Alien laser 
                 laser_hit = pygame.sprite.spritecollide(laser, self.alien_lasers, True)
                 if laser_hit:
-                    self.active_explosions.append({"pos" : (laser.rect.x, laser.rect.y), "time" : 100, "hit" : "laser"})
+                    self.s.active_explosions.append({"pos" : (laser.rect.x, laser.rect.y), "time" : 100, "hit" : "laser"})
                     laser.kill()
 
             
@@ -329,10 +339,10 @@ class Game (Settings):
                 # Player 
                 if pygame.sprite.spritecollide(laser, self.player, True):
                     self.player_explosion_sound.play()
-                    self.lives -= 1
+                    self.s.lives -= 1
                     self.alien_lasers.empty()
-                    self.active_explosions.append({"pos" : (self.player_sprite.rect.x, self.player_sprite.rect.y), "time" : 500, "hit" : "player"})
-                    if self.lives < 0:
+                    self.s.active_explosions.append({"pos" : (self.player_sprite.rect.x, self.player_sprite.rect.y), "time" : 500, "hit" : "player"})
+                    if self.s.lives < 0:
                         self.playing = False
                         self.curr_menu = self.game_over_menu
                         
@@ -340,7 +350,7 @@ class Game (Settings):
                 # Blocks 
                 if pygame.sprite.spritecollide (laser, self.blocks, True):
 
-                    self.active_explosions.append({"pos" : (laser.rect.x, laser.rect.y), "time" : 500, "hit" : "block"})
+                    self.s.active_explosions.append({"pos" : (laser.rect.x, laser.rect.y), "time" : 500, "hit" : "block"})
                     laser.kill()
            
 
@@ -350,57 +360,59 @@ class Game (Settings):
                 # Blocks
                 block_hit = pygame.sprite.spritecollide(block, self.aliens, False)
                 if block_hit:
-                    self.active_explosions.append({"pos" : (block.rect.x, block.rect.y), "time" : 500, "hit" : "block"})
+                    self.s.active_explosions.append({"pos" : (block.rect.x, block.rect.y), "time" : 500, "hit" : "block"})
                     block.kill()
 
             # Player
             if pygame.sprite.groupcollide(self.player, self.aliens, True, True):
                 self.player_explosion_sound.play()
-                self.active_explosions.append({"pos" : (self.player_sprite.rect.x, self.player_sprite.rect.y), "time" : 800, "hit" : "fleet_bottom"})
+                self.s.active_explosions.append({"pos" : (self.player_sprite.rect.x, self.player_sprite.rect.y), "time" : 800, "hit" : "fleet_bottom"})
+                self.playing = False
+                self.curr_menu = self.game_over_menu
             
 
     def display_lives(self):
         """Display the player life on screen"""
-        self.draw_text(f'x {self.lives}', self.font_scoreboard, self.text_col, self.screen_width - 40, 20)
+        self.draw_text(f'x {self.s.lives}', self.font_scoreboard, self.s.text_col, self.s.screen_width - 40, 20)
         self.screen.blit(self.life_surf, (self.life_x,15))
 
     def display_score(self):
         """Display the score on screen"""
-        self.draw_text(f'SCORE: {self.score}', self.font_scoreboard, self.text_col, 20, 0, 'topleft')
+        self.draw_text(f'SCORE: {self.s.score}', self.font_scoreboard, self.s.text_col, 20, 0, 'topleft')
       
     def display_hiscore(self): 
         """Display the hiscore on screen"""
-        self.draw_text(f'HI-SCORE: {self.hi_score}', self.font_scoreboard, self.text_col, self.screen_rect.centerx, self.screen_rect.top + 20)
-        if self.score > self.hi_score:
-            self.hi_score = self.score
+        self.draw_text(f'HI-SCORE: {self.s.hi_score}', self.font_scoreboard, self.s.text_col, self.screen_rect.centerx, self.screen_rect.top + 20)
+        if self.s.score > self.s.hi_score:
+            self.s.hi_score = self.s.score
     
     def display_level(self):
         """Display the current level on screen"""
-        if self.level > 0:
-            self.draw_text(f'LEVEL: {self.level}', self.font_scoreboard, self.text_col, self.screen_width - 200, 20)
+        if self.s.level > 0:
+            self.draw_text(f'LEVEL: {self.s.level}', self.font_scoreboard, self.s.text_col, self.s.screen_width - 200, 20)
 
     def new_life(self):
         """Gives the player an extra life when they reach a certain score."""
-        match self.score:
-            case s if s >= 20000 and not self.executed:
-                self.lives += 1
+        match self.s.score:
+            case s if s >= 20000 and not self.s.executed:
+                self.s.lives += 1
                 self.new_life_sound.play()
-                self.executed = True
+                self.s.executed = True
 
-            case s if s >= 50000 and not self.executed_2:
-                self.lives += 1
+            case s if s >= 50000 and not self.s.executed_2:
+                self.s.lives += 1
                 self.new_life_sound.play()
-                self.executed_2 = True
+                self.s.executed_2 = True
 
-            case s if s >= 80000 and not self.executed_3:
-                self.lives += 1
+            case s if s >= 80000 and not self.s.executed_3:
+                self.s.lives += 1
                 self.new_life_sound.play()
-                self.executed_3 = True
+                self.s.executed_3 = True
 
-            case s if s >= 100000 and not self.executed_4:
-                self.lives += 1
+            case s if s >= 100000 and not self.s.executed_4:
+                self.s.lives += 1
                 self.new_life_sound.play()
-                self.executed_4 = True
+                self.s.executed_4 = True
 
     def pause_time(self, time, start):
         """ Take a pause before continuing
@@ -418,16 +430,16 @@ class Game (Settings):
         if self.level_up_active:
             if not self.aliens:
                 if self.pause_time(8, True):
-                    self.level +=1 
+                    self.s.level +=1 
                     self.alien_setup()
                     self.restart_speed()
                     self.raise_difficulty()
-                    self.alien_direction = 1
+                    self.s.alien_direction = 1
 
     def initial_planet_animation(self):
         if not self.finish_initial_planet_animation:
             if self.planet.execute_show_planet == False:
-                Settings.moving_stars = False
+                self.s.moving_stars = False
                 self.describe_planet()
                 if self.create_obstacle_flag:
                     self.create_multiple_obstacles()
@@ -439,18 +451,17 @@ class Game (Settings):
 
     def planet_animation(self):
         if not self.finish_planet_animation:
-            if self.level in (3, 6, 9, 12, 15, 18, 21) and not (self.aliens):
+            if self.s.level in (3, 6, 9, 12, 15, 18, 21) and not (self.aliens):
                 self.level_up_active = False
                 self.alien_lasers.empty()
                 self.blocks.empty()
-                #self.warp_sound.play()
-                Settings.moving_stars = True
+                self.s.moving_stars = True
                 self.planet.execute_hide_planet = True
                 if self.pause_time(10, True):
-                    if self.level == 21:
+                    if self.s.level == 21:
                         self.extra.empty()
                         self.finish_planet_animation = True
-                        Settings.moving_stars = False
+                        self.s.moving_stars = False
                         self.playing = False
                         self.curr_menu = self.beatgame_menu
                         
@@ -481,8 +492,6 @@ class Game (Settings):
 
     def reset_game(self):
         """Reset the game settings"""
-        #self.active_explosions = []
-
         self.hiscore_menu.hiscore_initialize()
         self.aliens.empty()
         self.alien_lasers.empty()
@@ -499,22 +508,10 @@ class Game (Settings):
         self.level_up_active = False
         self.planet.execute_show_planet = True
         self.finish_initial_planet_animation = False
-        Settings.moving_stars = False
-        Settings.menu_stars = True
         self.create_obstacle_flag = True
-        self.alien_bullets_allowed = 1
-        self.shoots_allowed = 1
-        self.alien_speedup_scale = 1.04
-        self.lives = 2
-        self.score = 0
-        self.level = 0
         self.player_sprite.restart_player_location()
-        # Default flags for the new_life function on the main program
-        self.executed = False
-        self.executed_2 = False
-        self.executed_3 = False
-        self.executed_4 = False
-     
+        self.s.initialize_dynamic_settings()
+      
 
     def draw_text(self, text, font, text_col, x, y, pos = 'center'):
             """Draw text on screen
@@ -534,98 +531,87 @@ class Game (Settings):
     
     def restart_speed(self):
         """ Restart speed of player and alien fleet speed"""
-        self.alien_speed = 1.3
+        self.s.alien_speed = 1.3
 
     def describe_planet(self):
         if self.planet.image == self.planet.list[0]:
-            self.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 4000, "hit" : "earth"})
+            self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 4000, "hit" : "earth"})
         elif self.planet.image == self.planet.list[1]:
-            self.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 4000, "hit" : "moon"})
+            self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 4000, "hit" : "moon"})
         elif self.planet.image == self.planet.list[2]:
-                self.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 4000, "hit" : "mars"})
+                self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 4000, "hit" : "mars"})
         elif self.planet.image == self.planet.list[3]:
-            self.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 4000, "hit" : "jupiter"})
+            self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 4000, "hit" : "jupiter"})
         elif self.planet.image == self.planet.list[4]:
-            self.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 4000, "hit" : "saturn"})
+            self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 4000, "hit" : "saturn"})
         elif self.planet.image == self.planet.list[5]:
-            self.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 4000, "hit" : "uranus"})
+            self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 4000, "hit" : "uranus"})
         elif self.planet.image == self.planet.list[6]:
-            self.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 4000, "hit" : "netuno"})
+            self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 4000, "hit" : "netuno"})
 
      
     def raise_difficulty(self):
         """Increase the game's difficulty by raising the number of shots fired by the alien fleet
           as the level rises. Raise the number of player's shots starting on level 4 """
-        if self.level in (1, 2):
-            self.alien_bullets_allowed = 1
-        elif self.level == 3:
+        if self.s.level in (1, 2):
+            self.s.alien_bullets_allowed = 1
+        elif self.s.level == 3:
             self.finish_planet_animation = False
             
-        elif self.level in (4, 5):
-            self.alien_bullets_allowed = 2
-            self.shoots_allowed = 2
-        elif self.level == 6:
+        elif self.s.level in (4, 5):
+            self.s.alien_bullets_allowed = 2
+            self.s.shoots_allowed = 2
+        elif self.s.level == 6:
             self.finish_planet_animation = False
 
-        elif self.level in (7, 8):
-            self.alien_bullets_allowed = 3
-            self.shoots_allowed = 2
-        elif self.level == 9:
+        elif self.s.level in (7, 8):
+            self.s.alien_bullets_allowed = 3
+            self.s.shoots_allowed = 2
+        elif self.s.level == 9:
             self.finish_planet_animation = False
            
-        elif self.level in (10, 11):
-            self.alien_bullets_allowed = 4
-            self.shoots_allowed = 2
-        elif self.level == 12:
+        elif self.s.level in (10, 11):
+            self.s.alien_bullets_allowed = 4
+            self.s.shoots_allowed = 2
+        elif self.s.level == 12:
             self.finish_planet_animation = False
 
-        elif self.level in (13, 14):
-            self.alien_bullets_allowed = 5
-            self.shoots_allowed = 2
-            self.alien_speed = 1.5    
-        elif self.level == 15:
+        elif self.s.level in (13, 14):
+            self.s.alien_bullets_allowed = 5
+            self.s.shoots_allowed = 2
+            self.s.alien_speed = 1.5    
+        elif self.s.level == 15:
             self.finish_planet_animation = False
 
-        elif self.level in (16, 17):
-            self.alien_bullets_allowed = 6
-            self.alien_speed = 1.7
-            self.shoots_allowed = 3
-        elif self.level == 18:
+        elif self.s.level in (16, 17):
+            self.s.alien_bullets_allowed = 6
+            self.s.alien_speed = 1.7
+            self.s.shoots_allowed = 3
+        elif self.s.level == 18:
             self.finish_planet_animation = False
             
-        elif self.level in (19, 20, 21):
-            self.finish_planet_hide_animation = False
-            self.alien_bullets_allowed = 6
-            self.alien_speed = 1.9
-            self.shoots_allowed = 3
-
-        elif self.level == 22:
-            self.finish_planet_hide_animation = False     
-          
-
-    def choose_level(self):
-        self.aliens.empty()
-        self.alien_lasers.empty()
-        self.extra.empty()
-        self.alien_setup()
-        self.restart_speed()
-        self.level += 1
-        self.raise_difficulty()
-
+        elif self.s.level in (19, 20):
+            self.s.alien_bullets_allowed = 6
+            self.s.alien_speed = 1.9
+            self.s.shoots_allowed = 3
+        elif self.s.level == 21:
+            self.finish_planet_animation = False
+            
+   
     def save_hiscore(self):
          # define a random key for the dictionary
         code = randint(1, 1000000)
         # if the dictionary key exists in loaded hiscore file get other random key 
-        if str(code) in self.current_hiscore.keys():
+        if str(code) in self.s.current_hiscore.keys():
             code = randint(1, 1000000)
         # create a dictionary with a random key with name and sccore of the player as values
-        self.new_hiscore[code] = [self.name, self.score]   
+        self.s.new_hiscore[code] = [self.s.name, self.s.score]   
         # save score on dictionary
-        self.current_hiscore.update(self.new_hiscore)
+        self.s.current_hiscore.update(self.s.new_hiscore)
         # save the hiscore file but sort first from the greater to lowest
-        sorted_hiscore = dict(sorted(self.current_hiscore.items(), key=lambda item: item[1][1], reverse=True))
+        sorted_hiscore = dict(sorted(self.s.current_hiscore.items(), key=lambda item: item[1][1], reverse=True))
         try:
-            with open (self.hiscore_file, "wb") as file:
+            with open (self.s.hiscore_file, "wb") as file:
                 pickle.dump (sorted_hiscore, file)
         except Exception:
             pass
@@ -634,43 +620,41 @@ class Game (Settings):
     def verify_score(self):
         
         # if the hiscore file has less than 10 scores update with the new score
-        if len(self.current_hiscore) < 10:
+        if len(self.s.current_hiscore) < 10:
             self.curr_menu = self.hiscore_menu
         
         # if the file has 10 scores update only if the new score is greater than the lowest
-        if len(self.current_hiscore) == 10:
-            lowest_hiscore = min(self.current_hiscore.items(), key=lambda item: item[1][1])
+        if len(self.s.current_hiscore) == 10:
+            lowest_hiscore = min(self.s.current_hiscore.items(), key=lambda item: item[1][1])
             key, values = lowest_hiscore
-            if self.score > values[1]:
-                self.current_hiscore.pop(key)
+            if self.s.score > values[1]:
+                self.s.current_hiscore.pop(key)
                 self.curr_menu = self.hiscore_menu
             else:
                 self.curr_menu = self.main_menu
                 self.reset_game()
                
 
-
-
     def load_hiscore(self):
-        if os.path.exists(self.hiscore_file):
-            with open (self.hiscore_file, "rb") as file:
+        if os.path.exists(self.s.hiscore_file):
+            with open (self.s.hiscore_file, "rb") as file:
                 try:
-                    self.current_hiscore = pickle.load(file)
+                    self.s.current_hiscore = pickle.load(file)
                 except Exception:
-                    self.current_hiscore={}
-            if self.current_hiscore:
-                if len(self.current_hiscore) > 10:
-                    self.current_hiscore.popitem()
-                self.hi_score = list(self.current_hiscore.values())[0][1]
+                    self.s.current_hiscore={}
+            if self.s.current_hiscore:
+                if len(self.s.current_hiscore) > 10:
+                    self.s.current_hiscore.popitem()
+                self.s.hi_score = list(self.s.current_hiscore.values())[0][1]
             else:
-                self.hi_score = 0
+                self.s.hi_score = 0
     
 
     def shoot_laser(self):
         """Create player laser sprite and add to the sprite group"""
-        if len(self.lasers) < self.shoots_allowed:
+        if len(self.lasers) < self.s.shoots_allowed:
             self.laser_sound.play()
-            self.lasers.add(Laser((self.player_sprite.rect.center)))
+            self.lasers.add(Laser(self.player_sprite.rect.center, self))
 
     def blink_text (self):
         self.blink_time += 0.05 
@@ -688,8 +672,8 @@ class Game (Settings):
                 if event.key == pygame.K_LCTRL or event.key == pygame.K_RCTRL:
                     self.shoot_laser()
                 if event.key == pygame.K_ESCAPE:
-                    if self.game_paused == False: 
-                        self.game_paused = True
+                    if self.s.game_paused == False: 
+                        self.s.game_paused = True
                    
                                    
     
@@ -700,19 +684,19 @@ class Game (Settings):
             if event.type == pygame.KEYDOWN:              
                 if event.key == pygame.K_ESCAPE:
                     self.playing = False
-                    self.game_paused = False
+                    self.s.game_paused = False
                     self.reset_game()
                   
                 if event.key == pygame.K_LCTRL or event.key == pygame.K_RCTRL:
-                    self.game_paused = False
+                    self.s.game_paused = False
 
     def pause_menu(self):
         self.check_events_paused()
         self.screen.blit(self.big_pause_image, self.big_pause_image_rect)
-        self.screen.blit(self.main_menu.esc_key, (self.screen_width / 2 - 60, self.screen_heigth / 2 + 10))
-        self.screen.blit(self.main_menu.exit_image, (self.screen_width /2 + 20, self.screen_heigth /2 + 20))
-        self.screen.blit(self.main_menu.ctrl_key, (self.screen_width / 2 - 60, self.screen_heigth / 2 + 80))
-        self.screen.blit(self.play_image, (self.screen_width /2 + 20, self.screen_heigth /2 + 90))        
+        self.screen.blit(self.main_menu.esc_key, (self.s.screen_width / 2 - 60, self.s.screen_heigth / 2 + 10))
+        self.screen.blit(self.main_menu.exit_image, (self.s.screen_width /2 + 20, self.s.screen_heigth /2 + 20))
+        self.screen.blit(self.main_menu.ctrl_key, (self.s.screen_width / 2 - 60, self.s.screen_heigth / 2 + 80))
+        self.screen.blit(self.play_image, (self.s.screen_width /2 + 20, self.s.screen_heigth /2 + 90))        
         pygame.display.flip()
 
 
@@ -720,7 +704,7 @@ class Game (Settings):
         """Run all the critical functions for the game """
         while self.playing:
     
-            if not self.game_paused:
+            if not self.s.game_paused:
                 
                 self.check_events()
                 self.screen.fill('black')
@@ -733,7 +717,7 @@ class Game (Settings):
                
                 self.player.update()
                 self.lasers.update()
-                self.aliens.update(self.alien_direction, self.alien_speed)
+                self.aliens.update(self.s.alien_direction, self.s.alien_speed)
                 invaders.alien_shoot()
                 self.alien_lasers.update()
                 self.extra.update()
@@ -758,7 +742,7 @@ class Game (Settings):
                 self.aliens.draw(self.screen)
                 self.alien_lasers.draw(self.screen)
                 self.extra.draw(self.screen)
-                #self.crt.draw()
+                self.crt.draw()
                 self.level_up()
                 self.new_life()
                 self.pause_time(self.time, self.start)
@@ -774,11 +758,11 @@ if __name__ == '__main__':
     pygame.init()
     pygame.font.init()
     pygame.mixer.init()
-    #clock = pygame.time.Clock()
     invaders = Game()
    
 
     while invaders.running:
+        pygame.mouse.set_visible(False)
         invaders.curr_menu.display_menu()
         invaders.game_loop()
        

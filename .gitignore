@@ -12,6 +12,7 @@ ENV/
 # Distribuição e empacotamento
 build/
 dist/
+*.spec
 *.egg-info/
 .eggs/
 pip-wheel-metadata/
