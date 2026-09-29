@@ -164,6 +164,7 @@ class GameOver (Menu):
         self.run_display = True
         while self.run_display:
             self.game.screen.fill('black')
+            self.game.crt.draw()
             self.game_over_menu()
             pygame.display.flip()
             self.game.clock.tick(60)
@@ -281,7 +282,18 @@ class BeatGame (Menu):
         Menu.__init__(self, game)
 
         self.unlock_input = False
+        self.bonus = 0
 
+    def end_game_bonus (self):
+        if self.game.s.activate_bonus:
+            if not self.game.s.executed_bonus:
+                self.game.s.lives += 1
+                self.bonus = self.game.s.lives * self.game.s.bonus
+                self.game.s.score += self.bonus
+                self.game.s.executed_bonus = True
+            self.draw_text(f"BONUS  {self.game.s.bonus} X {self.game.s.lives} LIVES = {self.bonus}" , self.game.font_finish, '#00ff00', self.game.s.screen_width / 2, self.game.s.screen_heigth / 5)
+            
+    
     def end_game(self):
         self.blink_text()
         self.draw_text("CONGRATULATIONS", self.game.font_wonder, '#fff01f', self.game.s.screen_width /2, self.game.s.screen_heigth / 3)
@@ -291,6 +303,7 @@ class BeatGame (Menu):
         self.draw_text("Your job is done", self.game.font_extra_points, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth / 3 + 240)
         self.draw_text("you can now return to Earth", self.game.font_extra_points, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth / 3 + 300)
         if self.game.pause_time(50, True):
+            self.game.s.activate_bonus = True
             self.unlock_input = True
             
             
@@ -319,7 +332,9 @@ class BeatGame (Menu):
             self.game.player.update()
             self.game.stars.draw(self.game.screen)
             self.game.player.draw(self.game.screen)
+            self.game.crt.draw()
             self.end_game()
+            self.end_game_bonus()
             self.check_input()
             pygame.display.flip()
             self.game.clock.tick(60)

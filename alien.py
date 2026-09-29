@@ -64,9 +64,13 @@ class Extra(Sprite):
        
         self.current_sprite = 0
         self.image = self.sprites[self.current_sprite]
-    
+        self.x_pos = self.image.get_width()    
+        self.side = ''
+
         if side == 'right':
+            self.side = 'right'
             x = self.game.s.screen_width + 50
+            self.value = -1
             self.speed = - self.game.s.extra_speed 
         else:
             x = -50
@@ -85,6 +89,12 @@ class Extra(Sprite):
                                                           
             self.image = self.sprites[int(self.current_sprite)]
             self.rect.x += self.speed
+            if self.side == 'right':
+                if self.rect.x < -(self.x_pos):
+                    self.kill()
+            else:
+                if self.rect.x > self.game.s.screen_width + self.x_pos:
+                    self.kill()
             
 
 

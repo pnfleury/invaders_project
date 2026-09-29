@@ -4,7 +4,7 @@ from random import randint
 
 class Settings:
     """ Global game settings class"""
-   
+    
     def __init__(self):
    
         # Screen resolution
@@ -13,7 +13,10 @@ class Settings:
         self.screen_heigth = 800
 
         self.game_paused = False
- 
+        
+        # end_game bonus
+        self.bonus = 100000
+        
         # Font coloer
         self.text_col = ('white') 
         
@@ -51,7 +54,7 @@ class Settings:
         self.alien_laser_y = 15
         self.alien_direction = 1
         self.alien_distance = 16 # distance that a line of aliens descends 
-        self.alien_time_between_bullets = 900
+        #self.alien_time_between_bullets = 900
         self.alien_rows = 5 #5
         self.alien_cols = 11 #11
         self.alien_x_distance = 70 #60
@@ -61,6 +64,7 @@ class Settings:
     
    
         # Extra alien settings
+        self.EXTRALASER = pygame.USEREVENT + 1
         self.range_a = 800
         self.range_b = 1600
         self.extra_spawn_time = randint (self.range_a, self.range_b)
@@ -70,6 +74,7 @@ class Settings:
 
         
         self.initialize_dynamic_settings()
+        
    
     def initialize_dynamic_settings(self):
         
@@ -84,6 +89,12 @@ class Settings:
         self.alien_bullets_allowed = 1
         self.alien_speedup_scale = 1.04
         self.alien_laser_speed = 5
+        # extra alien settings
+        pygame.time.set_timer(self.EXTRALASER, 800)
+        self.activate_extra_shot = False
+        self.extra_bullets_allowed = 1
+        self.extra_laser_speed = 4
+
         # flag for moving start or not
         self.moving_stars = False
         # flag for colors stars on title menu
@@ -95,7 +106,6 @@ class Settings:
         self.executed_2 = False
         self.executed_3 = False
         self.executed_4 = False
+        self.activate_bonus = False
+        self.executed_bonus = False
    
-    
-
-    

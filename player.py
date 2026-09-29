@@ -32,12 +32,12 @@ class Player (Sprite):
             self.game.s.ship_up = False
              
     def update (self):
+     
         if self.game.s.ship_up:
             self.move_up()
         else:
             self.get_input()
         
         
-           
 
-
+            
