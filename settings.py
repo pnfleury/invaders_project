@@ -1,4 +1,4 @@
-import pygame
+import pygame, os, pickle
 from random import randint
 
 
@@ -20,12 +20,15 @@ class Settings:
         # Font coloer
         self.text_col = ('white') 
         
-        # Initialize score and hiscore variables
+        ## Initialize score and hiscore variables
         self.hiscore_file = "hiscore.pkl"
-        self.current_hiscore = {}
+        # standard hiscore
+        self.current_hiscore = {1: ['PNF', 100000], 2: ['AFF', 50000], 3: ['ANF', 20000], 4: ['PHF', 10000], 5: ['LMP', 5000], 
+                                6: ['ALE', 1000], 7: ['OZY', 1000], 8: ['AMP', 1000], 9: ['LRP', 1000], 10: ['RBH', 1000]}
         self.new_hiscore = {}
+        # standard hiscore name if none
         self.name = 'INV'
-        self.hi_score = 0
+        self.hi_score = 100000
             
         # Initialize stars variables
         self.x = self.y = 0
@@ -74,10 +77,26 @@ class Settings:
 
         
         self.initialize_dynamic_settings()
-        
+
+    def load_hiscore(self):
+        if os.path.exists(self.hiscore_file):
+            with open (self.hiscore_file, "rb") as file:
+                try:
+                    self.current_hiscore = pickle.load(file)
+                except Exception:
+                    self.current_hiscore={}
+            if self.current_hiscore:
+                if len(self.current_hiscore) > 10:
+                    self.current_hiscore.popitem()
+                self.hi_score = list(self.current_hiscore.values())[0][1]
+
+            else:
+                self.hi_score = 0
+
    
     def initialize_dynamic_settings(self):
-        
+        # load hiscore file
+        self.load_hiscore()
         # Initialize level and lives variables
         self.level = 0 
         self.lives = 2
@@ -102,7 +121,7 @@ class Settings:
         # create a list for explosions time
         self.active_explosions = []   
         # Flags for the new_life function on the main program
-        self.executed = False
+        #self.executed = False
         self.executed_2 = False
         self.executed_3 = False
         self.executed_4 = False

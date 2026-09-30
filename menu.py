@@ -15,7 +15,6 @@ class Menu():
         self.exit_image = pygame.image.load(self.game.resource_path('assets/graphics/exit.png')).convert_alpha()
         self.pause_image = pygame.image.load(self.game.resource_path('assets/graphics/pause.png')).convert_alpha()
         self.player_image = pygame.image.load(self.game.resource_path('assets/graphics/player_image.png')).convert_alpha()   
-        self.base_font = pygame.font.Font(self.game.resource_path('assets/font/Pixeled.ttf'), 45)     
        
         # variable for blinking text used on blink function
         self.blink_time = 0
@@ -23,7 +22,10 @@ class Menu():
         self.title_active = True
         self.hiscore_active = True
         self.speed = 1
-        self.hi_color = 'red'
+        self.hi_color = 'white'
+        self.first_color = '#fff01f'
+        self.second_color = '#c4c4c4'
+        self.third_color = '#FF7A00'
         self.hi_space = 0
       
     def draw_text(self, text, font, text_col, x, y):
@@ -43,16 +45,16 @@ class Menu():
         hiscore_list_size = len (self.hiscore_list)
         if hiscore_list_size > 0:
             try:    
-                self.draw_text (f"1.    {self.hiscore_list[0][0]}   {self.hiscore_list[0][1]}", self.game.font_score, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6)
-                self.draw_text (f"2.    {self.hiscore_list[1][0]}   {self.hiscore_list[1][1]}", self.game.font_score, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 60)
-                self.draw_text (f"3.    {self.hiscore_list[2][0]}   {self.hiscore_list[2][1]}", self.game.font_score, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 120)
-                self.draw_text (f"4.    {self.hiscore_list[3][0]}   {self.hiscore_list[3][1]}", self.game.font_score, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 180)
-                self.draw_text (f"5.    {self.hiscore_list[4][0]}   {self.hiscore_list[4][1]}", self.game.font_score, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 240)
-                self.draw_text (f"6.    {self.hiscore_list[5][0]}   {self.hiscore_list[5][1]}", self.game.font_score, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 300)
-                self.draw_text (f"7.    {self.hiscore_list[6][0]}   {self.hiscore_list[6][1]}", self.game.font_score, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 360)
-                self.draw_text (f"8.    {self.hiscore_list[7][0]}   {self.hiscore_list[7][1]}", self.game.font_score, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 420)
-                self.draw_text (f"9.    {self.hiscore_list[8][0]}   {self.hiscore_list[8][1]}", self.game.font_score, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 480)
-                self.draw_text (f"10.    {self.hiscore_list[9][0]}   {self.hiscore_list[9][1]}", self.game.font_score, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 540)
+                self.draw_text (f"1. {self.hiscore_list[0][0]} {self.hiscore_list[0][1]:06}", self.game.font_y22436, self.first_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6)
+                self.draw_text (f"2. {self.hiscore_list[1][0]} {self.hiscore_list[1][1]:06}", self.game.font_y22436, self.second_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 60)
+                self.draw_text (f"3. {self.hiscore_list[2][0]} {self.hiscore_list[2][1]:06}", self.game.font_y22436, self.third_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 120)
+                self.draw_text (f"4. {self.hiscore_list[3][0]} {self.hiscore_list[3][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 180)
+                self.draw_text (f"5. {self.hiscore_list[4][0]} {self.hiscore_list[4][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 240)
+                self.draw_text (f"6. {self.hiscore_list[5][0]} {self.hiscore_list[5][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 300)
+                self.draw_text (f"7. {self.hiscore_list[6][0]} {self.hiscore_list[6][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 360)
+                self.draw_text (f"8. {self.hiscore_list[7][0]} {self.hiscore_list[7][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 420)
+                self.draw_text (f"9. {self.hiscore_list[8][0]} {self.hiscore_list[8][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 480)
+                self.draw_text (f"10.{self.hiscore_list[9][0]} {self.hiscore_list[9][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 540)
             except:
                 pass
         else: pass
@@ -60,14 +62,14 @@ class Menu():
         
     def title_menu(self):
         ''' function to show the game title screen '''
+        #self.game.load_hiscore()
         if self.title_active:
            
-            self.game.load_hiscore()
             self.game.screen.blit(self.earth_view,(0, 500))
             
             self.blink_text()
                             
-            self.draw_text (f'HI-SCORE: {self.game.s.hi_score}', self.game.font_text, 'white', self.game.s.screen_width / 2, 20)
+            self.draw_text (f'HI-SCORE: {self.game.s.hi_score:06}', self.game.font_text, 'white', self.game.s.screen_width / 2, 20)
             self.draw_text("INVADERS", self.game.font_title, "#074B07", self.game.s.screen_width / 2 + 10, self.game.s.screen_heigth / 4 + 10)
             self.draw_text("INVADERS", self.game.font_title, '#00ff00', self.game.s.screen_width / 2, self.game.s.screen_heigth / 4)
             
@@ -89,12 +91,12 @@ class Menu():
 
         else:
 
-            self.draw_text("HIGH SCORES", self.game.font_wonder, 'green', self.game.s.screen_width /2, 40)
+            self.draw_text("HIGH SCORES", self.game.font_y22436, '#45ea1d', self.game.s.screen_width /2, 40)
             
             self.show_hiscore_list()
             
             # give a pause before changing to title game screen
-            if self.game.pause_time(25, True):
+            if self.game.pause_time(35, True):
                 self.title_active = True
 
 
@@ -164,8 +166,8 @@ class GameOver (Menu):
         self.run_display = True
         while self.run_display:
             self.game.screen.fill('black')
-            self.game.crt.draw()
             self.game_over_menu()
+            self.game.crt.draw()
             pygame.display.flip()
             self.game.clock.tick(60)
 
@@ -176,7 +178,7 @@ class Hiscore (Menu):
 
         
         self.alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O',
-             'P','Q','R','S','T','U','V','W','X','Y','Z','DEL', 'OK']
+             'P','Q','R','S','T','U','V','W','X','Y','Z','<', '+']
         self.alphabet_copy = self.alphabet[:]
      
         self.hiscore_initialize()
@@ -187,7 +189,7 @@ class Hiscore (Menu):
         # index variable of alphabet list.
         self.i = 0
         # space between letters on input hiscore screen.
-        self.space = -50
+        self.space = 0
         self.score_name = '#ff0000'
        
         
@@ -210,21 +212,18 @@ class Hiscore (Menu):
                     # save it to the list.
                     if len(self.player_name) < 3 and self.i not in {26, 27}:    # i=24 is 'DEL'.
                         self.player_name.append(self.alphabet[self.i])     # save on player name list.
-                        self.space += 50 # add a horizontal space after selecting the letter.
+                        self.space += 80 # add a horizontal space after selecting the letter.
                         self.i = 0   # the alphabet list index jumps to the first letter.
                     # choose "ok" to save hiscore.
                     # select 'del' to delete the character and move to the previous character.
                     else:
-                        if self.alphabet[self.i] == 'DEL' and self.player_name:
+                        if self.alphabet[self.i] == '<' and self.player_name:
                             self.player_name.pop()
-                            self.space -= 50
+                            self.space -= 80
                             self.i = 0
 
-                        if self.alphabet[self.i] == 'OK':
-                            if  len(self.player_name) > 0:
-                                self.game.s.name = "".join (self.player_name)
-                            else:
-                                self.game.s.name = '???'
+                        if self.alphabet[self.i] == '+':
+                            self.game.s.name = "".join(self.player_name).ljust(3, ".")
 
                             self.game.save_hiscore()
                             self.run_display = False
@@ -234,30 +233,30 @@ class Hiscore (Menu):
     def display_letters(self):
         # If the first letter is chosen, display it on the screen.
         if len(self.player_name) > 0:
-            first_letter = self.base_font.render(self.player_name[0], True, self.score_name)
-            self.game.screen.blit(first_letter, (550, self.game.s.screen_heigth / 3))
+            first_letter = self.game.font_y22448.render(self.player_name[0], True, self.score_name)
+            self.game.screen.blit(first_letter, (500, self.game.s.screen_heigth / 3))
         # If the second letter is chosen, display it on the screen.
         if len(self.player_name) > 1:
-            second_letter = self.base_font.render(self.player_name[1], True, self.score_name)
-            self.game.screen.blit(second_letter, (600, self.game.s.screen_heigth / 3))
+            second_letter = self.game.font_y22448.render(self.player_name[1], True, self.score_name)
+            self.game.screen.blit(second_letter, (580, self.game.s.screen_heigth / 3))
         # If the third letter is chosen, display it on the screen.
         if len(self.player_name) > 2:
-            last_letter = self.base_font.render(self.player_name[2], True, self.score_name)
-            self.game.screen.blit(last_letter, (650, self.game.s.screen_heigth / 3))
+            last_letter = self.game.font_y22448.render(self.player_name[2], True, self.score_name)
+            self.game.screen.blit(last_letter, (660, self.game.s.screen_heigth / 3))
         # if three letters are choosen shrink the alphabet list to two options, 'end' or 'del'.
-            self.alphabet = ['DEL', 'OK']
+            self.alphabet = ['<', '+']
         else:
             # if choosen letters are minor than three, the alphabet list remains full.
             self.alphabet = self.alphabet_copy
 
         # displays the letter on the screen for the player to choose using the arrow keys.
-        choose_letters = self.base_font.render(self.alphabet[self.i], True, self.score_name)
-        self.game.screen.blit(choose_letters, (600 + self.space, self.game.s.screen_heigth / 3))
-        traces = self.base_font.render("___", True, self.score_name)  
-        self.game.screen.blit(traces, (550, self.game.s.screen_heigth / 3 + 15))
-        self.game.screen.blit(self.left_arrow, (self.game.s.screen_width /2 - 70, self.game.s.screen_heigth / 3 + 130)) 
-        self.game.screen.blit(self.right_arrow, (self.game.s.screen_width /2, self.game.s.screen_heigth / 3 + 130)) 
-        self.game.screen.blit( self.ctrl_key, (self.game.s.screen_width /2 + 70, self.game.s.screen_heigth / 3 + 130)) 
+        choose_letters = self.game.font_y22448.render(self.alphabet[self.i], True, self.score_name)
+        self.game.screen.blit(choose_letters, (500 + self.space, self.game.s.screen_heigth / 3))
+        traces = self.game.font_y22448.render("___", True, self.score_name)  
+        self.game.screen.blit(traces, (500, self.game.s.screen_heigth / 3 + 15))
+        self.game.screen.blit(self.left_arrow, (520, self.game.s.screen_heigth / 3 + 120)) 
+        self.game.screen.blit(self.right_arrow, (590, self.game.s.screen_heigth / 3 + 120)) 
+        self.game.screen.blit( self.ctrl_key, (660, self.game.s.screen_heigth / 3 + 120)) 
        
 
     def display_menu(self):
@@ -268,8 +267,8 @@ class Hiscore (Menu):
             self.game.stars.draw(self.game.screen)
             self.game.stars.update()
             if self.blink_time >= 1.5:
-                self.draw_text("HIGH SCORES", self.game.font_wonder, 'green', self.game.s.screen_width /2, 40)
-            self.hi_color = ('#404040') 
+                self.draw_text("HIGH SCORES", self.game.font_y22436, 'green', self.game.s.screen_width /2, 40)
+            self.hi_color = self.first_color = self.second_color = self.third_color = '#404040'
             self.show_hiscore_list()
             
             self.check_input()
@@ -332,9 +331,9 @@ class BeatGame (Menu):
             self.game.player.update()
             self.game.stars.draw(self.game.screen)
             self.game.player.draw(self.game.screen)
-            self.game.crt.draw()
             self.end_game()
             self.end_game_bonus()
+            self.game.crt.draw()
             self.check_input()
             pygame.display.flip()
             self.game.clock.tick(60)

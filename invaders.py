@@ -19,7 +19,7 @@ class Game:
         
         
         # initialize screen
-        self.screen =  pygame.display.set_mode((self.s.screen_width, self.s.screen_heigth))
+        self.screen =  pygame.display.set_mode((self.s.screen_width, self.s.screen_heigth), self.s.flags)
         self.screen_rect = self.screen.get_rect()
 
         # Lifes indicator on top right screen
@@ -51,6 +51,8 @@ class Game:
         self.font_title = pygame.font.Font(self.resource_path('assets/font/Pixeled.ttf'), 80)
         self.font_score = pygame.font.Font(self.resource_path('assets/font/Pixeled.ttf'), 25)
         self.font_wonder = pygame.font.Font(self.resource_path('assets/font/8-BIT WONDER.ttf'), 35)
+        self.font_y22436 = pygame.font.Font(self.resource_path('assets/font/Y224-2vdae.ttf'), 36)
+        self.font_y22448 = pygame.font.Font(self.resource_path('assets/font/Y224-2vdae.ttf'), 72)
 
         # Load sounds files
         self.music = pygame.mixer.Sound(self.resource_path('assets/audio/music.wav'))
@@ -413,11 +415,11 @@ class Game:
 
     def display_score(self):
         """Display the score on screen"""
-        self.draw_text(f'SCORE: {self.s.score}', self.font_scoreboard, self.s.text_col, 20, 0, 'topleft')
+        self.draw_text(f'SCORE: {self.s.score:06}', self.font_scoreboard, self.s.text_col, 20, 0, 'topleft')
       
     def display_hiscore(self): 
         """Display the hiscore on screen"""
-        self.draw_text(f'HI-SCORE: {self.s.hi_score}', self.font_scoreboard, self.s.text_col, self.screen_rect.centerx, self.screen_rect.top + 20)
+        self.draw_text(f'HI-SCORE: {self.s.hi_score:06}', self.font_scoreboard, self.s.text_col, self.screen_rect.centerx, self.screen_rect.top + 20)
         if self.s.score > self.s.hi_score:
             self.s.hi_score = self.s.score
     
@@ -429,17 +431,13 @@ class Game:
     def new_life(self):
         """Gives the player an extra life when they reach a certain score."""
         match self.s.score:
-            case s if s >= 20000 and not self.s.executed:
-                self.s.lives += 1
-                self.new_life_sound.play()
-                self.s.executed = True
 
-            case s if s >= 50000 and not self.s.executed_2:
+            case s if s >= 30000 and not self.s.executed_2:
                 self.s.lives += 1
                 self.new_life_sound.play()
                 self.s.executed_2 = True
 
-            case s if s >= 80000 and not self.s.executed_3:
+            case s if s >= 60000 and not self.s.executed_3:
                 self.s.lives += 1
                 self.new_life_sound.play()
                 self.s.executed_3 = True
@@ -662,37 +660,15 @@ class Game:
 
 
     def verify_score(self):
-        
-        # if the hiscore file has less than 10 scores update with the new score
-        if len(self.s.current_hiscore) < 10:
+        lowest_hiscore = min(self.s.current_hiscore.items(), key=lambda item: item[1][1])
+        key, values = lowest_hiscore
+        if self.s.score > values[1]:
+            self.s.current_hiscore.pop(key)
             self.curr_menu = self.hiscore_menu
-        
-        # if the file has 10 scores update only if the new score is greater than the lowest
-        if len(self.s.current_hiscore) == 10:
-            lowest_hiscore = min(self.s.current_hiscore.items(), key=lambda item: item[1][1])
-            key, values = lowest_hiscore
-            if self.s.score > values[1]:
-                self.s.current_hiscore.pop(key)
-                self.curr_menu = self.hiscore_menu
-            else:
-                self.curr_menu = self.main_menu
-                self.reset_game()
-               
-
-    def load_hiscore(self):
-        if os.path.exists(self.s.hiscore_file):
-            with open (self.s.hiscore_file, "rb") as file:
-                try:
-                    self.s.current_hiscore = pickle.load(file)
-                except Exception:
-                    self.s.current_hiscore={}
-            if self.s.current_hiscore:
-                if len(self.s.current_hiscore) > 10:
-                    self.s.current_hiscore.popitem()
-                self.s.hi_score = list(self.s.current_hiscore.values())[0][1]
-            else:
-                self.s.hi_score = 0
-    
+        else:
+            self.curr_menu = self.main_menu
+            self.reset_game()
+            
 
     def shoot_laser(self):
         """Create player laser sprite and add to the sprite group"""
