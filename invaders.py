@@ -42,17 +42,11 @@ class Game:
         self.big_pause_image_rect = self.big_pause_image.get_rect(midtop = (self.s.screen_width /2, self.s.screen_heigth /3))
        
         # Create Font objects from files
-        self.font_text = pygame.font.Font(self.resource_path('assets/font/Pixeled.ttf'), 15)
-        self.font_title_2 = pygame.font.Font(self.resource_path('assets/font/Pixeled.ttf'), 40)
-        self.font_scoreboard = pygame.font.Font(self.resource_path('assets/font/Pixeled.ttf'), 15)
-        self.font_extra_points = pygame.font.Font(self.resource_path('assets/font/8-BIT WONDER.ttf'), 20)
-        self.font_finish = pygame.font.Font(self.resource_path('assets/font/Pixeled.ttf'), 25) 
-        self.font_planets = pygame.font.Font(self.resource_path('assets/font/8-BIT WONDER.ttf'), 40)
-        self.font_title = pygame.font.Font(self.resource_path('assets/font/Pixeled.ttf'), 80)
-        self.font_score = pygame.font.Font(self.resource_path('assets/font/Pixeled.ttf'), 25)
-        self.font_wonder = pygame.font.Font(self.resource_path('assets/font/8-BIT WONDER.ttf'), 35)
-        self.font_y22436 = pygame.font.Font(self.resource_path('assets/font/Y224-2vdae.ttf'), 36)
-        self.font_y22448 = pygame.font.Font(self.resource_path('assets/font/Y224-2vdae.ttf'), 72)
+        self.font_pixeled15 = pygame.font.Font(self.resource_path('assets/font/Pixeled.ttf'), 15)
+        self.font_pixeled80 = pygame.font.Font(self.resource_path('assets/font/Pixeled.ttf'), 80)
+        self.font_y22424 = pygame.font.Font(self.resource_path('assets/font/Y224-2vdae.ttf'), 24)
+        self.font_y22436 = pygame.font.Font(self.resource_path('assets/font/Y224-2vdae.ttf'), 36) 
+        self.font_y22472 = pygame.font.Font(self.resource_path('assets/font/Y224-2vdae.ttf'), 72)
 
         # Load sounds files
         self.music = pygame.mixer.Sound(self.resource_path('assets/audio/music.wav'))
@@ -276,7 +270,7 @@ class Game:
                 case 'extra_explosion':
                     self.screen.blit(self.explosion_extra,  exp["pos"])
                 case 'extra':
-                    self.draw_text(f"{exp['points']}", self.font_scoreboard, 'red', exp['pos'][0] + 25, exp['pos'][1] + 25)
+                    self.draw_text(f"{exp['points']}",  self.font_pixeled15, 'red', exp['pos'][0] + 25, exp['pos'][1] + 25)
                 case 'laser':
                     self.screen.blit(self.laser_hit, exp["pos"])
                 case 'alien':
@@ -296,19 +290,19 @@ class Game:
                     self.s.active_explosions.append({"time" : 8000, "hit" : "game_over"})            
 
                 case 'earth':
-                    self.draw_text(f'DEFEND EARTH', self.font_planets, '#E1E6E7', exp['pos'][0], exp['pos'][1])
+                    self.draw_text(f'DEFEND EARTH',  self.font_y22472, '#E1E6E7', exp['pos'][0], exp['pos'][1])
                 case 'moon':
-                    self.draw_text(f'DEFEND MOON', self.font_planets, '#E1E6E7', exp['pos'][0], exp['pos'][1])
+                    self.draw_text(f'DEFEND MOON',  self.font_y22472, '#E1E6E7', exp['pos'][0], exp['pos'][1])
                 case 'mars':
-                    self.draw_text(f'DEFEND MARS', self.font_planets, '#E1E6E7', exp['pos'][0], exp['pos'][1])
+                    self.draw_text(f'DEFEND MARS',  self.font_y22472, '#E1E6E7', exp['pos'][0], exp['pos'][1])
                 case 'jupiter':
-                    self.draw_text(f'DEFEND JUPITER', self.font_planets, '#E1E6E7', exp['pos'][0], exp['pos'][1])
+                    self.draw_text(f'DEFEND JUPITER',  self.font_y22472, '#E1E6E7', exp['pos'][0], exp['pos'][1])
                 case 'saturn':
-                    self.draw_text(f'DEFEND SATURN', self.font_planets, '#E1E6E7', exp['pos'][0], exp['pos'][1])
+                    self.draw_text(f'DEFEND SATURN',  self.font_y22472, '#E1E6E7', exp['pos'][0], exp['pos'][1])
                 case 'uranus':
-                    self.draw_text(f'DEFEND URANUS', self.font_planets, '#E1E6E7', exp['pos'][0], exp['pos'][1])
+                    self.draw_text(f'DEFEND URANUS',  self.font_y22472, '#E1E6E7', exp['pos'][0], exp['pos'][1])
                 case 'netuno':
-                    self.draw_text(f'DEFEND NEPTUNE', self.font_planets, '#E1E6E7', exp['pos'][0], exp['pos'][1])
+                    self.draw_text(f'DEFEND NEPTUNE',  self.font_y22472, '#E1E6E7', exp['pos'][0], exp['pos'][1])
                 
     def collision_checks(self):
         """Check all the sprites collisons"""
@@ -410,39 +404,39 @@ class Game:
 
     def display_lives(self):
         """Display the player life on screen"""
-        self.draw_text(f'x {self.s.lives}', self.font_scoreboard, self.s.text_col, self.s.screen_width - 40, 20)
+        self.draw_text(f'x {self.s.lives}',  self.font_pixeled15, self.s.text_col, self.s.screen_width - 40, 20)
         self.screen.blit(self.life_surf, (self.life_x,15))
 
     def display_score(self):
         """Display the score on screen"""
-        self.draw_text(f'SCORE: {self.s.score:06}', self.font_scoreboard, self.s.text_col, 20, 0, 'topleft')
+        self.draw_text(f'SCORE: {self.s.score:06}',  self.font_pixeled15, self.s.text_col, 20, 0, 'topleft')
       
     def display_hiscore(self): 
         """Display the hiscore on screen"""
-        self.draw_text(f'HI-SCORE: {self.s.hi_score:06}', self.font_scoreboard, self.s.text_col, self.screen_rect.centerx, self.screen_rect.top + 20)
+        self.draw_text(f'HI-SCORE: {self.s.hi_score:06}',  self.font_pixeled15, self.s.text_col, self.screen_rect.centerx, self.screen_rect.top + 20)
         if self.s.score > self.s.hi_score:
             self.s.hi_score = self.s.score
     
     def display_level(self):
         """Display the current level on screen"""
         if self.s.level > 0:
-            self.draw_text(f'LEVEL: {self.s.level}', self.font_scoreboard, self.s.text_col, self.s.screen_width - 200, 20)
+            self.draw_text(f'LEVEL: {self.s.level}',  self.font_pixeled15, self.s.text_col, self.s.screen_width - 200, 20)
 
     def new_life(self):
         """Gives the player an extra life when they reach a certain score."""
         match self.s.score:
 
-            case s if s >= 30000 and not self.s.executed_2:
+            case s if s >= 50000 and not self.s.executed_2:
                 self.s.lives += 1
                 self.new_life_sound.play()
                 self.s.executed_2 = True
 
-            case s if s >= 60000 and not self.s.executed_3:
+            case s if s >= 100000 and not self.s.executed_3:
                 self.s.lives += 1
                 self.new_life_sound.play()
                 self.s.executed_3 = True
 
-            case s if s >= 100000 and not self.s.executed_4:
+            case s if s >= 150000 and not self.s.executed_4:
                 self.s.lives += 1
                 self.new_life_sound.play()
                 self.s.executed_4 = True
@@ -596,7 +590,7 @@ class Game:
             
         elif self.s.level in (4, 5):
             self.s.alien_bullets_allowed = 2
-            self.s.shoots_allowed = 2
+            #self.s.shoots_allowed = 2
         elif self.s.level == 6:
             self.s.extra_bullets_allowed = 2
             self.finish_planet_animation = False
@@ -610,14 +604,14 @@ class Game:
            
         elif self.s.level in (10, 11):
             self.s.alien_bullets_allowed = 4
-            self.s.shoots_allowed = 2
+            #self.s.shoots_allowed = 2
         elif self.s.level == 12:
             self.s.extra_bullets_allowed = 4
             self.finish_planet_animation = False
 
         elif self.s.level in (13, 14):
             self.s.alien_bullets_allowed = 5
-            self.s.shoots_allowed = 2
+            #self.s.shoots_allowed = 2
             self.s.alien_speed = 1.5    
         elif self.s.level == 15:
             self.s.extra_bullets_allowed = 5
@@ -626,16 +620,16 @@ class Game:
         elif self.s.level in (16, 17):
             self.s.alien_bullets_allowed = 6
             self.s.alien_speed = 1.7
-            self.s.shoots_allowed = 3
+            #self.s.shoots_allowed = 3
         elif self.s.level == 18:
             self.s.extra_bullets_allowed = 4
-            pygame.time.set_timer(self.s.EXTRALASER, 600)
+            pygame.time.set_timer(self.s.EXTRALASER, 500)
             self.finish_planet_animation = False
             
         elif self.s.level in (19, 20):
             self.s.alien_bullets_allowed = 6
             self.s.alien_speed = 1.9
-            self.s.shoots_allowed = 3
+            #self.s.shoots_allowed = 3
         elif self.s.level == 21:
             self.finish_planet_animation = False
             

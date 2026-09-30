@@ -69,9 +69,9 @@ class Menu():
             
             self.blink_text()
                             
-            self.draw_text (f'HI-SCORE: {self.game.s.hi_score:06}', self.game.font_text, 'white', self.game.s.screen_width / 2, 20)
-            self.draw_text("INVADERS", self.game.font_title, "#074B07", self.game.s.screen_width / 2 + 10, self.game.s.screen_heigth / 4 + 10)
-            self.draw_text("INVADERS", self.game.font_title, '#00ff00', self.game.s.screen_width / 2, self.game.s.screen_heigth / 4)
+            self.draw_text (f'HI-SCORE: {self.game.s.hi_score:06}',  self.game.font_pixeled15, 'white', self.game.s.screen_width / 2, 20)
+            self.draw_text("INVADERS", self.game.font_pixeled80, "#074B07", self.game.s.screen_width / 2 + 10, self.game.s.screen_heigth / 4 + 10)
+            self.draw_text("INVADERS", self.game.font_pixeled80, '#00ff00', self.game.s.screen_width / 2, self.game.s.screen_heigth / 4)
             
             self.game.screen.blit(self.esc_key, (140, 490))  
             self.game.screen.blit(self.exit_image, (220, 500)) 
@@ -84,7 +84,7 @@ class Menu():
            
             
             if self.blink_time > 1:
-                self.draw_text("Press [ENTER] to play", self.game.font_text, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth - 50)
+                self.draw_text("Press [ENTER] to play",  self.game.font_pixeled15, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth - 50)
 
             if self.game.pause_time(50, True): #50
                 self.title_active = False
@@ -150,8 +150,8 @@ class GameOver (Menu):
         self.game.aliens.draw(self.game.screen)
         if self.count < 2:
             self.game.screen.blit(self.game.explosion_player, (self.game.player_sprite.rect.x, self.game.player_sprite.rect.y))
-        self.draw_text("GAME OVER", self.game.font_title, "#3F0422", self.game.screen_rect.centerx + 10, self.game.screen_rect.centery + 10)
-        self.draw_text("GAME OVER", self.game.font_title, '#FF007F', self.game.screen_rect.centerx, self.game.screen_rect.centery)
+        self.draw_text("GAME OVER", self.game.font_pixeled80, "#3F0422", self.game.screen_rect.centerx + 10, self.game.screen_rect.centery + 10)
+        self.draw_text("GAME OVER", self.game.font_pixeled80, '#FF007F', self.game.screen_rect.centerx, self.game.screen_rect.centery)
 
         if self.game.pause_time(28, True):
             self.run_display = False
@@ -233,15 +233,15 @@ class Hiscore (Menu):
     def display_letters(self):
         # If the first letter is chosen, display it on the screen.
         if len(self.player_name) > 0:
-            first_letter = self.game.font_y22448.render(self.player_name[0], True, self.score_name)
+            first_letter = self.game.font_y22472.render(self.player_name[0], True, self.score_name)
             self.game.screen.blit(first_letter, (500, self.game.s.screen_heigth / 3))
         # If the second letter is chosen, display it on the screen.
         if len(self.player_name) > 1:
-            second_letter = self.game.font_y22448.render(self.player_name[1], True, self.score_name)
+            second_letter = self.game.font_y22472.render(self.player_name[1], True, self.score_name)
             self.game.screen.blit(second_letter, (580, self.game.s.screen_heigth / 3))
         # If the third letter is chosen, display it on the screen.
         if len(self.player_name) > 2:
-            last_letter = self.game.font_y22448.render(self.player_name[2], True, self.score_name)
+            last_letter = self.game.font_y22472.render(self.player_name[2], True, self.score_name)
             self.game.screen.blit(last_letter, (660, self.game.s.screen_heigth / 3))
         # if three letters are choosen shrink the alphabet list to two options, 'end' or 'del'.
             self.alphabet = ['<', '+']
@@ -250,9 +250,9 @@ class Hiscore (Menu):
             self.alphabet = self.alphabet_copy
 
         # displays the letter on the screen for the player to choose using the arrow keys.
-        choose_letters = self.game.font_y22448.render(self.alphabet[self.i], True, self.score_name)
+        choose_letters = self.game.font_y22472.render(self.alphabet[self.i], True, self.score_name)
         self.game.screen.blit(choose_letters, (500 + self.space, self.game.s.screen_heigth / 3))
-        traces = self.game.font_y22448.render("___", True, self.score_name)  
+        traces = self.game.font_y22472.render("___", True, self.score_name)  
         self.game.screen.blit(traces, (500, self.game.s.screen_heigth / 3 + 15))
         self.game.screen.blit(self.left_arrow, (520, self.game.s.screen_heigth / 3 + 120)) 
         self.game.screen.blit(self.right_arrow, (590, self.game.s.screen_heigth / 3 + 120)) 
@@ -290,17 +290,17 @@ class BeatGame (Menu):
                 self.bonus = self.game.s.lives * self.game.s.bonus
                 self.game.s.score += self.bonus
                 self.game.s.executed_bonus = True
-            self.draw_text(f"BONUS  {self.game.s.bonus} X {self.game.s.lives} LIVES = {self.bonus}" , self.game.font_finish, '#00ff00', self.game.s.screen_width / 2, self.game.s.screen_heigth / 5)
+            self.draw_text(f"BONUS  {self.game.s.bonus} X {self.game.s.lives} LIVES = {self.bonus}" , self.game.font_y22424, '#00ff00', self.game.s.screen_width / 2, self.game.s.screen_heigth / 5)
             
     
     def end_game(self):
         self.blink_text()
-        self.draw_text("CONGRATULATIONS", self.game.font_wonder, '#fff01f', self.game.s.screen_width /2, self.game.s.screen_heigth / 3)
-        self.draw_text("You defended our entire solar system", self.game.font_extra_points, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth / 3 + 60)
-        self.draw_text("and drove the alien armada back", self.game.font_extra_points, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth / 3 + 120)
-        self.draw_text("to the far reaches of the universe", self.game.font_extra_points, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth / 3 + 180)
-        self.draw_text("Your job is done", self.game.font_extra_points, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth / 3 + 240)
-        self.draw_text("you can now return to Earth", self.game.font_extra_points, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth / 3 + 300)
+        self.draw_text("CONGRATULATIONS", self.game.font_y22424, '#fff01f', self.game.s.screen_width /2, self.game.s.screen_heigth / 3)
+        self.draw_text("You defended our entire solar system", self.game.font_y22424, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth / 3 + 60)
+        self.draw_text("and drove the alien armada back", self.game.font_y22424, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth / 3 + 120)
+        self.draw_text("to the far reaches of the universe", self.game.font_y22424, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth / 3 + 180)
+        self.draw_text("Your job is done", self.game.font_y22424, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth / 3 + 240)
+        self.draw_text("you can now return to Earth", self.game.font_y22424, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth / 3 + 300)
         if self.game.pause_time(50, True):
             self.game.s.activate_bonus = True
             self.unlock_input = True
@@ -311,7 +311,7 @@ class BeatGame (Menu):
         """Check player input events"""
         if self.unlock_input:
             if self.blink_time > 1:
-                self.draw_text("Press [ENTER] to continue", self.game.font_text, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth - 50)
+                self.draw_text("Press [ENTER] to continue",  self.game.font_pixeled15, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth - 50)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()              
