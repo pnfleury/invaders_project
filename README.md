@@ -38,8 +38,8 @@ Inserir musica durante o jogo e refazer todos os efeitos sonoros.
 
 ### Screenshots
 ![Tela inicial](screenshots/tela_principal.jpg)  
+![Tela hiscore](screenshots/tela_hiscores.jpg)  
 ![Tela 1 jogo](screenshots/tela1_jogo.jpg)  
-![Tela 2 jogo](screenshots/tela2_jogo.jpg)  
 
 
 ### Créditos
