@@ -45,16 +45,16 @@ class Menu():
         hiscore_list_size = len (self.hiscore_list)
         if hiscore_list_size > 0:
             try:    
-                self.draw_text (f"1. {self.hiscore_list[0][0]} {self.hiscore_list[0][1]:06}", self.game.font_y22436, self.first_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6)
-                self.draw_text (f"2. {self.hiscore_list[1][0]} {self.hiscore_list[1][1]:06}", self.game.font_y22436, self.second_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 60)
-                self.draw_text (f"3. {self.hiscore_list[2][0]} {self.hiscore_list[2][1]:06}", self.game.font_y22436, self.third_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 120)
-                self.draw_text (f"4. {self.hiscore_list[3][0]} {self.hiscore_list[3][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 180)
-                self.draw_text (f"5. {self.hiscore_list[4][0]} {self.hiscore_list[4][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 240)
-                self.draw_text (f"6. {self.hiscore_list[5][0]} {self.hiscore_list[5][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 300)
-                self.draw_text (f"7. {self.hiscore_list[6][0]} {self.hiscore_list[6][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 360)
-                self.draw_text (f"8. {self.hiscore_list[7][0]} {self.hiscore_list[7][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 420)
-                self.draw_text (f"9. {self.hiscore_list[8][0]} {self.hiscore_list[8][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 480)
-                self.draw_text (f"10.{self.hiscore_list[9][0]} {self.hiscore_list[9][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 6 + 540)
+                self.draw_text (f"1. {self.hiscore_list[0][0]} {self.hiscore_list[0][1]:06}", self.game.font_y22436, self.first_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5)
+                self.draw_text (f"2. {self.hiscore_list[1][0]} {self.hiscore_list[1][1]:06}", self.game.font_y22436, self.second_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 60)
+                self.draw_text (f"3. {self.hiscore_list[2][0]} {self.hiscore_list[2][1]:06}", self.game.font_y22436, self.third_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 120)
+                self.draw_text (f"4. {self.hiscore_list[3][0]} {self.hiscore_list[3][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 180)
+                self.draw_text (f"5. {self.hiscore_list[4][0]} {self.hiscore_list[4][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 240)
+                self.draw_text (f"6. {self.hiscore_list[5][0]} {self.hiscore_list[5][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 300)
+                self.draw_text (f"7. {self.hiscore_list[6][0]} {self.hiscore_list[6][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 360)
+                self.draw_text (f"8. {self.hiscore_list[7][0]} {self.hiscore_list[7][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 420)
+                self.draw_text (f"9. {self.hiscore_list[8][0]} {self.hiscore_list[8][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 480)
+                self.draw_text (f"10.{self.hiscore_list[9][0]} {self.hiscore_list[9][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 540)
             except:
                 pass
         else: pass
@@ -91,7 +91,7 @@ class Menu():
 
         else:
 
-            self.draw_text("HIGH SCORES", self.game.font_y22436, '#45ea1d', self.game.s.screen_width /2, 40)
+            self.draw_text("HIGH SCORES", self.game.font_y22436, '#45ea1d', self.game.s.screen_width /2, self.game.s.screen_heigth / 9)
             
             self.show_hiscore_list()
             
@@ -122,12 +122,13 @@ class Menu():
         while self.run_display:
             self.check_input()
             self.game.screen.fill('black')
+            self.game.extra.update()
+            self.game.stars.update()
             self.game.extra_alien_timer()  
             self.game.stars.draw(self.game.screen)
-            self.game.extra.update()
+            self.title_menu()
             self.game.extra.draw(self.game.screen)
-            self.game.stars.update()
-            self.title_menu()   
+            self.game.crt.draw()   
             pygame.display.flip()
             self.game.clock.tick(60)
 

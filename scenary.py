@@ -82,11 +82,12 @@ class Planet(Sprite):
             if self.image != self.list[5]:
                 self.divisor = 3 
             if self.rect.y <= self.game.s.screen_heigth / self.divisor: 
-                
                 self.execute_show_planet = False
+               
             
                
     def hide_planet(self):
+      
         self.rect.y +=  3
         if self.rect.y > self.game.s.screen_heigth:
             self.rect.y == self.game.s.screen_heigth

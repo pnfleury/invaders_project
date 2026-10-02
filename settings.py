@@ -11,13 +11,13 @@ class Settings:
         self.flags = pygame.SCALED | pygame.FULLSCREEN
         self.screen_width = 1200
         self.screen_heigth = 800
-
+ 
         self.game_paused = False
-        
+       
         # end_game bonus
         self.bonus = 100000
         
-        # Font coloer
+        # Font color
         self.text_col = ('white') 
         
         ## Initialize score and hiscore variables
@@ -37,12 +37,16 @@ class Settings:
         # flag for move ship up if beat game       
         self.ship_up = False
 
+        self.ship_thruster_on = False
+        self.ship_thruster_off = False
+        #self.activate_time = 1
+
         # Obstacle setup
         self.block_size = 6
         self.obstacle_amount = 4
         self.obstacle_color = ('#FF5F1F') 
         self.obstacle_x_start = int(self.screen_width / 12)
-        self.obstacle_y_start = self.screen_heigth - 140
+        self.obstacle_y_start = self.screen_heigth - 150
         # Calculate obstacles positions on screen and put in a list
         self.obstacle_x_positions = []
         for num in range(self.obstacle_amount):

@@ -7,11 +7,21 @@ class Player (Sprite):
     def __init__(self, game):
         super().__init__()
         self.game = game
-        self.image = pygame.image.load(self.game.resource_path('assets/graphics/player.png')).convert_alpha()
+        self.player_sprites =  []
+        self.player_sprites.append (pygame.image.load(self.game.resource_path('assets/graphics/player.png')).convert_alpha())
+        self.player_sprites.append (pygame.image.load(self.game.resource_path('assets/graphics/ship_ciano/sprite_0.png')).convert_alpha())
+        self.player_sprites.append (pygame.image.load(self.game.resource_path('assets/graphics/ship_ciano/sprite_1.png')).convert_alpha())
+        self.player_sprites.append (pygame.image.load(self.game.resource_path('assets/graphics/ship_ciano/sprite_2.png')).convert_alpha())
+        self.current_sprite = 0
+        self.image = self.player_sprites[self.current_sprite]
+        
         self.x_pos = self.image.get_width()
-        self.y_pos = self.game.s.screen_heigth - self.image.get_height()
+        self.y_pos = self.game.s.screen_heigth - self.image.get_height() - 15
         self.rect = self.image.get_rect(midleft = (self.x_pos , self.y_pos))
         self.speed_up = 1
+        
+        self.executed_thruster_on = False
+       
             
     def get_input(self):
         
@@ -24,20 +34,37 @@ class Player (Sprite):
     def restart_player_location (self):
         self.rect = self.image.get_rect(midleft = (self.x_pos , self.y_pos))
 
-    def move_up (self):
+    def last_thrust (self):
+        self.current_sprite += 0.5
+        if self.current_sprite >= len (self.player_sprites):
+            self.current_sprite = 0
+        self.image = self.player_sprites[int(self.current_sprite)]
         self.rect.y -= 1 * self.speed_up
         self.speed_up += 0.1
         if self.rect.y < 0:
             self.game.player.empty()
             self.game.s.ship_up = False
-             
+                     
+         
+    def thruster_on(self): 
+        self.current_sprite += 0.5
+        if self.current_sprite >= len (self.player_sprites):
+            self.current_sprite = 0
+        self.image = self.player_sprites[int(self.current_sprite)]
+        if self.game.ship_boost_time (15, True):
+            self.game.s.ship_thruster_on = False
+            self.image = self.player_sprites[0]
+
     def update (self):
-     
+       
+        self.get_input()
         if self.game.s.ship_up:
-            self.move_up()
-        else:
-            self.get_input()
+            self.last_thrust()
+        if self.game.s.ship_thruster_on:
+            self.thruster_on()
+       
         
-        
+            
+           
 
             

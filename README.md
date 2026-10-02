@@ -9,7 +9,7 @@
 ### Status do projeto
 - Em desenvolvimento.  
 No momento esta em fase beta, mas esta jogável com todos os estagios e funcionalidades.
-- Ultima atualização em 24/09/2026.
+- Ultima atualização em 02/10/2026.
 
 ### Gameplay
 - O objetivo do jogo é destruir todos os alienigenas invasores e expulsa-los de vez do nosso sistema solar. Começando pela Terra e depois Lua, Marte, Jupiter, Saturno, Urano, Netuno. Cada planeta e satelite natural possui tres estagios, totalizando vinte e um estagios.
@@ -20,6 +20,11 @@ SETAS para controlar sua nave.
 CTRL (esquerdo ou direito) para atirar.  
 ESC para dar pausa e sair do jogo.  
 ENTER para iniciar o jogo.
+
+### Config
+- Este jogo funciona na resolução de 1200 x 800 em tela cheia somente.
+- Controle só com teclado (por enquanto).
+- Tela emulando monitores de tubo (CRT), como nao antigos arcades.
 
 
 ### Funcionalidades  
@@ -40,13 +45,15 @@ Inserir musica durante o jogo e refazer todos os efeitos sonoros.
 ![Tela inicial](screenshots/tela_principal.jpg)  
 ![Tela hiscore](screenshots/tela_hiscores.jpg)  
 ![Tela 1 jogo](screenshots/tela1_jogo.jpg)  
+![Tela 2 jogo](screenshots/tela2_jogo.jpg)  
+
 
 
 ### Créditos
 - Desenvolvimento, arte, programação e áudio:  
 Paulo Fleury
 
-### Observaçoes
+### Observações
 - Nenhuma IA ajudou no desenvolvimento deste jogo.
 - Muitos detalhes ainda vão ser implementados.
 

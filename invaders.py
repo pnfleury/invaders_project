@@ -99,7 +99,7 @@ class Game:
         self.extra_lasers = pygame.sprite.Group()
         self.lasers = pygame.sprite.Group()
         self.stars = pygame.sprite.Group()
-
+        
 
         """ initialize variables """
         # Menu inicial
@@ -110,11 +110,18 @@ class Game:
 
         ## PAUSE FUNCTION
         # time variable for pause function 
-        self.time =  10
+        self.time =  0
         # initial time variable for pause function 
         self.initial_time = 0
         # flag variable for pause function
         self.start = False
+
+        ## SHIP BOOST TIME FUNCTION
+        # time variable for ship boost function 
+        self.ship_time =  0
+        # initial time variable for boost ship 
+        self.ship_initial_time = 0
+        self.start_boost = False
         
         ## OBSTACLE 
         # flag variable for create obstacles blocks
@@ -144,6 +151,7 @@ class Game:
         # Call functions for create stars
         self.create_stars(self.s.x, self.s.y)
 
+     
         
     """ GAME FUNCTIONS """
 
@@ -181,7 +189,6 @@ class Game:
                     x = self.s.obstacle_x_start + col_index * self.s.block_size + offset_x
                     y = self.s.obstacle_y_start + row_index * self.s.block_size        
                     self.block = scenary.Block(self.s.block_size, self.s.obstacle_color, x, y)
-
                     self.blocks.add(self.block)
                          
    
@@ -356,8 +363,7 @@ class Game:
                     self.s.active_explosions.append({"pos" : (self.player_sprite.rect.x, self.player_sprite.rect.y), "time" : 500, "hit" : "player"})
                     if self.s.lives < 0:
                         self.playing = False
-                        self.curr_menu = self.game_over_menu
-                        
+                        self.curr_menu = self.game_over_menu 
                                                      
                 # Blocks 
                 if pygame.sprite.spritecollide (laser, self.blocks, True):
@@ -451,7 +457,17 @@ class Game:
             if self.initial_time >= time:
                 self.initial_time = 0
                 return True
-
+    
+    def ship_boost_time(self, time, start):
+        """ Take a pause before continuing
+        Parameters:
+        time (int) = pause time 
+        start (boolean)= starts pause """
+        if start:
+            self.ship_initial_time += 0.03
+            if self.ship_initial_time >= time:
+                self.ship_initial_time = 0
+                return True
 
     def level_up (self):
         if self.level_up_active:
@@ -483,6 +499,7 @@ class Game:
                 self.alien_lasers.empty()
                 self.blocks.empty()
                 self.s.moving_stars = True
+                self.s.ship_thruster_on = True 
                 self.planet.execute_hide_planet = True
                 if self.pause_time(10, True):
                     if self.s.level == 21:
@@ -491,7 +508,6 @@ class Game:
                         self.s.moving_stars = False
                         self.playing = False
                         self.curr_menu = self.beatgame_menu
-                        
                     else:
                         self.i += 1
                         self.planet.image = self.planet.list[self.i] 
@@ -590,7 +606,7 @@ class Game:
             
         elif self.s.level in (4, 5):
             self.s.alien_bullets_allowed = 2
-            #self.s.shoots_allowed = 2
+           
         elif self.s.level == 6:
             self.s.extra_bullets_allowed = 2
             self.finish_planet_animation = False
@@ -598,21 +614,22 @@ class Game:
         elif self.s.level in (7, 8):
             self.s.alien_bullets_allowed = 3
             self.s.shoots_allowed = 2
+        
         elif self.s.level == 9:
             self.s.extra_bullets_allowed = 3
             self.finish_planet_animation = False
            
         elif self.s.level in (10, 11):
             self.s.alien_bullets_allowed = 4
-            #self.s.shoots_allowed = 2
+            
         elif self.s.level == 12:
             self.s.extra_bullets_allowed = 4
             self.finish_planet_animation = False
 
         elif self.s.level in (13, 14):
             self.s.alien_bullets_allowed = 5
-            #self.s.shoots_allowed = 2
             self.s.alien_speed = 1.5    
+        
         elif self.s.level == 15:
             self.s.extra_bullets_allowed = 5
             self.finish_planet_animation = False
@@ -620,16 +637,15 @@ class Game:
         elif self.s.level in (16, 17):
             self.s.alien_bullets_allowed = 6
             self.s.alien_speed = 1.7
-            #self.s.shoots_allowed = 3
+           
         elif self.s.level == 18:
-            self.s.extra_bullets_allowed = 4
             pygame.time.set_timer(self.s.EXTRALASER, 500)
             self.finish_planet_animation = False
             
         elif self.s.level in (19, 20):
             self.s.alien_bullets_allowed = 6
             self.s.alien_speed = 1.9
-            #self.s.shoots_allowed = 3
+            
         elif self.s.level == 21:
             self.finish_planet_animation = False
             
@@ -722,12 +738,6 @@ class Game:
                 
                 self.check_events()
                 self.screen.fill('black')
-                self.initial_planet_animation()
-                self.planet_animation()
-
-                self.explosion_time()
-                self.extra.update()
-                self.planets.update()
                 self.stars.update()
                 self.player.update()
                 self.lasers.update()
@@ -735,33 +745,38 @@ class Game:
                 self.alien_lasers.update()
                 self.extra_lasers.update()
                 self.blocks.update()
+                self.extra.update()
+                self.planets.update()
+                
+                self.initial_planet_animation()
+                self.planet_animation()
+                self.explosion_time()
                 self.alien_shoot()
                 self.extra_alien_timer()     
-
                 self.alien_position_checker()
                 self.collision_checks()
+                self.level_up()
+                self.new_life()
+                self.pause_time(self.time, self.start)
+                self.ship_boost_time(self.ship_time, self.start_boost)
                 
                 self.display_score()
                 self.display_hiscore()
                 self.display_level()
                 self.display_lives()
-
                 self.stars.draw(self.screen)
                 self.planets.draw(self.screen)
                 self.player.draw (self.screen)
-                self.draw_explosion()           
-                self.blocks.draw(self.screen)
-                self.redraw_blocks()
                 self.lasers.draw(self.screen)
                 self.aliens.draw(self.screen)
                 self.alien_lasers.draw(self.screen)
                 self.extra_lasers.draw(self.screen)
+                self.blocks.draw(self.screen)
                 self.extra.draw(self.screen)
+               
+                self.draw_explosion()           
+                self.redraw_blocks()
                 self.crt.draw()
-                self.level_up()
-                self.new_life()
-                self.pause_time(self.time, self.start)
-
                 pygame.display.flip()
                 self.dt = self.clock.tick(60)
             else:
