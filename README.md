@@ -23,9 +23,8 @@ ENTER para iniciar o jogo.
 
 ### Config
 - Este jogo funciona na resolução de 1200 x 800 em tela cheia somente.
-- Controle só com teclado (por enquanto).
-- Tela emulando monitores de tubo (CRT), como nao antigos arcades.
-
+- Controle só com teclado.
+- Tela emulando monitores de tubo (CRT), como nos antigos arcades.
 
 ### Funcionalidades  
 - Já implementado:  
