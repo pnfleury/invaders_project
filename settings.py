@@ -62,8 +62,8 @@ class Settings:
         self.alien_direction = 1
         self.alien_distance = 16 # distance that a line of aliens descends 
         #self.alien_time_between_bullets = 900
-        self.alien_rows = 2 #5
-        self.alien_cols = 2 #11
+        self.alien_rows = 5 #5
+        self.alien_cols = 11 #11
         self.alien_x_distance = 70 #60
         self.alien_y_distance = 48 
         self.aliens_x_offset = 70 
@@ -102,7 +102,7 @@ class Settings:
         # load hiscore file
         self.load_hiscore()
         # Initialize level and lives variables
-        self.level = 20
+        self.level = 0
         self.lives = 2
         self.score = 0
         # player ship

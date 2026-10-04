@@ -18,7 +18,7 @@ class Game:
         self.clock = pygame.time.Clock()
         
         # initialize screen
-        self.screen =  pygame.display.set_mode((self.s.screen_width, self.s.screen_heigth))
+        self.screen =  pygame.display.set_mode((self.s.screen_width, self.s.screen_heigth), self.s.flags)
         self.screen_rect = self.screen.get_rect()
 
         # Lifes indicator on top right screen
@@ -65,9 +65,11 @@ class Game:
         self.name_entry_sound = pygame.mixer.Sound(self.resource_path('assets/audio/name_entry.mp3'))
         self.beat_game_sound = pygame.mixer.Sound(self.resource_path('assets/audio/end_game.mp3'))
         self.bonus_sound = pygame.mixer.Sound(self.resource_path('assets/audio/bonus.mp3'))
+        self.game_over_sound = pygame.mixer.Sound(self.resource_path('assets/audio/game_over.mp3'))
 
         # Set volume
         #self.music.set_volume(0.1)
+        self.game_over_sound.set_volume(0.4)
         self.bonus_sound.set_volume(0.3)
         self.beat_game_sound.set_volume(0.8)
         self.name_entry_sound.set_volume(0.3)
@@ -423,6 +425,7 @@ class Game:
             pygame.mixer.stop()
             self.player_explosion_sound.play()
             self.playing = False
+            self.game_over_sound.play()
             self.curr_menu = self.game_over_menu        
 
     def display_lives(self):
