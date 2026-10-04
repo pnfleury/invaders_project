@@ -113,6 +113,9 @@ class Menu():
                         self.game.s.moving_stars = True
                         self.run_display = False
                         self.game.playing = True
+                        self.game.ship_thruster_sound.play()
+                        self.game.s.ship_thruster_on = True
+                       
 
                 if event.key == pygame.K_ESCAPE:
                     sys.exit()
@@ -225,8 +228,8 @@ class Hiscore (Menu):
 
                         if self.alphabet[self.i] == '+':
                             self.game.s.name = "".join(self.player_name).ljust(3, ".")
-
                             self.game.save_hiscore()
+                            pygame.mixer.stop()
                             self.run_display = False
                             self.game.curr_menu = self.game.main_menu
                             self.game.reset_game()
@@ -287,6 +290,7 @@ class BeatGame (Menu):
     def end_game_bonus (self):
         if self.game.s.activate_bonus:
             if not self.game.s.executed_bonus:
+                self.game.bonus_sound.play()
                 self.game.s.lives += 1
                 self.bonus = self.game.s.lives * self.game.s.bonus
                 self.game.s.score += self.bonus
@@ -319,13 +323,15 @@ class BeatGame (Menu):
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
+                        pygame.mixer.stop()
                         self.run_display = False
                         self.game.verify_score()  
 
 
     def display_menu(self):
+        self.game.beat_game_sound.play()
         self.run_display = True
-        self.game.s.ship_up = True
+        self.game.s.ship_last_thrust = True
         while self.run_display:
             self.game.screen.fill('black')
             self.game.stars.update()

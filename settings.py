@@ -34,12 +34,12 @@ class Settings:
         self.x = self.y = 0
         self.num_stars = 200 # numbers of stars on screen
 
-        # flag for move ship up if beat game       
-        self.ship_up = False
-
+        # turn on/off ship thruster
         self.ship_thruster_on = False
         self.ship_thruster_off = False
-        #self.activate_time = 1
+        
+        # activate last thrust (end game)
+        self.ship_last_thrust = False
 
         # Obstacle setup
         self.block_size = 6
@@ -62,8 +62,8 @@ class Settings:
         self.alien_direction = 1
         self.alien_distance = 16 # distance that a line of aliens descends 
         #self.alien_time_between_bullets = 900
-        self.alien_rows = 5 #5
-        self.alien_cols = 11 #11
+        self.alien_rows = 2 #5
+        self.alien_cols = 2 #11
         self.alien_x_distance = 70 #60
         self.alien_y_distance = 48 
         self.aliens_x_offset = 70 
@@ -102,7 +102,7 @@ class Settings:
         # load hiscore file
         self.load_hiscore()
         # Initialize level and lives variables
-        self.level = 0 
+        self.level = 20
         self.lives = 2
         self.score = 0
         # player ship
@@ -131,4 +131,5 @@ class Settings:
         self.executed_4 = False
         self.activate_bonus = False
         self.executed_bonus = False
+        self.ship_thruster_sound_played = False
    
