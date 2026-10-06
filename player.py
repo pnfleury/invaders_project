@@ -20,7 +20,6 @@ class Player (Sprite):
         self.rect = self.image.get_rect(midleft = (self.x_pos , self.y_pos))
         self.speed_up = 1
         self.block_input = False
-        #self.executed_thruster_on = False
        
             
     def get_input(self):

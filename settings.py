@@ -23,12 +23,13 @@ class Settings:
         ## Initialize score and hiscore variables
         self.hiscore_file = "hiscore.pkl"
         # standard hiscore
-        self.current_hiscore = {1: ['PNF', 100000], 2: ['AFF', 50000], 3: ['ANF', 20000], 4: ['PHF', 10000], 5: ['LMP', 5000], 
-                                6: ['ALE', 1000], 7: ['OZY', 1000], 8: ['AMP', 1000], 9: ['LRP', 1000], 10: ['RBH', 1000]}
+        self.current_hiscore = {1: ['PNF', 150000], 2: ['AFF', 120000], 3: ['ANF', 80000], 4: ['PHF', 50000], 5: ['LMP', 30000], 
+                                6: ['ALE', 20000], 7: ['OZY', 15000], 8: ['AMP', 10000], 9: ['LRP', 8000], 10: ['RBH', 5000]}
         self.new_hiscore = {}
         # standard hiscore name if none
         self.name = 'INV'
         self.hi_score = 100000
+        self.hiscore_list = []
             
         # Initialize stars variables
         self.x = self.y = 0
@@ -70,6 +71,7 @@ class Settings:
         self.aliens_y_offset = 100
     
    
+   
         # Extra alien settings
         self.EXTRALASER = pygame.USEREVENT + 1
         self.range_a = 800
@@ -89,16 +91,17 @@ class Settings:
                     self.current_hiscore = pickle.load(file)
                 except Exception:
                     self.current_hiscore={}
-            if self.current_hiscore:
-                if len(self.current_hiscore) > 10:
-                    self.current_hiscore.popitem()
-                self.hi_score = list(self.current_hiscore.values())[0][1]
-
-            else:
-                self.hi_score = 0
+        if self.current_hiscore:
+            if len(self.current_hiscore) > 10:
+                self.current_hiscore.popitem()
+            self.hiscore_list = list(self.current_hiscore.values())
+            self.hi_score = self.hiscore_list[0][1]
+        else:
+            self.hi_score = 0
 
    
     def initialize_dynamic_settings(self):
+        
         # load hiscore file
         self.load_hiscore()
         # Initialize level and lives variables

@@ -18,7 +18,7 @@ class Game:
         self.clock = pygame.time.Clock()
         
         # initialize screen
-        self.screen =  pygame.display.set_mode((self.s.screen_width, self.s.screen_heigth), self.s.flags)
+        self.screen =  pygame.display.set_mode((self.s.screen_width, self.s.screen_heigth))
         self.screen_rect = self.screen.get_rect()
 
         # Lifes indicator on top right screen
@@ -66,9 +66,9 @@ class Game:
         self.beat_game_sound = pygame.mixer.Sound(self.resource_path('assets/audio/end_game.mp3'))
         self.bonus_sound = pygame.mixer.Sound(self.resource_path('assets/audio/bonus.mp3'))
         self.game_over_sound = pygame.mixer.Sound(self.resource_path('assets/audio/game_over.mp3'))
+        self.first_place_sound = pygame.mixer.Sound(self.resource_path('assets/audio/first_place.mp3'))
 
         # Set volume
-        #self.music.set_volume(0.1)
         self.game_over_sound.set_volume(0.4)
         self.bonus_sound.set_volume(0.3)
         self.beat_game_sound.set_volume(0.8)
@@ -86,7 +86,7 @@ class Game:
         self.block_rebuild_sound.set_volume(0.2)
         self.obstacle_explosion.set_volume(0.2)
         self.shot_collision.set_volume(0.2)
-        #self.warp_exit_sound.set_volume(0.2)
+       
 
         ## Create instances
         self.crt = CRT(self)
@@ -566,6 +566,7 @@ class Game:
 
     def reset_game(self):
         """Reset the game settings"""
+        self.player_sprite.block_input = False
         self.hiscore_menu.hiscore_initialize()
         self.aliens.empty()
         self.alien_lasers.empty()
@@ -574,9 +575,10 @@ class Game:
         self.extra.empty()
         self.planets.empty()
         self.player.empty()
+        
         self.planets.add(self.planet)
         self.player.add(self.player_sprite)
-        self.planet.rect = self.planet.image.get_rect(topleft = (0, 800))
+        self.planet.rect = self.planet.image.get_rect(topleft = (0, self.s.screen_heigth))
         self.i = 0 
         self.planet.image = self.planet.list[self.i]
         self.level_up_active = False
@@ -699,18 +701,22 @@ class Game:
         except Exception:
             pass
 
-
+    
     def verify_score(self):
         lowest_hiscore = min(self.s.current_hiscore.items(), key=lambda item: item[1][1])
         key, values = lowest_hiscore
         if self.s.score > values[1]:
             self.s.current_hiscore.pop(key)
-            self.name_entry_sound.play()
+            if self.s.score > self.s.hiscore_list[0][1]:
+                 self.hiscore_menu.score_color = self.main_menu.first_color
+                 self.first_place_sound.play()
+            else:
+                self.name_entry_sound.play()
             self.curr_menu = self.hiscore_menu
         else:
             self.curr_menu = self.main_menu
             self.reset_game()
-            
+        
 
     def shoot_laser(self):
         """Create player laser sprite and add to the sprite group"""

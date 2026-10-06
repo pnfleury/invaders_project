@@ -18,7 +18,7 @@ class Menu():
        
         # variable for blinking text used on blink function
         self.blink_time = 0
-        self.hiscore_list = []
+        #self.hiscore_list = []
         self.title_active = True
         self.hiscore_active = True
         self.speed = 1
@@ -27,6 +27,7 @@ class Menu():
         self.second_color = '#c4c4c4'
         self.third_color = '#FF7A00'
         self.hi_space = 0
+
       
     def draw_text(self, text, font, text_col, x, y):
         img = font.render (text, False, text_col)
@@ -41,20 +42,18 @@ class Menu():
             self.blink_time = 0
 
     def show_hiscore_list(self):
-        self.hiscore_list = list(self.game.s.current_hiscore.values())
-        hiscore_list_size = len (self.hiscore_list)
-        if hiscore_list_size > 0:
+        if len(self.game.s.hiscore_list) > 0:
             try:    
-                self.draw_text (f"1. {self.hiscore_list[0][0]} {self.hiscore_list[0][1]:06}", self.game.font_y22436, self.first_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5)
-                self.draw_text (f"2. {self.hiscore_list[1][0]} {self.hiscore_list[1][1]:06}", self.game.font_y22436, self.second_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 60)
-                self.draw_text (f"3. {self.hiscore_list[2][0]} {self.hiscore_list[2][1]:06}", self.game.font_y22436, self.third_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 120)
-                self.draw_text (f"4. {self.hiscore_list[3][0]} {self.hiscore_list[3][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 180)
-                self.draw_text (f"5. {self.hiscore_list[4][0]} {self.hiscore_list[4][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 240)
-                self.draw_text (f"6. {self.hiscore_list[5][0]} {self.hiscore_list[5][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 300)
-                self.draw_text (f"7. {self.hiscore_list[6][0]} {self.hiscore_list[6][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 360)
-                self.draw_text (f"8. {self.hiscore_list[7][0]} {self.hiscore_list[7][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 420)
-                self.draw_text (f"9. {self.hiscore_list[8][0]} {self.hiscore_list[8][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 480)
-                self.draw_text (f"10.{self.hiscore_list[9][0]} {self.hiscore_list[9][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 540)
+                self.draw_text (f"1. {self.game.s.hiscore_list[0][0]} {self.game.s.hiscore_list[0][1]:06}", self.game.font_y22436, self.first_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5)
+                self.draw_text (f"2. {self.game.s.hiscore_list[1][0]} {self.game.s.hiscore_list[1][1]:06}", self.game.font_y22436, self.second_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 60)
+                self.draw_text (f"3. {self.game.s.hiscore_list[2][0]} {self.game.s.hiscore_list[2][1]:06}", self.game.font_y22436, self.third_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 120)
+                self.draw_text (f"4. {self.game.s.hiscore_list[3][0]} {self.game.s.hiscore_list[3][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 180)
+                self.draw_text (f"5. {self.game.s.hiscore_list[4][0]} {self.game.s.hiscore_list[4][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 240)
+                self.draw_text (f"6. {self.game.s.hiscore_list[5][0]} {self.game.s.hiscore_list[5][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 300)
+                self.draw_text (f"7. {self.game.s.hiscore_list[6][0]} {self.game.s.hiscore_list[6][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 360)
+                self.draw_text (f"8. {self.game.s.hiscore_list[7][0]} {self.game.s.hiscore_list[7][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 420)
+                self.draw_text (f"9. {self.game.s.hiscore_list[8][0]} {self.game.s.hiscore_list[8][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 480)
+                self.draw_text (f"10.{self.game.s.hiscore_list[9][0]} {self.game.s.hiscore_list[9][1]:06}", self.game.font_y22436, self.hi_color, self.game.s.screen_width /2, self.game.s.screen_heigth / 5 + 540)
             except:
                 pass
         else: pass
@@ -115,8 +114,8 @@ class Menu():
                         self.game.playing = True
                         self.game.ship_thruster_sound.play()
                         self.game.s.ship_thruster_on = True
-                       
-
+                        self.exit_hiscore_time = 40
+        
                 if event.key == pygame.K_ESCAPE:
                     sys.exit()
 
@@ -184,23 +183,35 @@ class Hiscore (Menu):
         self.alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O',
              'P','Q','R','S','T','U','V','W','X','Y','Z','<', '+']
         self.alphabet_copy = self.alphabet[:]
-     
-        self.hiscore_initialize()
+        
+        # gray letters for first to third place 
+        self.hi_color = self.first_color = self.second_color = self.third_color = '#404040'     
+
+        self.HISCORE = pygame.USEREVENT + 2
     
+        self.hiscore_initialize()    
+
     def hiscore_initialize (self):
+        # Timer for exiting hiscore menu
+        pygame.time.set_timer(self.HISCORE, 0)
+        self.exit_hiscore_time = 40
         # player name list.
         self.player_name = []
         # index variable of alphabet list.
         self.i = 0
         # space between letters on input hiscore screen.
         self.space = 0
-        self.score_name = '#ff0000'
-       
+        self.score_color = '#ff0000'
+        
+            
         
     def check_input(self):
         ''' get player input for hiscore '''
         # press left or right arrow to choose the letter on alphabet list.
         for event in pygame.event.get():
+            if event.type == self.HISCORE and self.exit_hiscore_time >= 0:
+                self.exit_hiscore_time -= 1
+            
             if event.type == pygame.QUIT:
                 sys.exit()
             if event.type == pygame.KEYDOWN:
@@ -227,25 +238,28 @@ class Hiscore (Menu):
                             self.i = 0
 
                         if self.alphabet[self.i] == '+':
-                            self.game.s.name = "".join(self.player_name).ljust(3, ".")
-                            self.game.save_hiscore()
-                            pygame.mixer.stop()
-                            self.run_display = False
-                            self.game.curr_menu = self.game.main_menu
-                            self.game.reset_game()
+                            self.save_hiscore()
+                      
 
     def display_letters(self):
+        # If time runs out, save and exit to the main menu
+        if self.exit_hiscore_time < 0:
+            pygame.time.wait(1000) 
+            self.save_hiscore()
+        # display blinking hiscore
+        if self.blink_time >= 1.5:
+            self.draw_text("HIGH SCORES", self.game.font_y22436, '#45ea1d', self.game.s.screen_width /2, 40)
         # If the first letter is chosen, display it on the screen.
         if len(self.player_name) > 0:
-            first_letter = self.game.font_y22472.render(self.player_name[0], True, self.score_name)
+            first_letter = self.game.font_y22472.render(self.player_name[0], True, self.score_color)
             self.game.screen.blit(first_letter, (500, self.game.s.screen_heigth / 3))
         # If the second letter is chosen, display it on the screen.
         if len(self.player_name) > 1:
-            second_letter = self.game.font_y22472.render(self.player_name[1], True, self.score_name)
+            second_letter = self.game.font_y22472.render(self.player_name[1], True, self.score_color)
             self.game.screen.blit(second_letter, (580, self.game.s.screen_heigth / 3))
         # If the third letter is chosen, display it on the screen.
         if len(self.player_name) > 2:
-            last_letter = self.game.font_y22472.render(self.player_name[2], True, self.score_name)
+            last_letter = self.game.font_y22472.render(self.player_name[2], True, self.score_color)
             self.game.screen.blit(last_letter, (660, self.game.s.screen_heigth / 3))
         # if three letters are choosen shrink the alphabet list to two options, 'end' or 'del'.
             self.alphabet = ['<', '+']
@@ -254,29 +268,41 @@ class Hiscore (Menu):
             self.alphabet = self.alphabet_copy
 
         # displays the letter on the screen for the player to choose using the arrow keys.
-        choose_letters = self.game.font_y22472.render(self.alphabet[self.i], True, self.score_name)
+        choose_letters = self.game.font_y22472.render(self.alphabet[self.i], True, self.score_color)
         self.game.screen.blit(choose_letters, (500 + self.space, self.game.s.screen_heigth / 3))
-        traces = self.game.font_y22472.render("___", True, self.score_name)  
+        traces = self.game.font_y22472.render("___", True, self.score_color)  
         self.game.screen.blit(traces, (500, self.game.s.screen_heigth / 3 + 15))
         self.game.screen.blit(self.left_arrow, (520, self.game.s.screen_heigth / 3 + 120)) 
         self.game.screen.blit(self.right_arrow, (590, self.game.s.screen_heigth / 3 + 120)) 
         self.game.screen.blit( self.ctrl_key, (660, self.game.s.screen_heigth / 3 + 120)) 
-       
+        # display timer for enter name
+        if self.exit_hiscore_time <= 0:
+            self.draw_text(f"0", self.game.font_pixeled80, "#c4c4c4" , 920, 350)
+        else:
+            self.draw_text(f"{self.exit_hiscore_time}", self.game.font_pixeled80, "#c4c4c4" , 920, 350)
+        
+
+    def save_hiscore (self):
+        self.game.s.name = "".join(self.player_name).ljust(3, ".")
+        self.game.save_hiscore()
+        pygame.mixer.stop()
+        self.run_display = False
+        self.game.curr_menu = self.game.main_menu
+        self.game.reset_game()  
+
 
     def display_menu(self):
+        #pygame.time.set_timer(self.HISCORE, 1000)
         self.run_display = True
+        pygame.time.set_timer(self.HISCORE, 1000)
         while self.run_display:                         
             self.game.screen.fill("black")
             self.blink_text()
             self.game.stars.draw(self.game.screen)
             self.game.stars.update()
-            if self.blink_time >= 1.5:
-                self.draw_text("HIGH SCORES", self.game.font_y22436, 'green', self.game.s.screen_width /2, 40)
-            self.hi_color = self.first_color = self.second_color = self.third_color = '#404040'
             self.show_hiscore_list()
-            
-            self.check_input()
-            self.display_letters()             
+            self.display_letters() 
+            self.check_input()           
             pygame.display.flip()
             self.game.clock.tick(60)
 
