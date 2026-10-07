@@ -11,14 +11,14 @@ import scenary
 from scenary import Planet
 
 class Game:
-    """ Principal class of Invader-X game"""
+    """ Principal class of Invaders game"""
     def __init__(self):
 
         self.s = Settings()
         self.clock = pygame.time.Clock()
         
         # initialize screen
-        self.screen =  pygame.display.set_mode((self.s.screen_width, self.s.screen_heigth))
+        self.screen =  pygame.display.set_mode((self.s.screen_width, self.s.screen_heigth),self.s.flags)
         self.screen_rect = self.screen.get_rect()
 
         # Lifes indicator on top right screen
