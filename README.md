@@ -1,6 +1,8 @@
 # <img src="screenshots/extra.png" alt="Logo" width="60" height=""> INVADERS
 ## Um jogo no estilo do antigo arcade "space invaders".
 
+### Status: 🧪 versão atual - [v0.1.0-beta](https://github.com/pnfleury/invaders_project/releases/tag/v0.1.0-beta)
+
 ### Objetivo
 - Este é meu primeiro jogo e meu objetivo é fazer um jogo completo com estagios, pontuação, vidas, tela inicial, salvar as iniciais, menu de pausa, tela final do jogo, efeitos sonoros, musica e tudo mais que um jogo precisa.
 - Não foi usado IA, todos os algoritmos foram feitos por mim (apesar de funcional vários deles precisam de refatoração).
