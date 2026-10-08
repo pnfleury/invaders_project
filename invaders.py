@@ -240,11 +240,9 @@ class Game:
             pos_y = lowest_alien_sprite.rect.bottom
             
             if pos_y >= self.s.screen_heigth:
-                self.player_explosion_sound.play()
-                self.s.lives = 0
-                self.playing = False
-                self.curr_menu = self.game_over_menu
-            else: self.s.alien_direction *= -1 
+                self.s.lives = -1
+            else: 
+                self.s.alien_direction *= -1 
                
     
     def alien_shoot(self):
@@ -309,7 +307,7 @@ class Game:
                     self.screen.blit(self.laser_miss, exp["pos"])
                 case 'fleet_bottom':
                     self.screen.blit(self.explosion_player, exp["pos"])
-                    self.s.active_explosions.append({"time" : 8000, "hit" : "game_over"})            
+                    self.s.lives = -1
 
                 case 'earth':
                     self.draw_text(f'DEFEND EARTH',  self.font_y22472, '#E1E6E7', exp['pos'][0], exp['pos'][1])
@@ -417,7 +415,6 @@ class Game:
             if pygame.sprite.groupcollide(self.player, self.aliens, True, True):
                 self.player_explosion_sound.play()
                 self.s.active_explosions.append({"pos" : (self.player_sprite.rect.x, self.player_sprite.rect.y), "time" : 800, "hit" : "fleet_bottom"})
-                self.s.lives < 0
                 
 
     def zero_lives_check(self):
@@ -684,7 +681,7 @@ class Game:
             
    
     def save_hiscore(self):
-         # define a random key for the dictionary
+        # define a random key for the dictionary
         code = randint(1, 1000000)
         # if the dictionary key exists in loaded hiscore file get other random key 
         if str(code) in self.s.current_hiscore.keys():
@@ -831,7 +828,6 @@ if __name__ == '__main__':
     pygame.mixer.init()
     invaders = Game()
    
-
     while invaders.running:
         pygame.mouse.set_visible(False)
         invaders.curr_menu.display_menu()

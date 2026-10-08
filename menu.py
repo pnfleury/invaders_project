@@ -202,7 +202,6 @@ class Hiscore (Menu):
         # space between letters on input hiscore screen.
         self.space = 0
         self.score_color = '#ff0000'
-        
             
         
     def check_input(self):
@@ -229,8 +228,8 @@ class Hiscore (Menu):
                         self.player_name.append(self.alphabet[self.i])     # save on player name list.
                         self.space += 80 # add a horizontal space after selecting the letter.
                         self.i = 0   # the alphabet list index jumps to the first letter.
-                    # choose "ok" to save hiscore.
-                    # select 'del' to delete the character and move to the previous character.
+                    # choose "+" to save hiscore.
+                    # select '<' to delete the character and move to the previous character.
                     else:
                         if self.alphabet[self.i] == '<' and self.player_name:
                             self.player_name.pop()
