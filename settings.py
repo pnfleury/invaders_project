@@ -120,7 +120,12 @@ class Settings:
         self.activate_extra_shot = False
         self.extra_bullets_allowed = 1
         self.extra_laser_speed = 4
-
+        # boss settings
+        #self.boss_executed = False
+        #self.boss_bullets_allowed = 2
+        #self.hits = 0
+        #self.total_hits = 10
+        
         # flag for moving start or not
         self.moving_stars = False
         # flag for colors stars on title menu

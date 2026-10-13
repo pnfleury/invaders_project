@@ -13,7 +13,7 @@ class Laser(Sprite):
      
     def update(self):
         self.rect.y -= self.game.s.laser_speed
-        if self.rect.y <= 75:
+        if self.rect.y <= 80:
             self.game.s.active_explosions.append({"pos" : (self.rect.x, self.rect.y), "time" : 100, "hit" : "laser_miss"})
             self.kill()
            

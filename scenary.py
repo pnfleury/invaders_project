@@ -34,25 +34,22 @@ class Stars(Sprite):
         self.image = pygame.surface.Surface((self.x, self.x))
         self.image.fill(color)
         self.rect = self.image.get_rect(center = (x,y))
+        self.speed = 1
 
     def update(self):
-        if self.game.s.menu_stars:
-            self.red = randint(0, 255)
-            self.green = randint(0, 255)
-            self.blue = randint(0, 255)
-            self.image.fill((self.red, self.green, self.blue))
-            self.rect.y -=  1
-            if self.rect.y < 0:
-                self.rect.y = self.game.s.screen_heigth
-
-        else:
-            self.color = randint(0 ,255)
-            self.image.fill((self.color, self.color, self.color))   
-            if self.game.s.moving_stars:
-                self.rect.y +=  6
-                if self.rect.y > self.game.s.screen_heigth:
-                    self.rect.y = 0
         
+        if self.game.s.moving_stars:
+            self.speed =  6
+        else: self.speed =  1 
+
+        self.red = randint(0, 255)
+        self.green = randint(0, 255)
+        self.blue = randint(0, 255)
+        self.image.fill((self.red, self.green, self.blue))
+        self.rect.y +=  self.speed
+        if self.rect.y > self.game.s.screen_heigth:
+            self.rect.y = 0
+
 
 class Planet(Sprite):
     def __init__(self, game):
@@ -82,12 +79,16 @@ class Planet(Sprite):
             if self.image != self.list[5]:
                 self.divisor = 3 
             if self.rect.y <= self.game.s.screen_heigth / self.divisor: 
+                self.game.s.moving_stars = False
+                self.game.level_up_active = True
+                self.game.describe_planet()
+                #if self.game.pause_time(10, True):
+                self.game.create_multiple_obstacles()
+                self.game.block_rebuild = True   
                 self.execute_show_planet = False
                
-            
-               
     def hide_planet(self):
-      
+        self.game.s.moving_stars = True
         self.rect.y +=  3
         if self.rect.y > self.game.s.screen_heigth:
             self.rect.y == self.game.s.screen_heigth
@@ -101,6 +102,8 @@ class Planet(Sprite):
         
         # Hide planet
         if self.execute_hide_planet:
+            self.game.extra.empty()
+            self.game.extra_alien_sound.stop()
             self.hide_planet()
            
                 

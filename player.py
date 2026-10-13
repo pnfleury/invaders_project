@@ -20,7 +20,7 @@ class Player (Sprite):
         self.rect = self.image.get_rect(midleft = (self.x_pos , self.y_pos))
         self.speed_up = 1
         self.block_input = False
-       
+        self.play_thruster_sound = False
             
     def get_input(self):
         if not self.block_input:
@@ -53,15 +53,20 @@ class Player (Sprite):
         if self.current_sprite >= len (self.player_sprites):
             self.current_sprite = 0
         self.image = self.player_sprites[int(self.current_sprite)]
+
         if self.game.ship_boost_time (time, True):
             self.game.s.ship_thruster_on = False
             self.game.ship_thruster_sound.stop()
+            self.play_thruster_sound = False
             self.image = self.player_sprites[0]
 
     def update (self):
         self.get_input()
             
         if self.game.s.ship_thruster_on:
+            if not self.play_thruster_sound:
+                self.game.ship_thruster_sound.play()
+                self.play_thruster_sound = True
             self.thruster_on()
         
         if self.game.s.ship_last_thrust:

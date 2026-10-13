@@ -61,11 +61,9 @@ class Menu():
         
     def title_menu(self):
         ''' function to show the game title screen '''
-        #self.game.load_hiscore()
         if self.title_active:
            
             self.game.screen.blit(self.earth_view,(0, 500))
-            
             self.blink_text()
                             
             self.draw_text (f'HI-SCORE: {self.game.s.hi_score:06}',  self.game.font_pixeled15, 'white', self.game.s.screen_width / 2, 20)
@@ -108,11 +106,12 @@ class Menu():
             if event.type == pygame.KEYDOWN:
                 if self.title_active:
                     if event.key == pygame.K_RETURN:
+                        self.game.extra.empty()
+                        self.game.extra_alien_sound.stop()
                         self.game.s.menu_stars = False
                         self.game.s.moving_stars = True
                         self.run_display = False
                         self.game.playing = True
-                        self.game.ship_thruster_sound.play()
                         self.game.s.ship_thruster_on = True
                         self.exit_hiscore_time = 40
         
@@ -144,9 +143,7 @@ class GameOver (Menu):
     def game_over_menu(self):
         """Show the game over text on screen and stop the game"""
         self.count += 0.1
-        self.game.display_score()
-        self.game.display_hiscore()
-        self.game.display_level()
+        self.game.display_scoreboard()
         self.game.stars.draw(self.game.screen)
         self.game.planets.draw(self.game.screen) 
         self.game.blocks.draw(self.game.screen)
