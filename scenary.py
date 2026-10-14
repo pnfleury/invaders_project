@@ -30,22 +30,23 @@ class Stars(Sprite):
     def __init__(self, color, x, y, game):
         super().__init__()
         self.game = game
-        self.x = randint (1,4)
-        self.image = pygame.surface.Surface((self.x, self.x))
-        self.image.fill(color)
+        
+        self.radius = randint(1, 3)
+        self.diameter = self.radius * 2
+        
+        self.image = pygame.Surface((self.diameter, self.diameter), pygame.SRCALPHA)
+        pygame.draw.circle(self.image, color, (self.radius, self.radius), self.radius)
+        
         self.rect = self.image.get_rect(center = (x,y))
         self.speed = 1
 
+        
     def update(self):
         
         if self.game.s.moving_stars:
             self.speed =  6
         else: self.speed =  1 
 
-        self.red = randint(0, 255)
-        self.green = randint(0, 255)
-        self.blue = randint(0, 255)
-        self.image.fill((self.red, self.green, self.blue))
         self.rect.y +=  self.speed
         if self.rect.y > self.game.s.screen_heigth:
             self.rect.y = 0
@@ -82,7 +83,6 @@ class Planet(Sprite):
                 self.game.s.moving_stars = False
                 self.game.level_up_active = True
                 self.game.describe_planet()
-                #if self.game.pause_time(10, True):
                 self.game.create_multiple_obstacles()
                 self.game.block_rebuild = True   
                 self.execute_show_planet = False

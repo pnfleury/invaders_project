@@ -18,7 +18,7 @@ class Game:
         self.clock = pygame.time.Clock()
         
         # initialize screen
-        self.screen =  pygame.display.set_mode((self.s.screen_width, self.s.screen_heigth),self.s.flags)
+        self.screen =  pygame.display.set_mode((self.s.screen_width, self.s.screen_heigth), self.s.flags)
         self.screen_rect = self.screen.get_rect()
 
         # Lifes indicator on top right screen
@@ -168,15 +168,18 @@ class Game:
     """ GAME FUNCTIONS """
 
     def resource_path(self,relative_path):
-        """ Retorna o caminho correto para o arquivo, funcionando no script ou no .exe """
+        """ Returns the correct path to the file, working in both the code and the executable. """
         if hasattr(sys, '_MEIPASS'):
             return os.path.join(sys._MEIPASS, relative_path)
         return os.path.join(os.path.abspath("."), relative_path)
 
 
     def create_stars(self, x, y):
-
+        """ Create space stars """
         for value in range(self.s.num_stars):
+            self.red = randint(0, 255)
+            self.green = randint(0, 255)
+            self.blue = randint(0, 255)
             rand_x = randint(0, self.s.screen_width)
             rand_y =  randint (0, self.s.screen_heigth)
             if x == rand_x:
@@ -185,7 +188,7 @@ class Game:
                 rand_y = randint(0, self.s.screen_heigth)
             x = rand_x
             y = rand_y
-            self.star_sprite = scenary.Stars('white', x, y, self)
+            self.star_sprite = scenary.Stars((self.red, self.green, self.blue), x, y, self)
             self.stars.add(self.star_sprite)
 
 
@@ -271,7 +274,7 @@ class Game:
                 if len (self.boss_lasers) < 1:
                     boss_laser_sprite = BossLaser (current_sprite.rect.midbottom, self)
                     self.boss_lasers.add(boss_laser_sprite)
-                    #self.extra_laser_sound.play()    
+                    
 
     def extra_alien_timer (self):
         """Spawns an extra alien as soon as the cooldown ends"""
@@ -510,6 +513,7 @@ class Game:
                     self.raise_difficulty()
                     self.s.alien_direction = 1
                     self.alien_setup()
+                    self.extra_sprite.execute = True
                     self.alien_fleet_sound.play(loops=-1)
                     
 
@@ -519,6 +523,8 @@ class Game:
         self.aliens.empty()
         self.alien_lasers.empty()
         self.blocks.empty()
+        self.extra_sprite.execute = False
+        self.destroy_remaining_extra()
     
     
     def destroy_remaining_extra (self):
@@ -535,7 +541,6 @@ class Game:
         if not self.finish_planet_animation:
             if self.s.level in (3, 6, 9, 12, 15, 18, 21) and not (self.aliens):  
                 self.clean_scenary()
-                self.destroy_remaining_extra()
                 # boost to leave the planet
                 self.s.moving_stars = True
                 self.s.ship_thruster_on = True 
@@ -543,6 +548,7 @@ class Game:
                 if self.pause_time(10, True):
                     # Go to beat game menu if you beat the game.
                     if self.s.level == 21:
+                        self.ship_thruster_sound.fadeout(2000)
                         self.finish_planet_animation = True
                         self.s.moving_stars = False
                         self.playing = False
@@ -614,79 +620,60 @@ class Game:
         self.s.alien_speed = 1.3
 
     def describe_planet(self):
-        if self.planet.image == self.planet.list[0]:
-            self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 3000, "hit" : "earth"})
-        elif self.planet.image == self.planet.list[1]:
-            self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 3000, "hit" : "moon"})
-        elif self.planet.image == self.planet.list[2]:
-                self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 3000, "hit" : "mars"})
-        elif self.planet.image == self.planet.list[3]:
-            self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 3000, "hit" : "jupiter"})
-        elif self.planet.image == self.planet.list[4]:
-            self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 3000, "hit" : "saturn"})
-        elif self.planet.image == self.planet.list[5]:
-            self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 3000, "hit" : "uranus"})
-        elif self.planet.image == self.planet.list[6]:
-            self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, self.screen_rect.centery), "time" : 3000, "hit" : "netuno"})
-
+        match self.i:
+            case 0: planet = "earth"   
+            case 1: planet = "moon"
+            case 2: planet = "mars"
+            case 3: planet = "jupiter"
+            case 4: planet = "saturn"
+            case 5: planet = "uranus"
+            case 6: planet = "netuno"
+        self.s.active_explosions.append({"pos" : (self.screen_rect.center), "time" : 3000, "hit" : planet})   
      
     def raise_difficulty(self):
         """Increase the game's difficulty by raising the number of shots fired by the alien fleet
           as the level rises. Raise the number of player's shots starting on level 4 """
-        if self.s.level in (1, 2):
-            self.s.alien_bullets_allowed = 1
+        match self.s.level:
+            case 1 | 2:
+                self.s.alien_bullets_allowed = 1
+            case 3:
+                self.s.activate_extra_shot = True
+                self.finish_planet_animation = False 
+            case 4 | 5:
+                self.s.alien_bullets_allowed = 2
+            case 6:
+                self.s.extra_bullets_allowed = 2
+                self.finish_planet_animation = False              
+            case 7 | 8:
+                self.s.alien_bullets_allowed = 3
+                self.s.shoots_allowed = 2
+            case 9:
+                self.s.extra_bullets_allowed = 3
+                self.finish_planet_animation = False
+            case 10 | 11:
+                self.s.alien_bullets_allowed = 4  
+            case 12:
+                self.s.extra_bullets_allowed = 4
+                self.finish_planet_animation = False
+            case 13 | 14:
+                self.s.alien_bullets_allowed = 5
+                self.s.alien_speed = 1.5    
+            case 15:
+                self.s.extra_bullets_allowed = 5
+                self.finish_planet_animation = False
+            case 16 | 17:
+                self.s.alien_bullets_allowed = 6
+                self.s.alien_speed = 1.7
+            case 18:
+                pygame.time.set_timer(self.s.EXTRALASER, 500)
+                self.finish_planet_animation = False
+            case 19 | 20:
+                self.s.alien_bullets_allowed = 6
+                self.s.alien_speed = 1.9 
+            case 21: 
+                self.finish_planet_animation = False
             
-        elif self.s.level == 3:
-            self.s.activate_extra_shot = True
-            self.s.extra_bullets_allowed = 1
-            self.finish_planet_animation = False 
-            
-        elif self.s.level in (4, 5):
-            self.s.alien_bullets_allowed = 2
-           
-        elif self.s.level == 6:
-            self.s.extra_bullets_allowed = 2
-            self.finish_planet_animation = False
-
-        elif self.s.level in (7, 8):
-            self.s.alien_bullets_allowed = 3
-            self.s.shoots_allowed = 2
-        
-        elif self.s.level == 9:
-            self.s.extra_bullets_allowed = 3
-            self.finish_planet_animation = False
-           
-        elif self.s.level in (10, 11):
-            self.s.alien_bullets_allowed = 4
-            
-        elif self.s.level == 12:
-            self.s.extra_bullets_allowed = 4
-            self.finish_planet_animation = False
-
-        elif self.s.level in (13, 14):
-            self.s.alien_bullets_allowed = 5
-            self.s.alien_speed = 1.5    
-        
-        elif self.s.level == 15:
-            self.s.extra_bullets_allowed = 5
-            self.finish_planet_animation = False
-
-        elif self.s.level in (16, 17):
-            self.s.alien_bullets_allowed = 6
-            self.s.alien_speed = 1.7
-           
-        elif self.s.level == 18:
-            pygame.time.set_timer(self.s.EXTRALASER, 500)
-            self.finish_planet_animation = False
-            
-        elif self.s.level in (19, 20):
-            self.s.alien_bullets_allowed = 6
-            self.s.alien_speed = 1.9 
-           
-        elif self.s.level == 21: 
-            self.finish_planet_animation = False
-            
-   
+              
     def save_hiscore(self):
         # define a random key for the dictionary
         code = randint(1, 1000000)
@@ -799,7 +786,7 @@ class Game:
                 self.planet_animation()
                 self.explosion_time()
                 self.alien_shoot()
-                self.boss_shoot()
+                #self.boss_shoot()
                 self.extra_alien_timer()
                 
                 self.alien_position_checker()

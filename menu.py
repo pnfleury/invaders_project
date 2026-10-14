@@ -96,7 +96,18 @@ class Menu():
             if self.game.pause_time(35, True):
                 self.title_active = True
 
+    def start_game (self):
+        self.game.extra.empty()
+        self.game.extra_sprite.execute = False
+        self.game.extra_alien_sound.stop()
+        self.game.s.menu_stars = False
+        self.game.s.moving_stars = True
+        self.run_display = False
+        self.game.playing = True
+        self.game.s.ship_thruster_on = True
+        self.exit_hiscore_time = 40
 
+    
     def check_input(self):
         """Check player input events"""
         for event in pygame.event.get():
@@ -106,15 +117,7 @@ class Menu():
             if event.type == pygame.KEYDOWN:
                 if self.title_active:
                     if event.key == pygame.K_RETURN:
-                        self.game.extra.empty()
-                        self.game.extra_alien_sound.stop()
-                        self.game.s.menu_stars = False
-                        self.game.s.moving_stars = True
-                        self.run_display = False
-                        self.game.playing = True
-                        self.game.s.ship_thruster_on = True
-                        self.exit_hiscore_time = 40
-        
+                        self.start_game()
                 if event.key == pygame.K_ESCAPE:
                     sys.exit()
 
