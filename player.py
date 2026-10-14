@@ -29,9 +29,10 @@ class Player (Sprite):
                 self.rect.x += self.game.s.player_speed
             elif keys[pygame.K_LEFT] and self.rect.left > self.game.screen_rect.left:
                 self.rect.x -= self.game.s.player_speed
-            
+    
     def restart_player_location (self):
         self.rect = self.image.get_rect(midleft = (self.x_pos , self.y_pos))
+    
     
     def last_thrust (self):
         self.current_sprite += 0.5

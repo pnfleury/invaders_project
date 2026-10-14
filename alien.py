@@ -26,8 +26,6 @@ class Alien(Sprite):
         else: 
             self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_prata/sprite_1.png')).convert_alpha())
             self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_prata/sprite_2.png')).convert_alpha())
-            
-            
             self.value = 300
         
         self.current_sprite = 0

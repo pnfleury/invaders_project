@@ -46,6 +46,7 @@ class Game:
         self.font_y22424 = pygame.font.Font(self.resource_path('assets/font/Y224-2vdae.ttf'), 24)
         self.font_y22436 = pygame.font.Font(self.resource_path('assets/font/Y224-2vdae.ttf'), 36) 
         self.font_y22472 = pygame.font.Font(self.resource_path('assets/font/Y224-2vdae.ttf'), 72)
+        self.font_minecraft = pygame.font.Font(self.resource_path('assets/font/MinecraftRegular-Bmg3.otf'), 24)
 
         # Load sounds files
         #self.music = pygame.mixer.Sound(self.resource_path('assets/audio/01 BGM.mp3'))
@@ -740,7 +741,8 @@ class Game:
                                   
     
     def check_events_paused(self):
-         for event in pygame.event.get():
+        """ check player input events when paused """
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                  sys.exit()
             if event.type == pygame.KEYDOWN:              

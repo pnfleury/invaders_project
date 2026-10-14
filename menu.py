@@ -14,7 +14,8 @@ class Menu():
         self.esc_key = pygame.image.load(self.game.resource_path('assets/graphics/keys/esc_key.png')).convert_alpha()
         self.exit_image = pygame.image.load(self.game.resource_path('assets/graphics/exit.png')).convert_alpha()
         self.pause_image = pygame.image.load(self.game.resource_path('assets/graphics/pause.png')).convert_alpha()
-        self.player_image = pygame.image.load(self.game.resource_path('assets/graphics/player_image.png')).convert_alpha()   
+        self.player_image = pygame.image.load(self.game.resource_path('assets/graphics/player_image.png')).convert_alpha()
+        self.copyright_image = pygame.image.load(self.game.resource_path('assets/graphics/copyright.png')).convert_alpha()    
        
         # variable for blinking text used on blink function
         self.blink_time = 0
@@ -70,6 +71,9 @@ class Menu():
             self.draw_text("INVADERS", self.game.font_pixeled80, "#074B07", self.game.s.screen_width / 2 + 10, self.game.s.screen_heigth / 4 + 10)
             self.draw_text("INVADERS", self.game.font_pixeled80, '#00ff00', self.game.s.screen_width / 2, self.game.s.screen_heigth / 4)
             
+            self.draw_text("2026 PAULO FLEURY V.0.1.0-BETA", self.game.font_minecraft, 'white', self.game.s.screen_width / 2, self.game.s.screen_heigth / 2 - 80)
+            self.game.screen.blit(self.copyright_image, (self.game.s.screen_width / 3 - 30, self.game.s.screen_heigth / 2 - 95)) 
+
             self.game.screen.blit(self.esc_key, (140, 490))  
             self.game.screen.blit(self.exit_image, (220, 500)) 
             self.game.screen.blit(self.pause_image, (290, 500)) 
@@ -78,6 +82,8 @@ class Menu():
             self.game.screen.blit(self.left_arrow, (200, 560)) 
             self.game.screen.blit(self.right_arrow, (260, 560))
             self.game.screen.blit(self.player_image, (340, 570))
+
+            
            
             
             if self.blink_time > 1:
