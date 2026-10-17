@@ -35,10 +35,9 @@ class Game:
         self.block_hit = pygame.image.load(self.resource_path('assets/graphics/block_hit.png')).convert_alpha()
         self.laser_miss = pygame.image.load(self.resource_path('assets/graphics/laser_miss.png')).convert_alpha()
 
-        # Load pause buttons images
-        self.play_image = pygame.image.load(self.resource_path('assets/graphics/play.png')).convert_alpha()
-        self.big_pause_image = pygame.image.load(self.resource_path('assets/graphics/pause_big.png')).convert_alpha()
-        self.big_pause_image_rect = self.big_pause_image.get_rect(midtop = (self.s.screen_width /2, self.s.screen_heigth /3))
+        # Load pause image
+        self.pause_keys = pygame.image.load(self.resource_path('assets/graphics/pause_keys.png')).convert_alpha()
+        self.pause_keys_rect = self.pause_keys.get_rect(midtop = (self.s.screen_width /2, self.s.screen_heigth /3))
        
         # Create Font objects from files
         self.font_pixeled15 = pygame.font.Font(self.resource_path('assets/font/Pixeled.ttf'), 15)
@@ -48,8 +47,7 @@ class Game:
         self.font_y22472 = pygame.font.Font(self.resource_path('assets/font/Y224-2vdae.ttf'), 72)
         self.font_minecraft = pygame.font.Font(self.resource_path('assets/font/MinecraftRegular-Bmg3.otf'), 24)
 
-        # Load sounds files
-        #self.music = pygame.mixer.Sound(self.resource_path('assets/audio/01 BGM.mp3'))
+        # Load sounds file
         self.laser_sound = pygame.mixer.Sound(self.resource_path('assets/audio/shoot.wav'))
         self.alien_laser_sound = pygame.mixer.Sound(self.resource_path('assets/audio/alien_laser.wav'))
         self.extra_alien_sound = pygame.mixer.Sound(self.resource_path('assets/audio/extra_sound.wav'))
@@ -64,15 +62,16 @@ class Game:
         self.alien_fleet_sound = pygame.mixer.Sound(self.resource_path('assets/audio/alien_fleet.wav'))
         self.ship_thruster_sound = pygame.mixer.Sound(self.resource_path('assets/audio/ship_thruster.wav'))
         self.name_entry_sound = pygame.mixer.Sound(self.resource_path('assets/audio/name_entry.mp3'))
-        self.beat_game_sound = pygame.mixer.Sound(self.resource_path('assets/audio/end_game.mp3'))
         self.bonus_sound = pygame.mixer.Sound(self.resource_path('assets/audio/bonus.mp3'))
         self.game_over_sound = pygame.mixer.Sound(self.resource_path('assets/audio/game_over.mp3'))
         self.first_place_sound = pygame.mixer.Sound(self.resource_path('assets/audio/first_place.mp3'))
+        self.warning_sound = pygame.mixer.Sound(self.resource_path('assets/audio/warning.mp3'))
 
         # Set volume
+        self.warning_sound.set_volume(0.8)
         self.game_over_sound.set_volume(0.4)
         self.bonus_sound.set_volume(0.3)
-        self.beat_game_sound.set_volume(0.8)
+        #self.beat_game_music.set_volume(0.8)
         self.name_entry_sound.set_volume(0.3)
         self.ship_thruster_sound.set_volume(0.3)
         self.alien_fleet_sound.set_volume(0.8)
@@ -133,6 +132,7 @@ class Game:
         # flag variable for pause function
         self.start = False
 
+        self.blink_time = 0
         ## SHIP BOOST TIME FUNCTION
         # time variable for ship boost function 
         self.ship_time =  0
@@ -242,7 +242,7 @@ class Game:
             lowest_alien_sprite = max (self.aliens, key=lambda a: a.rect.bottom)
             pos_y = lowest_alien_sprite.rect.bottom
             
-            if pos_y >= self.s.screen_heigth:
+            if pos_y >= self.s.screen_heigth - self.player_sprite.image.get_width():
                 self.s.lives = -1
             else: 
                 self.s.alien_direction *= -1 
@@ -335,7 +335,15 @@ class Game:
                     self.draw_text(f'DEFEND URANUS',  self.font_y22472, '#E1E6E7', exp['pos'][0], exp['pos'][1])
                 case 'netuno':
                     self.draw_text(f'DEFEND NEPTUNE',  self.font_y22472, '#E1E6E7', exp['pos'][0], exp['pos'][1])
-                
+                case 'double_shoot':
+                    if not self.s.played_once:
+                        self.warning_sound.play()
+                        self.s.played_once = True
+                    self.draw_text(f'DOUBLE SHOOT',  self.font_pixeled15, '#00ff00', exp['pos'][0], exp['pos'][1])
+                case 'new_life':
+                    self.draw_text(f'NEW LIFE',  self.font_pixeled15, '#fff01f', exp['pos'][0], exp['pos'][1])
+
+
     
     def player_laser_collision (self):
         for laser in self.lasers:
@@ -414,16 +422,16 @@ class Game:
                 laser.kill()
 
     def alien_collision (self):
-         for block in self.blocks:
+        for block in self.blocks:
             # Blocks
             block_hit = pygame.sprite.spritecollide(block, self.aliens, False)
             if block_hit:
                 self.s.active_explosions.append({"pos" : (block.rect.x, block.rect.y), "time" : 500, "hit" : "block"})
                 block.kill()
-            # Player
-            if pygame.sprite.groupcollide(self.player, self.aliens, True, True):
-                self.player_explosion_sound.play()
-                self.s.active_explosions.append({"pos" : (self.player_sprite.rect.x, self.player_sprite.rect.y), "time" : 800, "hit" : "fleet_bottom"})
+        # Player
+        if pygame.sprite.groupcollide(self.player, self.aliens, True, True):
+            self.player_explosion_sound.play()
+            self.s.active_explosions.append({"pos" : (self.player_sprite.rect.x, self.player_sprite.rect.y), "time" : 800, "hit" : "fleet_bottom"})
                             
     
     def collision_checks(self):
@@ -450,6 +458,7 @@ class Game:
             self.curr_menu = self.game_over_menu        
 
     def display_scoreboard (self):
+        
         # display the current score
         self.draw_text(f'SCORE: {self.s.score:06}',  self.font_pixeled15, self.s.text_col, 20, 0, 'topleft')
         # display the hiscore
@@ -463,21 +472,31 @@ class Game:
         if self.s.lives == -1: self.s.lives = 0
         self.draw_text(f'x {self.s.lives}',  self.font_pixeled15, self.s.text_col, self.s.screen_width - 40, 20)
         self.screen.blit(self.life_surf, (self.life_x,15))
-        
+        # display double shot warning
+        if self.s.level == 7 and self.s.double_shoot_warning:
+            self.blink_text()
+            if self.blink_time > 1:
+                self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, 50), "time" : 50, "hit" : 'double_shoot'}) 
+            if self.pause_time (10, True):
+                self.s.double_shoot_warning = False
+
     def new_life(self):
         """Gives the player an extra life when they reach a certain score."""
         match self.s.score:
             case s if s >= 50000 and not self.s.executed_2:
                 self.s.lives += 1
                 self.new_life_sound.play()
+                self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, 50), "time" : 1500, "hit" : 'new_life'})
                 self.s.executed_2 = True
             case s if s >= 100000 and not self.s.executed_3:
                 self.s.lives += 1
                 self.new_life_sound.play()
+                self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, 50), "time" : 1500, "hit" : 'new_life'})
                 self.s.executed_3 = True
             case s if s >= 150000 and not self.s.executed_4:
                 self.s.lives += 1
                 self.new_life_sound.play()
+                self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, 50), "time" : 1500, "hit" : 'new_life'})
                 self.s.executed_4 = True
 
     def pause_time(self, time, start):
@@ -564,7 +583,6 @@ class Game:
                                                                                         
     def redraw_blocks (self):
         if self.block_rebuild:
-            self.block_rebuild_sound.play()   
             self.block_count += 0.1
             if self.block_count <= 4: 
                 for dots in self.blocks:
@@ -575,10 +593,12 @@ class Game:
             else:
                 self.create_multiple_obstacles()
                 self.block_count = 0
-                self.block_rebuild = False            
+                self.block_rebuild = False
+            
 
     def reset_game(self):
         """Reset the game settings"""
+        self.time =  0
         self.player_sprite.block_input = False
         self.hiscore_menu.hiscore_initialize()
         self.aliens.empty()
@@ -599,6 +619,8 @@ class Game:
         self.create_obstacle_flag = True
         self.player_sprite.restart_player_location()
         self.s.initialize_dynamic_settings()
+        pygame.mixer.music.set_endevent()
+        pygame.mixer.music.stop()
       
     def draw_text(self, text, font, text_col, x, y, pos = 'center'):
             """Draw text on screen
@@ -706,8 +728,9 @@ class Game:
                 self.name_entry_sound.play()
             self.curr_menu = self.hiscore_menu
         else:
-            self.curr_menu = self.main_menu
             self.reset_game()
+            self.curr_menu = self.main_menu
+           
         
 
     def shoot_laser(self):
@@ -717,8 +740,8 @@ class Game:
             self.lasers.add(Laser(self.player_sprite.rect.center, self))
 
     def blink_text (self):
-        self.blink_time += 0.05 
-        if self.blink_time >= 3:
+        self.blink_time += 0.1 
+        if self.blink_time >= 2:
             self.blink_time = 0
 
 
@@ -757,12 +780,8 @@ class Game:
 
     def pause_menu(self):
         self.check_events_paused()
-        self.screen.blit(self.big_pause_image, self.big_pause_image_rect)
-        self.screen.blit(self.main_menu.esc_key, (self.s.screen_width / 2 - 60, self.s.screen_heigth / 2 + 10))
-        self.screen.blit(self.main_menu.exit_image, (self.s.screen_width /2 + 20, self.s.screen_heigth /2 + 20))
-        self.screen.blit(self.main_menu.ctrl_key, (self.s.screen_width / 2 - 60, self.s.screen_heigth / 2 + 80))
-        self.screen.blit(self.play_image, (self.s.screen_width /2 + 20, self.s.screen_heigth /2 + 90))        
-        pygame.display.flip()
+        self.screen.blit(self.pause_keys, self.pause_keys_rect)
+        pygame.display.update()
 
 
     def game_loop(self):
@@ -824,8 +843,8 @@ class Game:
 if __name__ == '__main__':
     
     pygame.init()
-    pygame.font.init()
     pygame.mixer.init()
+    pygame.mixer.set_num_channels(32)
     invaders = Game()
    
     while invaders.running:

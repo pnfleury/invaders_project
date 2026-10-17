@@ -84,7 +84,8 @@ class Planet(Sprite):
                 self.game.level_up_active = True
                 self.game.describe_planet()
                 self.game.create_multiple_obstacles()
-                self.game.block_rebuild = True   
+                self.game.block_rebuild = True
+                self.game.block_rebuild_sound.play()   
                 self.execute_show_planet = False
                
     def hide_planet(self):

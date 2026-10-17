@@ -8,13 +8,8 @@ class Menu():
         
         self.game = game
         self.earth_view = pygame.image.load(self.game.resource_path('assets/graphics/planets/earth_view.png')).convert_alpha()
-        self.left_arrow = pygame.image.load(self.game.resource_path('assets/graphics/keys/left_arrow.png')).convert_alpha()
-        self.right_arrow = pygame.image.load(self.game.resource_path('assets/graphics/keys/right_arrow.png')).convert_alpha()
-        self.ctrl_key = pygame.image.load(self.game.resource_path('assets/graphics/keys/ctrl_key.png')).convert_alpha()
-        self.esc_key = pygame.image.load(self.game.resource_path('assets/graphics/keys/esc_key.png')).convert_alpha()
-        self.exit_image = pygame.image.load(self.game.resource_path('assets/graphics/exit.png')).convert_alpha()
-        self.pause_image = pygame.image.load(self.game.resource_path('assets/graphics/pause.png')).convert_alpha()
-        self.player_image = pygame.image.load(self.game.resource_path('assets/graphics/player_image.png')).convert_alpha()
+        self.keys_image = pygame.image.load(self.game.resource_path('assets/graphics/keys.png')).convert_alpha()
+        self.hiscore_keys_image = pygame.image.load(self.game.resource_path('assets/graphics/hiscore_keys.png')).convert_alpha()
         self.copyright_image = pygame.image.load(self.game.resource_path('assets/graphics/copyright.png')).convert_alpha()    
        
         # variable for blinking text used on blink function
@@ -71,25 +66,16 @@ class Menu():
             self.draw_text("INVADERS", self.game.font_pixeled80, "#074B07", self.game.s.screen_width / 2 + 10, self.game.s.screen_heigth / 4 + 10)
             self.draw_text("INVADERS", self.game.font_pixeled80, '#00ff00', self.game.s.screen_width / 2, self.game.s.screen_heigth / 4)
             
-            self.draw_text("2026 PAULO FLEURY V.0.1.0-BETA", self.game.font_minecraft, 'white', self.game.s.screen_width / 2, self.game.s.screen_heigth / 2 - 80)
-            self.game.screen.blit(self.copyright_image, (self.game.s.screen_width / 3 - 30, self.game.s.screen_heigth / 2 - 95)) 
+            self.draw_text("2026 PAULO FLEURY", self.game.font_minecraft, 'white', self.game.s.screen_width / 6, self.game.s.screen_heigth - 80)
+            self.draw_text("V.0.2.0-BETA", self.game.font_minecraft, 'white', 130, self.game.s.screen_heigth - 50)
+            self.game.screen.blit(self.copyright_image, (60, self.game.s.screen_heigth - 90)) 
 
-            self.game.screen.blit(self.esc_key, (140, 490))  
-            self.game.screen.blit(self.exit_image, (220, 500)) 
-            self.game.screen.blit(self.pause_image, (290, 500)) 
-            
-            self.game.screen.blit( self.ctrl_key, (140, 560)) 
-            self.game.screen.blit(self.left_arrow, (200, 560)) 
-            self.game.screen.blit(self.right_arrow, (260, 560))
-            self.game.screen.blit(self.player_image, (340, 570))
-
-            
-           
+            self.game.screen.blit(self.keys_image, (140, 490)) 
             
             if self.blink_time > 1:
                 self.draw_text("Press [ENTER] to play",  self.game.font_pixeled15, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth - 50)
 
-            if self.game.pause_time(50, True): #50
+            if self.game.pause_time(50, True): 
                 self.title_active = False
 
         else:
@@ -106,6 +92,8 @@ class Menu():
         self.game.extra.empty()
         self.game.extra_sprite.execute = False
         self.game.extra_alien_sound.stop()
+        pygame.mixer.init()
+        self.game.player_sprite.play_thruster_sound = False
         self.game.s.menu_stars = False
         self.game.s.moving_stars = True
         self.run_display = False
@@ -166,9 +154,10 @@ class GameOver (Menu):
             self.run_display = False
             if self.game.s.score > 0:
                 self.game.verify_score()  
-            else:  
+            else:
+                self.game.reset_game()  
                 self.game.curr_menu = self.game.main_menu
-                self.game.reset_game()
+                
             
 
     def display_menu(self):
@@ -230,7 +219,7 @@ class Hiscore (Menu):
                 if event.key == pygame.K_LCTRL or event.key == pygame.K_RCTRL:
                     # If the player's name is 3 letters or fewer and the index is not 'del', 
                     # save it to the list.
-                    if len(self.player_name) < 3 and self.i not in {26, 27}:    # i=24 is 'DEL'.
+                    if len(self.player_name) < 3 and self.i not in {26, 27}:    # i=26 is 'DEL'.
                         self.player_name.append(self.alphabet[self.i])     # save on player name list.
                         self.space += 80 # add a horizontal space after selecting the letter.
                         self.i = 0   # the alphabet list index jumps to the first letter.
@@ -257,15 +246,15 @@ class Hiscore (Menu):
         # If the first letter is chosen, display it on the screen.
         if len(self.player_name) > 0:
             first_letter = self.game.font_y22472.render(self.player_name[0], True, self.score_color)
-            self.game.screen.blit(first_letter, (500, self.game.s.screen_heigth / 3))
+            self.game.screen.blit(first_letter, (500, self.game.s.screen_heigth / 2 - self.hiscore_keys_image.get_height()))
         # If the second letter is chosen, display it on the screen.
         if len(self.player_name) > 1:
             second_letter = self.game.font_y22472.render(self.player_name[1], True, self.score_color)
-            self.game.screen.blit(second_letter, (580, self.game.s.screen_heigth / 3))
+            self.game.screen.blit(second_letter, (580, self.game.s.screen_heigth / 2 - self.hiscore_keys_image.get_height()))
         # If the third letter is chosen, display it on the screen.
         if len(self.player_name) > 2:
             last_letter = self.game.font_y22472.render(self.player_name[2], True, self.score_color)
-            self.game.screen.blit(last_letter, (660, self.game.s.screen_heigth / 3))
+            self.game.screen.blit(last_letter, (660, self.game.s.screen_heigth / 2 - self.hiscore_keys_image.get_height()))
         # if three letters are choosen shrink the alphabet list to two options, 'end' or 'del'.
             self.alphabet = ['<', '+']
         else:
@@ -274,12 +263,10 @@ class Hiscore (Menu):
 
         # displays the letter on the screen for the player to choose using the arrow keys.
         choose_letters = self.game.font_y22472.render(self.alphabet[self.i], True, self.score_color)
-        self.game.screen.blit(choose_letters, (500 + self.space, self.game.s.screen_heigth / 3))
-        traces = self.game.font_y22472.render("___", True, self.score_color)  
-        self.game.screen.blit(traces, (500, self.game.s.screen_heigth / 3 + 15))
-        self.game.screen.blit(self.left_arrow, (520, self.game.s.screen_heigth / 3 + 120)) 
-        self.game.screen.blit(self.right_arrow, (590, self.game.s.screen_heigth / 3 + 120)) 
-        self.game.screen.blit( self.ctrl_key, (660, self.game.s.screen_heigth / 3 + 120)) 
+        self.game.screen.blit(choose_letters, (500 + self.space, self.game.s.screen_heigth / 2 - self.hiscore_keys_image.get_height()))
+        
+        #self.game.screen.blit(traces, (500, self.game.s.screen_heigth / 3 + 15))
+        self.game.screen.blit(self.hiscore_keys_image, (500, self.game.s.screen_heigth / 2))
         # display timer for enter name
         if self.exit_hiscore_time <= 0:
             self.draw_text(f"0", self.game.font_pixeled80, "#c4c4c4" , 920, 350)
@@ -291,13 +278,13 @@ class Hiscore (Menu):
         self.game.s.name = "".join(self.player_name).ljust(3, ".")
         self.game.save_hiscore()
         pygame.mixer.stop()
+        self.game.reset_game()
         self.run_display = False
         self.game.curr_menu = self.game.main_menu
-        self.game.reset_game()  
+          
 
 
     def display_menu(self):
-        #pygame.time.set_timer(self.HISCORE, 1000)
         self.run_display = True
         pygame.time.set_timer(self.HISCORE, 1000)
         while self.run_display:                         
@@ -315,7 +302,8 @@ class BeatGame (Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
 
-        self.unlock_input = False
+        pygame.mixer.music.load(self.game.resource_path('assets/audio/end_game.mp3'))
+        self.MUSIC_FINISHED = pygame.USEREVENT + 3
         self.bonus = 0
 
     def end_game_bonus (self):
@@ -339,28 +327,34 @@ class BeatGame (Menu):
         self.draw_text("you can now return to Earth", self.game.font_y22424, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth / 3 + 300)
         if self.game.pause_time(50, True):
             self.game.s.activate_bonus = True
-            self.unlock_input = True
+            self.game.s.unlock_input = True
             
-            
+    def exit_congrats (self):
+        pygame.mixer.music.stop()
+        self.run_display = False
+        self.game.verify_score()          
 
+    
     def check_input(self):
         """Check player input events"""
-        if self.unlock_input:
+        if self.game.s.unlock_input:
             if self.blink_time > 1:
                 self.draw_text("Press [ENTER] to continue",  self.game.font_pixeled15, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth - 50)
             for event in pygame.event.get():
+                if event.type == self.MUSIC_FINISHED:
+                    self.exit_congrats()
+                
                 if event.type == pygame.QUIT:
                     sys.exit()              
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
-                        pygame.mixer.stop()
-                        self.run_display = False
-                        self.game.verify_score()  
-
-
+                        self.exit_congrats()
+                        
+        
     def display_menu(self):
-        self.game.beat_game_sound.play()
+        pygame.mixer.music.set_endevent(self.MUSIC_FINISHED)
+        pygame.mixer_music.play()
         self.run_display = True
         self.game.s.ship_last_thrust = True
         while self.run_display:

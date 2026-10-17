@@ -24,7 +24,8 @@ class Settings:
         self.hiscore_file = "hiscore.pkl"
         # standard hiscore
         self.current_hiscore = {1: ['PNF', 150000], 2: ['AFF', 120000], 3: ['ANF', 80000], 4: ['PHF', 50000], 5: ['LMP', 30000], 
-                                6: ['ALE', 20000], 7: ['OZY', 15000], 8: ['AMP', 10000], 9: ['LRP', 8000], 10: ['RBH', 5000]}
+                                6: ['ALE', 20000], 7: ['OZY', 15000], 8: ['AMP', 10000], 9: ['LRP', 5000], 10: ['RBH', 1000]}
+        
         self.new_hiscore = {}
         # standard hiscore name if none
         self.name = 'INV'
@@ -62,15 +63,13 @@ class Settings:
         self.alien_laser_y = 15
         self.alien_direction = 1
         self.alien_distance = 16 # distance that a line of aliens descends 
-        #self.alien_time_between_bullets = 900
+        self.alien_time_between_bullets = 900
         self.alien_rows = 5 #5
         self.alien_cols = 11 #11
         self.alien_x_distance = 70 #60
         self.alien_y_distance = 48 
         self.aliens_x_offset = 70 
         self.aliens_y_offset = 100
-    
-   
    
         # Extra alien settings
         self.EXTRALASER = pygame.USEREVENT + 1
@@ -133,11 +132,13 @@ class Settings:
         # create a list for explosions time
         self.active_explosions = []   
         # Flags for the new_life function on the main program
-        #self.executed = False
         self.executed_2 = False
         self.executed_3 = False
         self.executed_4 = False
         self.activate_bonus = False
         self.executed_bonus = False
-        self.ship_thruster_sound_played = False
-   
+        # flag for unlock the player input to continue after show the game final screen        
+        self.unlock_input = False
+        self.double_shoot_warning = True
+        self.played_once = False
+        
