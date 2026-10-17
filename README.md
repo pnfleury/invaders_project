@@ -1,7 +1,7 @@
 # <img src="screenshots/extra.png" alt="Logo" width="60" height=""> INVADERS
 ## Um jogo no estilo do antigo arcade "space invaders".
 
-### Status: 🧪 versão atual - [v0.1.0-beta](https://github.com/pnfleury/invaders_project/releases/tag/v0.1.0-beta)
+### Status: 🧪 versão atual - [v0.2.0-beta](https://github.com/pnfleury/invaders_project/releases/tag/v0.2.0-beta)
 
 ### Objetivo
 - Este é meu primeiro jogo e meu objetivo é fazer um jogo completo com estagios, pontuação, vidas, tela inicial, salvar as iniciais, menu de pausa, tela final do jogo, efeitos sonoros, musica e tudo mais que um jogo precisa.
@@ -11,7 +11,7 @@
 ### Status do projeto
 - Em desenvolvimento.  
 No momento esta em fase beta, mas esta jogável com todos os estagios e funcionalidades.
-- Ultima atualização em 02/10/2026.
+- Ultima atualização em 17/10/2026.
 
 ### Gameplay
 - O objetivo do jogo é destruir todos os alienigenas invasores e expulsa-los de vez do nosso sistema solar. Começando pela Terra e depois Lua, Marte, Jupiter, Saturno, Urano, Netuno. Cada planeta e satelite natural possui tres estagios, totalizando vinte e um estagios.
