@@ -80,6 +80,8 @@ class Settings:
         self.extra_list_points = [100, 200, 500, 800, 1000]
         self.extra_point = 0
 
+        self.BOSSLASER = pygame.USEREVENT + 4
+
         
         self.initialize_dynamic_settings()
 
@@ -119,11 +121,20 @@ class Settings:
         self.activate_extra_shot = False
         self.extra_bullets_allowed = 1
         self.extra_laser_speed = 4
+        
         # boss settings
-        #self.boss_executed = False
-        #self.boss_bullets_allowed = 2
-        #self.hits = 0
-        #self.total_hits = 10
+        pygame.time.set_timer(self.BOSSLASER, 400)
+        self.boss_speed = 5
+        self.boss_direction = 1
+        self.boss_bullets_speed = 10
+        self.boss_bullets_allowed = 1
+        self.boss_hits = 0
+        self.boss_total_hits = 15
+        self.start_boss_update = False
+        self.executed_boss_animation = False
+        self.boss_executed = False
+       
+        
         
         # flag for moving start or not
         self.moving_stars = False
@@ -140,5 +151,9 @@ class Settings:
         # flag for unlock the player input to continue after show the game final screen        
         self.unlock_input = False
         self.double_shoot_warning = True
+        self.boss_warning = True
         self.played_once = False
+        self.wait = 0
+        self.wait_2 = 0
+       
         

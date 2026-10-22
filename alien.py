@@ -103,31 +103,50 @@ class Boss(Sprite):
         super().__init__()
         self.game = game
         self.sprites = []
-        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/boss_earth.png')).convert_alpha())
-        #self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/extra1.png')).convert_alpha())
-        #self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/extra2.png')).convert_alpha())
-        #self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/extra3.png')).convert_alpha())
-        #self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/extra4.png')).convert_alpha())
-        #self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/extra5.png')).convert_alpha())
+        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/boss_earth/sprite_0.png')).convert_alpha())
+        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/boss_earth/sprite_1.png')).convert_alpha())
+        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/boss_earth/sprite_2.png')).convert_alpha())
+        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/boss_earth/sprite_3.png')).convert_alpha())
+        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/boss_earth/sprite_4.png')).convert_alpha())
+        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/boss_earth/sprite_5.png')).convert_alpha())
 
+    
         self.current_sprite = 0
         self.image = self.sprites[self.current_sprite]
+              
         self.x_pos = self.image.get_width()
         self.y_pos = self.image.get_height()   
         
-        self.rect = self.image.get_rect(topleft = (0, 100))
-        self.speed = 3
-        self.direction = 1
-        self.execute = True
-                    
+        self.rect = self.image.get_rect(center = (self.game.s.screen_width / 2, -100))
+        self.game.s.boss_speed = 5
+        self.game.s.boss_direction = 1
+        #self.execute = False
+        
+    def initial_animation(self):
+        if not self.game.s.executed_boss_animation:
+            self.rect.y += 3
+            if self.rect.y >= 100:
+                self.game.s.executed_boss_animation = True
+                pygame.mixer_music.load(self.game.resource_path('assets/audio/battle_boss.mp3'))
+                pygame.mixer_music.play()
+                self.game.s.start_boss_update = True
+
+    
     def move_down(self):
         self.rect.y += 20
-        self.direction *= -1
-        self.speed += 0.5
+        self.game.s.boss_direction *= -1
+        self.game.s.boss_speed += 0.6
     
     def update(self):
-        if self.execute: 
-            self.rect.x += self.speed * self.direction
+        self.initial_animation()
+        if self.game.s.start_boss_update: 
+            
+            self.current_sprite += 0.2
+            if self.current_sprite >= len (self.sprites):
+                    self.current_sprite = 0
+                                                            
+            self.image = self.sprites[int(self.current_sprite)]
+            self.rect.x += self.game.s.boss_speed * self.game.s.boss_direction
             if self.rect.x > self.game.s.screen_width - self.x_pos or self.rect.x < 0:
                 self.move_down()
             

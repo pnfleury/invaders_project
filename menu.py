@@ -302,7 +302,7 @@ class BeatGame (Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
 
-        pygame.mixer.music.load(self.game.resource_path('assets/audio/end_game.mp3'))
+        
         self.MUSIC_FINISHED = pygame.USEREVENT + 3
         self.bonus = 0
 
@@ -353,6 +353,7 @@ class BeatGame (Menu):
                         
         
     def display_menu(self):
+        pygame.mixer.music.load(self.game.resource_path('assets/audio/end_game.mp3'))
         pygame.mixer.music.set_endevent(self.MUSIC_FINISHED)
         pygame.mixer_music.play()
         self.run_display = True

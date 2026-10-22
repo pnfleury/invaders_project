@@ -1,4 +1,4 @@
-import pygame,sys, os, pickle
+import pygame,sys, os, pickle, asyncio
 from random import choice, randint
 from player import Player
 from crt import CRT
@@ -18,8 +18,9 @@ class Game:
         self.clock = pygame.time.Clock()
         
         # initialize screen
-        self.screen =  pygame.display.set_mode((self.s.screen_width, self.s.screen_heigth), self.s.flags)
+        self.screen =  pygame.display.set_mode((self.s.screen_width, self.s.screen_heigth))
         self.screen_rect = self.screen.get_rect()
+
 
         # Lifes indicator on top right screen
         self.life_surf_original = pygame.image.load(self.resource_path('assets/graphics/player.png')).convert_alpha()
@@ -30,10 +31,18 @@ class Game:
         # Load explosions images
         self.explosion_alien = pygame.image.load(self.resource_path('assets/graphics/alien_explosion.png')).convert_alpha() 
         self.explosion_extra = pygame.image.load(self.resource_path('assets/graphics/extra_explosion.png')).convert_alpha()
+        self.explosion_boss = pygame.image.load(self.resource_path('assets/graphics/boss_explosion/sprite_0.png')).convert_alpha()
         self.laser_hit = pygame.image.load(self.resource_path('assets/graphics/laser_hit.png')).convert_alpha()
         self.explosion_player = pygame.image.load(self.resource_path('assets/graphics/player_explosion.png')).convert_alpha()
         self.block_hit = pygame.image.load(self.resource_path('assets/graphics/block_hit.png')).convert_alpha()
         self.laser_miss = pygame.image.load(self.resource_path('assets/graphics/laser_miss.png')).convert_alpha()
+        self.boss_loss_sprites =[]
+        self.boss_loss_sprites.append (pygame.image.load(self.resource_path('assets/graphics/boss_explosion/sprite_0.png')).convert_alpha())
+        self.boss_loss_sprites.append (pygame.image.load(self.resource_path('assets/graphics/boss_explosion/sprite_1.png')).convert_alpha())
+        self.boss_loss_sprites.append (pygame.image.load(self.resource_path('assets/graphics/boss_explosion/sprite_2.png')).convert_alpha())
+        self.boss_loss_sprites.append (pygame.image.load(self.resource_path('assets/graphics/boss_explosion/sprite_3.png')).convert_alpha())
+        self.current_boss_loss_sprite = 0
+
 
         # Load pause image
         self.pause_keys = pygame.image.load(self.resource_path('assets/graphics/pause_keys.png')).convert_alpha()
@@ -66,8 +75,13 @@ class Game:
         self.game_over_sound = pygame.mixer.Sound(self.resource_path('assets/audio/game_over.mp3'))
         self.first_place_sound = pygame.mixer.Sound(self.resource_path('assets/audio/first_place.mp3'))
         self.warning_sound = pygame.mixer.Sound(self.resource_path('assets/audio/warning.mp3'))
+        self.danger_sound = pygame.mixer.Sound(self.resource_path('assets/audio/danger.wav'))
+        self.boss_loss_sound = pygame.mixer.Sound(self.resource_path('assets/audio/boss_loss.wav'))
+        
 
         # Set volume
+        self.boss_loss_sound.set_volume(0.8)
+        self.danger_sound.set_volume(0.8)
         self.warning_sound.set_volume(0.8)
         self.game_over_sound.set_volume(0.4)
         self.bonus_sound.set_volume(0.3)
@@ -269,12 +283,12 @@ class Game:
     
     def boss_shoot(self):
         """ Create the aliens shoot"""
-        if self.boss_sprite.execute:
-            if self.boss:
-                current_sprite = self.boss.sprites()[0]
-                if len (self.boss_lasers) < 1:
-                    boss_laser_sprite = BossLaser (current_sprite.rect.midbottom, self)
-                    self.boss_lasers.add(boss_laser_sprite)
+        if self.boss:
+            current_sprite = self.boss.sprites()[0]
+            if len (self.boss_lasers) < self.s.boss_bullets_allowed:
+                boss_laser_sprite = BossLaser (current_sprite.rect.midbottom, self)
+                self.boss_lasers.add(boss_laser_sprite)
+                self.extra_laser_sound.play()
                     
 
     def extra_alien_timer (self):
@@ -294,13 +308,20 @@ class Game:
             if exp["time"] <= 0:
                 self.s.active_explosions.remove(exp)
 
-
+    
     def draw_explosion(self):
         """Draws images of the explosions on the screen if there are any in the list"""
         for exp in self.s.active_explosions:
             match exp['hit']:
                 case 'extra_explosion':
                     self.screen.blit(self.explosion_extra,  exp["pos"])
+                case 'boss_hit':
+                    self.screen.blit(self.explosion_extra,  exp["pos"])
+                case 'boss_explosion':
+                    self.current_boss_loss_sprite += 0.2
+                    if self.current_boss_loss_sprite >= len (self.boss_loss_sprites):
+                        break
+                    self.screen.blit(self.boss_loss_sprites[int(self.current_boss_loss_sprite)],  exp["pos"])
                 case 'extra':
                     self.draw_text(f"{exp['points']}",  self.font_pixeled15, 'red', exp['pos'][0] + 25, exp['pos'][1] + 25)
                 case 'laser':
@@ -342,7 +363,10 @@ class Game:
                     self.draw_text(f'DOUBLE SHOOT',  self.font_pixeled15, '#00ff00', exp['pos'][0], exp['pos'][1])
                 case 'new_life':
                     self.draw_text(f'NEW LIFE',  self.font_pixeled15, '#fff01f', exp['pos'][0], exp['pos'][1])
-
+                case 'warning':
+                    self.blink_text()
+                    if self.blink_time > 1:
+                        self.draw_text(f'WARNING',  self.font_pixeled15, 'red', exp['pos'][0], exp['pos'][1]) 
 
     
     def player_laser_collision (self):
@@ -373,12 +397,22 @@ class Game:
             # Boss alien 
             boss_hit = pygame.sprite.spritecollideany(laser, self.boss)
             if boss_hit:
-                self.s.hits += 1
-                if self.s.hits == self.s.total_hits:
+                self.s.active_explosions.append({"pos" : (laser.rect.x, laser.rect.y), "time" : 100, "hit" : "boss_hit"})
+                self.s.boss_hits += 1
+                if self.s.boss_hits == self.s.boss_total_hits:
+                    pygame.mixer.music.stop()
+                    self.boss_loss_sound.play()
                     self.boss.empty()
-                    self.s.hits = 0
+                    self.s.active_explosions.append({"pos" : (self.boss_sprite.rect.x, self.boss_sprite.rect.y), "time" : 600, "hit" : "boss_explosion"})
+                    self.s.boss_hits = 0
                 laser.kill()
                 self.explosion_sound.play()
+            # Boss laser
+            boss_laser_hit = pygame.sprite.spritecollide(laser, self.boss_lasers, False)
+            if boss_laser_hit:
+                self.s.active_explosions.append({"pos" : (laser.rect.x, laser.rect.y), "time" : 100, "hit" : "laser"})
+                self.shot_collision.play()
+                laser.kill()
             # Alien laser 
             laser_hit = pygame.sprite.spritecollide(laser, self.alien_lasers, True)
             if laser_hit:
@@ -414,22 +448,41 @@ class Game:
                 self.player_explosion_sound.play()
                 self.s.lives -= 1
                 self.extra_lasers.empty()
-                self.s.active_explosions.append({"pos" : (self.player_sprite.rect.x, self.player_sprite.rect.y), "time" : 500, "hit" : "player"})                                                     
+                self.s.active_explosions.append({"pos" : (self.player_sprite.rect.x, self.player_sprite.rect.y), "time" : 500, "hit" : "player"})                                          
             # Blocks 
             if pygame.sprite.spritecollide (laser, self.blocks, True):
                 self.s.active_explosions.append({"pos" : (laser.rect.x, laser.rect.y), "time" : 500, "hit" : "block"})
                 self.obstacle_explosion.play()
                 laser.kill()
-
+    
+    def boss_laser_collision (self):
+        # Player 
+        if pygame.sprite.groupcollide(self.boss_lasers, self.player, True, True):
+            self.player_explosion_sound.play()
+            self.s.lives -= 1
+            self.s.active_explosions.append({"pos" : (self.player_sprite.rect.x, self.player_sprite.rect.y), "time" : 500, "hit" : "player"})                                                     
+        # Blocks 
+        for laser in self.boss_lasers:
+            if pygame.sprite.spritecollide (laser, self.blocks, True):
+                self.s.active_explosions.append({"pos" : (laser.rect.x, laser.rect.y), "time" : 500, "hit" : "block"})
+                self.obstacle_explosion.play()
+                laser.kill()
+            
     def alien_collision (self):
-        for block in self.blocks:
-            # Blocks
-            block_hit = pygame.sprite.spritecollide(block, self.aliens, False)
-            if block_hit:
-                self.s.active_explosions.append({"pos" : (block.rect.x, block.rect.y), "time" : 500, "hit" : "block"})
-                block.kill()
+        # Blocks
+        if pygame.sprite.groupcollide(self.blocks, self.aliens, True, False):
+            self.obstacle_explosion.play()
         # Player
         if pygame.sprite.groupcollide(self.player, self.aliens, True, True):
+            self.player_explosion_sound.play()
+            self.s.active_explosions.append({"pos" : (self.player_sprite.rect.x, self.player_sprite.rect.y), "time" : 800, "hit" : "fleet_bottom"})
+
+    def boss_collision (self):
+        # Blocks
+        if pygame.sprite.groupcollide(self.blocks, self.boss, True, False):
+            self.obstacle_explosion.play()
+        # Player
+        if pygame.sprite.groupcollide(self.player, self.boss, True, True):
             self.player_explosion_sound.play()
             self.s.active_explosions.append({"pos" : (self.player_sprite.rect.x, self.player_sprite.rect.y), "time" : 800, "hit" : "fleet_bottom"})
                             
@@ -445,12 +498,19 @@ class Game:
         # extra alien lasers 
         if self.extra_lasers:
             self.extra_laser_collision()
+        # boss lasers
+        if self.boss_lasers:
+            self.boss_laser_collision()
         # alien collisions
         if self.aliens:
             self.alien_collision()
+        # boss collisions
+        if self.boss:
+            self.boss_collision()
 
     def zero_lives_check(self):
         if self.s.lives < 0:
+            pygame.mixer.music.stop()
             pygame.mixer.stop()
             self.player_explosion_sound.play()
             self.playing = False
@@ -486,17 +546,17 @@ class Game:
             case s if s >= 50000 and not self.s.executed_2:
                 self.s.lives += 1
                 self.new_life_sound.play()
-                self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, 50), "time" : 1500, "hit" : 'new_life'})
+                self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, 50), "time" : 2000, "hit" : 'new_life'})
                 self.s.executed_2 = True
             case s if s >= 100000 and not self.s.executed_3:
                 self.s.lives += 1
                 self.new_life_sound.play()
-                self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, 50), "time" : 1500, "hit" : 'new_life'})
+                self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, 50), "time" : 2000, "hit" : 'new_life'})
                 self.s.executed_3 = True
             case s if s >= 150000 and not self.s.executed_4:
                 self.s.lives += 1
                 self.new_life_sound.play()
-                self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, 50), "time" : 1500, "hit" : 'new_life'})
+                self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, 50), "time" : 2000, "hit" : 'new_life'})
                 self.s.executed_4 = True
 
     def pause_time(self, time, start):
@@ -542,7 +602,6 @@ class Game:
         self.level_up_active = False
         self.aliens.empty()
         self.alien_lasers.empty()
-        self.blocks.empty()
         self.extra_sprite.execute = False
         self.destroy_remaining_extra()
     
@@ -555,31 +614,61 @@ class Game:
                 self.extra.empty()
                 self.extra_alien_sound.stop()
     
+    def boss_fight(self):
+        if not self.s.boss_executed:
+            self.s.start_boss_update = False
+            self.current_boss_loss_sprite = 0
+            if self.s.level >= 4:
+                self.s.boss_speed = 6
+            else: self.s.boss_speed = 5
+            self.s.boss_direction = 1
+            self.boss_sprite.rect = self.boss_sprite.image.get_rect(center = (self.s.screen_width / 2, -100))
+            self.boss.add(self.boss_sprite)
+            self.s.boss_executed = True
+           
     
     def planet_animation(self):
         """ hide and show planets """
+        
         if not self.finish_planet_animation:
             if self.s.level in (3, 6, 9, 12, 15, 18, 21) and not (self.aliens):  
                 self.clean_scenary()
-                # boost to leave the planet
-                self.s.moving_stars = True
-                self.s.ship_thruster_on = True 
-                self.planet.execute_hide_planet = True
-                if self.pause_time(10, True):
-                    # Go to beat game menu if you beat the game.
-                    if self.s.level == 21:
-                        self.ship_thruster_sound.fadeout(2000)
-                        self.finish_planet_animation = True
-                        self.s.moving_stars = False
-                        self.playing = False
-                        self.curr_menu = self.beatgame_menu
-                    else:
-                    # boost to the next planet
-                        self.i += 1
-                        self.planet.image = self.planet.list[self.i] 
-                        self.finish_planet_animation = True
-                        self.planet.execute_show_planet = True
-                        
+                if self.s.boss_warning:
+                    self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, 50), "time" : 3000, "hit" : 'warning'})
+                    self.danger_sound.play() 
+                    self.s.boss_warning = False
+                self.s.wait += 0.05 #if self.pause_time(10, True):
+                if self.s.wait >= 8:
+                # call boss fight function
+                    self.boss_fight()
+                    if len(self.boss) == 0:
+                        self.s.wait_2 += 0.05 #if self.pause_time(10, True):
+                        if self.s.wait_2 > 16:
+                            self.blocks.empty()
+                            # boost to leave the planet
+                            self.s.moving_stars = True
+                            self.s.ship_thruster_on = True 
+                            self.planet.execute_hide_planet = True
+                            if self.pause_time(10, True):
+                                # Go to beat game menu if you beat the game.
+                                if self.s.level == 21:
+                                    self.ship_thruster_sound.fadeout(2000)
+                                    self.finish_planet_animation = True
+                                    self.s.moving_stars = False
+                                    self.playing = False
+                                    self.curr_menu = self.beatgame_menu
+                                else:
+                                # boost to the next planet
+                                    self.i += 1
+                                    self.planet.image = self.planet.list[self.i] 
+                                    self.planet.execute_show_planet = True
+                                    self.finish_planet_animation = True
+                                    self.s.executed_boss_animation = False
+                                    self.s.boss_executed = False
+                                    self.s.boss_warning = True
+                                    self.s.wait = 0
+                                    self.s.wait_2 = 0
+                    
                                                                                         
     def redraw_blocks (self):
         if self.block_rebuild:
@@ -608,6 +697,7 @@ class Game:
         self.extra.empty()
         self.planets.empty()
         self.player.empty()
+        self.boss.empty()
         self.planets.add(self.planet)
         self.player.add(self.player_sprite)
         self.planet.rect = self.planet.image.get_rect(topleft = (0, self.s.screen_heigth))
@@ -670,6 +760,8 @@ class Game:
             case 7 | 8:
                 self.s.alien_bullets_allowed = 3
                 self.s.shoots_allowed = 2
+                self.s.boss_bullets_allowed = 2
+                self.s.boss_total_hits = 20
             case 9:
                 self.s.extra_bullets_allowed = 3
                 self.finish_planet_animation = False
@@ -687,12 +779,14 @@ class Game:
             case 16 | 17:
                 self.s.alien_bullets_allowed = 6
                 self.s.alien_speed = 1.7
+                self.s.boss_total_hits = 25
             case 18:
                 pygame.time.set_timer(self.s.EXTRALASER, 500)
                 self.finish_planet_animation = False
             case 19 | 20:
                 self.s.alien_bullets_allowed = 6
                 self.s.alien_speed = 1.9 
+                self.s.boss_bullets_allowed = 3
             case 21: 
                 self.finish_planet_animation = False
             
@@ -753,6 +847,9 @@ class Game:
             if self.extra:
                 if event.type == self.s.EXTRALASER:
                     self.extra_shoot()
+            if self.boss:
+                if event.type == self.s.BOSSLASER:
+                    self.boss_shoot()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LCTRL or event.key == pygame.K_RCTRL:
                     self.shoot_laser()
@@ -804,10 +901,9 @@ class Game:
                 self.boss.update()
                 self.planets.update()
                 
-                self.planet_animation()
+              
                 self.explosion_time()
                 self.alien_shoot()
-                #self.boss_shoot()
                 self.extra_alien_timer()
                 
                 self.alien_position_checker()
@@ -815,6 +911,7 @@ class Game:
                 self.level_up()
                 self.new_life()
                 self.pause_time(self.time, self.start)
+                self.planet_animation()
                 self.ship_boost_time(self.ship_time, self.start_boost)
                 self.zero_lives_check()
                 self.display_scoreboard()
