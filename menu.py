@@ -10,8 +10,13 @@ class Menu():
         self.earth_view = pygame.image.load(self.game.resource_path('assets/graphics/planets/earth_view.png')).convert_alpha()
         self.keys_image = pygame.image.load(self.game.resource_path('assets/graphics/keys.png')).convert_alpha()
         self.hiscore_keys_image = pygame.image.load(self.game.resource_path('assets/graphics/hiscore_keys.png')).convert_alpha()
-        self.copyright_image = pygame.image.load(self.game.resource_path('assets/graphics/copyright.png')).convert_alpha()    
-       
+        self.copyright_image = pygame.image.load(self.game.resource_path('assets/graphics/copyright.png')).convert_alpha()
+        self.points_image = pygame.image.load(self.game.resource_path('assets/graphics/points.png')).convert_alpha()     
+        self.rect_points = self.points_image.get_rect(midtop = (self.game.s.screen_width / 2, self.game.s.screen_heigth / 2))
+        self.lives_image = pygame.image.load(self.game.resource_path('assets/graphics/life.png')).convert_alpha()
+        self.rect_lives = self.lives_image.get_rect(midtop = (self.game.s.screen_width / 2, self.game.s.screen_heigth / 2))   
+        
+        
         # variable for blinking text used on blink function
         self.blink_time = 0
         #self.hiscore_list = []
@@ -23,6 +28,7 @@ class Menu():
         self.second_color = '#c4c4c4'
         self.third_color = '#FF7A00'
         self.hi_space = 0
+        self.wait = 0
 
       
     def draw_text(self, text, font, text_col, x, y):
@@ -66,8 +72,22 @@ class Menu():
             self.draw_text("INVADERS", self.game.font_pixeled80, "#074B07", self.game.s.screen_width / 2 + 10, self.game.s.screen_heigth / 4 + 10)
             self.draw_text("INVADERS", self.game.font_pixeled80, '#00ff00', self.game.s.screen_width / 2, self.game.s.screen_heigth / 4)
             
+            
+            self.wait += 0.05 
+            match self.wait:
+                case w if w < 16:
+                    self.draw_text("DEVELOPMENT, PROGRAMMING, ART AND AUDIO:", self.game.font_minecraft, '#fff01f', self.game.s.screen_width / 2, self.game.s.screen_heigth / 2 - 80)
+                    self.draw_text("PAULO FLEURY", self.game.font_minecraft, '#fff01f', self.game.s.screen_width / 2, self.game.s.screen_heigth / 2 - 50)
+                case w if w > 16 and w < 32:
+                    self.game.screen.blit(self.points_image, self.rect_points)
+                case w if w > 32:
+                    self.game.screen.blit(self.lives_image, self.rect_lives)
+                    if self.wait > 48: self.wait = 0
+            
+
+            
             self.draw_text("2026 PAULO FLEURY", self.game.font_minecraft, 'white', self.game.s.screen_width / 6, self.game.s.screen_heigth - 80)
-            self.draw_text("V.0.2.0-BETA", self.game.font_minecraft, 'white', 130, self.game.s.screen_heigth - 50)
+            self.draw_text("V.0.3.0-BETA", self.game.font_minecraft, 'white', 130, self.game.s.screen_heigth - 50)
             self.game.screen.blit(self.copyright_image, (60, self.game.s.screen_heigth - 90)) 
 
             self.game.screen.blit(self.keys_image, (140, 490)) 
@@ -75,7 +95,7 @@ class Menu():
             if self.blink_time > 1:
                 self.draw_text("Press [ENTER] to play",  self.game.font_pixeled15, 'white', self.game.s.screen_width /2, self.game.s.screen_heigth - 50)
 
-            if self.game.pause_time(50, True): 
+            if self.game.pause_time(80, True): 
                 self.title_active = False
 
         else:
@@ -85,7 +105,7 @@ class Menu():
             self.show_hiscore_list()
             
             # give a pause before changing to title game screen
-            if self.game.pause_time(35, True):
+            if self.game.pause_time(30, True):
                 self.title_active = True
 
     def start_game (self):
