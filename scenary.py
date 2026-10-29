@@ -106,17 +106,3 @@ class Planet(Sprite):
             self.game.extra.empty()
             self.game.extra_alien_sound.stop()
             self.hide_planet()
-           
-                
-                                                 
-        
-
-
-
-
-
-                
-             
-                
-
-    

@@ -1,4 +1,4 @@
-import pygame,sys, os, pickle, asyncio
+import pygame,sys, os, pickle
 from random import choice, randint
 from player import Player
 from crt import CRT
@@ -9,6 +9,7 @@ from laser import Laser
 from menu import *
 import scenary
 from scenary import Planet
+from spritesheets import SpriteSheet
 
 class Game:
     """ Principal class of Invaders game"""
@@ -28,8 +29,20 @@ class Game:
         self.live_x_start_pos = self.s.screen_width - (self.life_surf.get_size()[0] * 2.3 + 65)
         self.life_x = self.live_x_start_pos + ((self.life_surf.get_size()[0]))  
 
+        # Title points animation spritesheet
+        self.title_points = []
+        self.points_spritesheet = SpriteSheet('assets/graphics/spritesheets/points/points.png', self)
+        for x in range (0, 19):
+            self.title_points.append(self.points_spritesheet.parse_sprite(f'points{x}.png'))
+       
         # Load explosions images
-        self.explosion_alien = pygame.image.load(self.resource_path('assets/graphics/alien_explosion.png')).convert_alpha() 
+        #self.explosion_alien = pygame.image.load(self.resource_path('assets/graphics/alien_explosion.png')).convert_alpha() 
+        self.current_alien_explosion_sprite = 0
+        self.alien_explosion_sheet = SpriteSheet('assets/graphics/spritesheets/alien_explosion/alien_explosion.png', self)
+        self.alien_explosion = [self.alien_explosion_sheet.parse_sprite('alien_explosion0.png'),
+                                self.alien_explosion_sheet.parse_sprite('alien_explosion1.png'),
+                                self.alien_explosion_sheet.parse_sprite('alien_explosion2.png')]
+  
         self.explosion_extra = pygame.image.load(self.resource_path('assets/graphics/extra_explosion.png')).convert_alpha()
         self.explosion_boss = pygame.image.load(self.resource_path('assets/graphics/boss_explosion/sprite_0.png')).convert_alpha()
         self.laser_hit = pygame.image.load(self.resource_path('assets/graphics/laser_hit.png')).convert_alpha()
@@ -85,7 +98,6 @@ class Game:
         self.warning_sound.set_volume(0.8)
         self.game_over_sound.set_volume(0.4)
         self.bonus_sound.set_volume(0.3)
-        #self.beat_game_music.set_volume(0.8)
         self.name_entry_sound.set_volume(0.3)
         self.ship_thruster_sound.set_volume(0.3)
         self.alien_fleet_sound.set_volume(0.8)
@@ -116,6 +128,7 @@ class Game:
         self.extra_sprite = Extra('left', self)
         self.player_sprite = Player(self)
         self.boss_sprite = Boss(self)
+        self.boss_laser_sprite = BossLaser((0,0), self)
        
         # sprite groups
         self.planets = pygame.sprite.Group(self.planet)
@@ -175,11 +188,11 @@ class Game:
         # explosion time function variable
         self.dt = 0   
 
+        self.count_dots = 0
         # Call functions for create stars
         self.create_stars(self.s.x, self.s.y)
 
-     
-        
+       
     """ GAME FUNCTIONS """
 
     def resource_path(self,relative_path):
@@ -320,6 +333,7 @@ class Game:
                 case 'boss_explosion':
                     self.current_boss_loss_sprite += 0.2
                     if self.current_boss_loss_sprite >= len (self.boss_loss_sprites):
+                        self.current_boss_loss_sprite = 0
                         break
                     self.screen.blit(self.boss_loss_sprites[int(self.current_boss_loss_sprite)],  exp["pos"])
                 case 'extra':
@@ -327,7 +341,7 @@ class Game:
                 case 'laser':
                     self.screen.blit(self.laser_hit, exp["pos"])
                 case 'alien':
-                    self.screen.blit(self.explosion_alien, exp["pos"])
+                    self.screen.blit(self.alien_explosion[0],  exp["pos"])                                 
                 case 'player':
                     self.screen.blit(self.explosion_player, exp["pos"])
                     self.lasers.empty()
@@ -377,7 +391,7 @@ class Game:
             # Alien 
             aliens_hit = pygame.sprite.spritecollide(laser, self.aliens, True)
             if aliens_hit:
-                for alien in aliens_hit:  
+                for alien in aliens_hit:
                     self.s.active_explosions.append({"pos" : (alien.rect.x, alien.rect.y), "time" : 100, "hit" : "alien"})                       
                     self.s.score += alien.value 
                 laser.kill()
@@ -462,15 +476,16 @@ class Game:
             self.s.lives -= 1
             self.s.active_explosions.append({"pos" : (self.player_sprite.rect.x, self.player_sprite.rect.y), "time" : 500, "hit" : "player"})                                                     
         # Blocks 
-        for laser in self.boss_lasers:
-            if pygame.sprite.spritecollide (laser, self.blocks, True):
-                self.s.active_explosions.append({"pos" : (laser.rect.x, laser.rect.y), "time" : 500, "hit" : "block"})
-                self.obstacle_explosion.play()
-                laser.kill()
-            
+        block_hit = pygame.sprite.groupcollide (self.boss_lasers, self.blocks, True, True)
+        for block in block_hit:
+            self.s.active_explosions.append({"pos" : (block.rect.x, block.rect.y), "time" : 500, "hit" : "block"})
+            self.obstacle_explosion.play()
+           
     def alien_collision (self):
         # Blocks
-        if pygame.sprite.groupcollide(self.blocks, self.aliens, True, False):
+        block_hit = pygame.sprite.groupcollide(self.blocks, self.aliens, True, False)
+        for block in block_hit:
+            self.s.active_explosions.append({"pos" : (block.rect.x, block.rect.y), "time" : 500, "hit" : "block"})
             self.obstacle_explosion.play()
         # Player
         if pygame.sprite.groupcollide(self.player, self.aliens, True, True):
@@ -479,7 +494,9 @@ class Game:
 
     def boss_collision (self):
         # Blocks
-        if pygame.sprite.groupcollide(self.blocks, self.boss, True, False):
+        block_hit = pygame.sprite.groupcollide(self.blocks, self.boss, True, False)
+        for block in block_hit:
+            self.s.active_explosions.append({"pos" : (block.rect.x, block.rect.y), "time" : 500, "hit" : "block"})
             self.obstacle_explosion.play()
         # Player
         if pygame.sprite.groupcollide(self.player, self.boss, True, True):
@@ -509,6 +526,7 @@ class Game:
             self.boss_collision()
 
     def zero_lives_check(self):
+        """ Check if you lost all lives"""
         if self.s.lives < 0:
             pygame.mixer.music.stop()
             pygame.mixer.stop()
@@ -518,7 +536,7 @@ class Game:
             self.curr_menu = self.game_over_menu        
 
     def display_scoreboard (self):
-        
+        """ Display on the top screen all scoreboard"""
         # display the current score
         self.draw_text(f'SCORE: {self.s.score:06}',  self.font_pixeled15, self.s.text_col, 20, 0, 'topleft')
         # display the hiscore
@@ -629,7 +647,6 @@ class Game:
     
     def planet_animation(self):
         """ hide and show planets """
-        
         if not self.finish_planet_animation:
             if self.s.level in (3, 6, 9, 12, 15, 18, 21) and not (self.aliens):  
                 self.clean_scenary()
@@ -637,12 +654,12 @@ class Game:
                     self.s.active_explosions.append({"pos" : (self.screen_rect.centerx, 50), "time" : 3000, "hit" : 'warning'})
                     self.danger_sound.play() 
                     self.s.boss_warning = False
-                self.s.wait += 0.05 #if self.pause_time(10, True):
+                self.s.wait += 0.05 
                 if self.s.wait >= 8:
                 # call boss fight function
                     self.boss_fight()
                     if len(self.boss) == 0:
-                        self.s.wait_2 += 0.05 #if self.pause_time(10, True):
+                        self.s.wait_2 += 0.05 
                         if self.s.wait_2 > 16:
                             self.blocks.empty()
                             # boost to leave the planet
@@ -729,10 +746,11 @@ class Game:
                 self.screen.blit(img, img_rect)
     
     def restart_speed(self):
-        """ Restart speed of player and alien fleet speed"""
+        """ Restart the alien fleet speed"""
         self.s.alien_speed = 1.3
 
     def describe_planet(self):
+        """ Show the planet name on the middle of screen"""
         match self.i:
             case 0: planet = "earth"   
             case 1: planet = "moon"
@@ -825,7 +843,6 @@ class Game:
             self.reset_game()
             self.curr_menu = self.main_menu
            
-        
 
     def shoot_laser(self):
         """Create player laser sprite and add to the sprite group"""
@@ -857,8 +874,7 @@ class Game:
                     if self.s.game_paused == False: 
                         self.s.game_paused = True
                         pygame.mixer.pause()
-                        
-                                  
+                                                
     
     def check_events_paused(self):
         """ check player input events when paused """
@@ -901,11 +917,9 @@ class Game:
                 self.boss.update()
                 self.planets.update()
                 
-              
                 self.explosion_time()
                 self.alien_shoot()
                 self.extra_alien_timer()
-                
                 self.alien_position_checker()
                 self.collision_checks()
                 self.level_up()
@@ -915,6 +929,8 @@ class Game:
                 self.ship_boost_time(self.ship_time, self.start_boost)
                 self.zero_lives_check()
                 self.display_scoreboard()
+                # animation
+               
                
                 self.stars.draw(self.screen)
                 self.planets.draw(self.screen)
@@ -928,7 +944,8 @@ class Game:
                 self.extra.draw(self.screen)
                 self.boss.draw(self.screen)
                
-                self.draw_explosion()           
+                self.draw_explosion()
+                #self.explosion_animation(self.s.x, self.s.y)           
                 self.redraw_blocks()
                 self.crt.draw()
                 pygame.display.flip()

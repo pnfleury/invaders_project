@@ -25,7 +25,6 @@ class Settings:
         # standard hiscore
         self.current_hiscore = {1: ['PNF', 150000], 2: ['AFF', 120000], 3: ['ANF', 80000], 4: ['PHF', 50000], 5: ['LMP', 30000], 
                                 6: ['ALE', 20000], 7: ['OZY', 15000], 8: ['AMP', 10000], 9: ['LRP', 5000], 10: ['RBH', 1000]}
-        
         self.new_hiscore = {}
         # standard hiscore name if none
         self.name = 'INV'
@@ -36,6 +35,14 @@ class Settings:
         self.x = self.y = 0
         self.num_stars = 200 # numbers of stars on screen
 
+        # animation settings
+        self.last_update = pygame.time.get_ticks()
+        self.animation_cooldown = 20
+        self.frame = 0
+        self.x = 0
+        self.y = 0
+
+        
         # turn on/off ship thruster
         self.ship_thruster_on = False
         self.ship_thruster_off = False

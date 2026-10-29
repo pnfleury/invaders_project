@@ -1,0 +1,5 @@
+{"frames":
+{"alien_explosion0.png":{"frame":{"x":0,"y":0,"w":40,"h":32},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":40,"h":32},"sourceSize":{"w":40,"h":32}},
+"alien_explosion1.png":{"frame":{"x":40,"y":0,"w":40,"h":32},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":40,"h":32},"sourceSize":{"w":40,"h":32}},
+"alien_explosion2.png":{"frame":{"x":0,"y":32,"w":40,"h":32},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":40,"h":32},"sourceSize":{"w":40,"h":32}}}
+,"meta":{"app":"https://github.com/piskelapp/piskel/","version":"1.0","image":"alien_explosion.png","format":"RGBA8888","size":{"w":80,"h":64}}}
