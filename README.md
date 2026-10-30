@@ -1,7 +1,7 @@
 # <img src="screenshots/extra.png" alt="Logo" width="60" height=""> INVADERS
 ## Um jogo no estilo do antigo arcade "space invaders".
 
-### Status: 🧪 versão atual - [v0.2.0-beta](https://github.com/pnfleury/invaders_project/releases/tag/v0.2.0-beta)
+### Status: 🧪 versão atual - [v0.3.0-beta](https://github.com/pnfleury/invaders_project/releases/tag/v0.2.0-beta)
 
 ### Objetivo
 - Este é meu primeiro jogo e meu objetivo é fazer um jogo completo com estagios, pontuação, vidas, tela inicial, salvar as iniciais, menu de pausa, tela final do jogo, efeitos sonoros, musica e tudo mais que um jogo precisa.
@@ -11,11 +11,11 @@
 ### Status do projeto
 - Em desenvolvimento.  
 No momento esta em fase beta, mas esta jogável com todos os estagios e funcionalidades.
-- Ultima atualização em 17/10/2026.
+- Ultima atualização em 29/10/2026.
 
 ### Gameplay
-- O objetivo do jogo é destruir todos os alienigenas invasores e expulsa-los de vez do nosso sistema solar. Começando pela Terra e depois Lua, Marte, Jupiter, Saturno, Urano, Netuno. Cada planeta e satelite natural possui tres estagios, totalizando vinte e um estagios.
-- O jogo acaba quando você perder suas 3 vidas ou quando a frota alienigena alcançar a parte inferior da tela.
+- O objetivo do jogo é destruir todos os alienigenas invasores e expulsa-los de vez do nosso sistema solar. Começando pela Terra e depois Lua, Marte, Jupiter, Saturno, Urano, Netuno. Cada planeta e satelite natural possui tres estagios, totalizando vinte e um estagios, além de enfrentar o chefão antes de partir para outro planeta. 
+- O jogo acaba quando você perder suas 3 vidas ou quando a frota alienigena ou o chefão alcançar a parte inferior da tela.
 - Você ganha novas vidas extras conforme sua pontuação aumenta.
 - Controle do jogo:   
 SETAS para controlar sua nave.  
@@ -33,8 +33,7 @@ ENTER para iniciar o jogo.
 A maioria das funcionalidades, como graficos, menus, estagios, progressão de dificuldade, efeitos sonoros (emprestados), salvamento da pontuação e outros.
 - Em andamento:  
 No momento estou aprimorando a jogabilidade adicionando outras implementações que um jogo deste tipo normalmente não possui, para deixa-lo mais interessante.  
-- Futuro:  
-Aprimorar o menu principal  
+- Futuro:   
 Aprimorar a jogabilidade  
 Inserir musica durante o jogo e refazer todos os efeitos sonoros.
 
