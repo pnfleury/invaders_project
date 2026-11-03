@@ -929,9 +929,7 @@ class Game:
                 self.ship_boost_time(self.ship_time, self.start_boost)
                 self.zero_lives_check()
                 self.display_scoreboard()
-                # animation
-               
-               
+        
                 self.stars.draw(self.screen)
                 self.planets.draw(self.screen)
                 self.player.draw (self.screen)
@@ -943,9 +941,7 @@ class Game:
                 self.blocks.draw(self.screen)
                 self.extra.draw(self.screen)
                 self.boss.draw(self.screen)
-               
                 self.draw_explosion()
-                #self.explosion_animation(self.s.x, self.s.y)           
                 self.redraw_blocks()
                 self.crt.draw()
                 pygame.display.flip()

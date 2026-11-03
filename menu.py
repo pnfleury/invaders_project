@@ -7,6 +7,8 @@ class Menu():
     def __init__(self, game):
         
         self.game = game
+        self.title = pygame.image.load(self.game.resource_path('assets/graphics/title_name.png')).convert_alpha()
+        self.title_rect = self.title.get_rect(midtop = (self.game.s.screen_width / 2, self.game.s.screen_heigth / 6))
         self.earth_view = pygame.image.load(self.game.resource_path('assets/graphics/planets/earth_view.png')).convert_alpha()
         self.keys_image = pygame.image.load(self.game.resource_path('assets/graphics/keys.png')).convert_alpha()
         self.hiscore_keys_image = pygame.image.load(self.game.resource_path('assets/graphics/hiscore_keys.png')).convert_alpha()
@@ -68,10 +70,8 @@ class Menu():
            
             self.game.screen.blit(self.earth_view,(0, 500))
             self.blink_text()
-                            
-            self.draw_text (f'HI-SCORE: {self.game.s.hi_score:06}',  self.game.font_pixeled15, 'white', self.game.s.screen_width / 2, 20)
-            self.draw_text("INVADERS", self.game.font_pixeled80, "#074B07", self.game.s.screen_width / 2 + 10, self.game.s.screen_heigth / 4 + 10)
-            self.draw_text("INVADERS", self.game.font_pixeled80, '#00ff00', self.game.s.screen_width / 2, self.game.s.screen_heigth / 4)
+
+            self.game.screen.blit(self.title, self.title_rect)                
             
             self.wait += 0.05 
             match self.wait:     

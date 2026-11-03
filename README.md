@@ -1,4 +1,4 @@
-# <img src="screenshots/extra.png" alt="Logo" width="60" height=""> INVADERS
+# <img src="screenshots/extra.png" alt="Logo" width="60" height=""> ATTACK ON SOLAR SYSTEM
 ## Um jogo no estilo do antigo arcade "space invaders".
 
 ### Status: 🧪 versão atual - [v0.3.0-beta](https://github.com/pnfleury/invaders_project/releases/tag/v0.3.0-beta)
@@ -22,7 +22,7 @@ SETAS para controlar sua nave.
 CTRL (esquerdo ou direito) para atirar.  
 ESC para dar pausa e sair do jogo.  
 ENTER para iniciar o jogo.
-
+v
 ### Config
 - Este jogo funciona na resolução de 1200 x 800 em tela cheia somente.
 - Controle só com teclado.
