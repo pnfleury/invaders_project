@@ -73,8 +73,8 @@ class Settings:
         self.alien_direction = 1
         self.alien_distance = 7 # distance that a line of aliens descends 
         self.alien_time_between_bullets = 900
-        self.alien_rows = 2 #5
-        self.alien_cols = 2 #11
+        self.alien_rows = 5 #5
+        self.alien_cols = 11 #11
         self.alien_x_distance = 42  
         self.alien_y_distance = 29
         self.aliens_x_offset = 42  
