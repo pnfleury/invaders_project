@@ -10,6 +10,7 @@ env/
 ENV/
 
 # Distribuição e empacotamento
+build/
 dist/
 *.spec
 *.egg-info/
