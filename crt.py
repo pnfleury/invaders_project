@@ -14,9 +14,9 @@ class CRT():
         line_amount = int(self.game.s.screen_heigth / line_height)
         for line in range (line_amount):
             y_pos = line * line_height
-            pygame.draw.line(self.tv, 'black', (0, y_pos), (self.game.s.screen_width, y_pos), 1)
+            pygame.draw.line(self.tv, 'black', (0, y_pos), (self.game.s.screen_width, y_pos))
     
     def draw (self):
-        self.tv.set_alpha(randint(75,95)) 
+        self.tv.set_alpha(randint(75,90)) 
         self.create_crt_lines()
         self.game.screen.blit(self.tv,(0,0))

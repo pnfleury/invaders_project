@@ -53,3 +53,7 @@ dmypy.json
 # Sistema operacional
 .DS_Store
 Thumbs.db
+
+# pygbag
+*-pygbag.???
+

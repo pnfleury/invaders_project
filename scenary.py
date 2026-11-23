@@ -1,6 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
-from random import randint
+#from random import randint
+import random
 
 class Block(Sprite):
     """ Shields player class """
@@ -31,25 +32,27 @@ class Stars(Sprite):
         super().__init__()
         self.game = game
         
-        self.radius = randint(1, 3)
-        self.diameter = self.radius * 2
+        self.radius = round(random.uniform(0.1, 1.6))
+        self.diameter = self.radius * 3
         
         self.image = pygame.Surface((self.diameter, self.diameter), pygame.SRCALPHA)
         pygame.draw.circle(self.image, color, (self.radius, self.radius), self.radius)
         
         self.rect = self.image.get_rect(center = (x,y))
         self.speed = 1
-
+        self.y = float(self.rect.y)
         
     def update(self):
         
         if self.game.s.moving_stars:
-            self.speed =  6
-        else: self.speed =  1 
+            self.speed =  3.6
+        else: self.speed =  0.6
 
-        self.rect.y +=  self.speed
+        self.y += self.speed
+        self.rect.y = self.y
+        
         if self.rect.y > self.game.s.screen_heigth:
-            self.rect.y = 0
+            self.y = 0
 
 
 class Planet(Sprite):
@@ -67,7 +70,7 @@ class Planet(Sprite):
         self.current_planet = 0
         self.image = self.list[self.current_planet]
         self.image_height = self.image.get_height()
-        self.rect = self.image.get_rect(topleft = (0, 800))
+        self.rect = self.image.get_rect(topleft = (0, 480))
 
         self.execute_show_planet = True
         self.execute_hide_planet = False
@@ -75,9 +78,11 @@ class Planet(Sprite):
 
     def show_planet(self):
             self.rect.y -= 2
-            if self.image == self.list[5]: 
+            if self.image == self.list[4]:
+                self.divisor = self.game.s.screen_heigth
+            elif self.image == self.list[5]: 
                 self.divisor = 7 
-            if self.image != self.list[5]:
+            else: 
                 self.divisor = 3 
             if self.rect.y <= self.game.s.screen_heigth / self.divisor: 
                 self.game.s.moving_stars = False

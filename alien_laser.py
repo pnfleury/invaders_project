@@ -14,7 +14,8 @@ class AlienLaser (Sprite):
         self.current_sprite = 0
         self.image = self.sprites[self.current_sprite]
         self.rect = self.image.get_rect(center = pos)
-    
+        self.y = float(self.rect.y)
+
     def update(self):
        
         self.current_sprite += 0.2
@@ -22,7 +23,8 @@ class AlienLaser (Sprite):
             self.current_sprite = 0
                        
         self.image = self.sprites[int(self.current_sprite)]
-        self.rect.y += self.game.s.alien_laser_speed
+        self.y += self.game.s.alien_laser_speed
+        self.rect.y = self.y
         if self.rect.y > self.game.s.screen_heigth: 
             self.kill()
 
@@ -41,6 +43,7 @@ class ExtraLaser (Sprite):
         self.image = self.sprites[self.current_sprite]
         self.rect = self.image.get_rect(center = pos)
         self.push = 0
+        self.y = float(self.rect.y)
         
     def update(self):
         
@@ -49,8 +52,8 @@ class ExtraLaser (Sprite):
             self.current_sprite = 0
         
         self.image = self.sprites[int(self.current_sprite)]
-        
-        self.rect.y += self.game.s.extra_laser_speed + self.push
+        self.y += self.game.s.extra_laser_speed + self.push
+        self.rect.y = self.y 
         self.push += 0.1
         if self.rect.y > self.game.s.screen_heigth:
             self.push = 0 
@@ -71,7 +74,8 @@ class BossLaser (Sprite):
         self.image = self.sprites[self.current_sprite]
         self.rect = self.image.get_rect(center = pos)
         self.push = 0
-        
+        self.y = float(self.rect.y)
+    
     def update(self):
         
         self.current_sprite += 0.6
@@ -79,7 +83,8 @@ class BossLaser (Sprite):
             self.current_sprite = 0
         
         self.image = self.sprites[int(self.current_sprite)]
-        self.rect.y += self.game.s.boss_bullets_speed + self.push
+        self.y += self.game.s.boss_bullets_speed + self.push
+        self.rect.y = self.y
         self.push += 0.1
         if self.rect.y > self.game.s.screen_heigth:
             self.push = 0 

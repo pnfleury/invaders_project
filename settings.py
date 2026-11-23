@@ -9,9 +9,9 @@ class Settings:
    
         # Screen resolution
         self.flags = pygame.SCALED | pygame.FULLSCREEN
-        self.screen_width = 1200
-        self.screen_heigth = 800
- 
+        self.screen_width = 720
+        self.screen_heigth = 480
+
         self.game_paused = False
        
         # end_game bonus
@@ -28,12 +28,12 @@ class Settings:
         self.new_hiscore = {}
         # standard hiscore name if none
         self.name = 'INV'
-        self.hi_score = 100000
+        self.hi_score = 0
         self.hiscore_list = []
             
         # Initialize stars variables
         self.x = self.y = 0
-        self.num_stars = 200 # numbers of stars on screen
+        self.num_stars = 200# numbers of stars on screen
 
         # animation settings
         self.last_update = pygame.time.get_ticks()
@@ -51,11 +51,11 @@ class Settings:
         self.ship_last_thrust = False
 
         # Obstacle setup
-        self.block_size = 6
+        self.block_size = int(6 * 0.6)
         self.obstacle_amount = 4
         self.obstacle_color = ('#FF5F1F') 
         self.obstacle_x_start = int(self.screen_width / 12)
-        self.obstacle_y_start = self.screen_heigth - 150
+        self.obstacle_y_start = self.screen_heigth - 90
         # Calculate obstacles positions on screen and put in a list
         self.obstacle_x_positions = []
         for num in range(self.obstacle_amount):
@@ -63,33 +63,32 @@ class Settings:
         
 
         # Player settings
-        self.player_speed = 5
-        self.laser_speed = 15
+        self.player_speed = 3
+        self.laser_speed = 9
+
     
         # Aliens settings
-        self.alien_laser_y = 15
+        self.alien_speedup_scale = 1.04
+        self.alien_laser_y = 9
         self.alien_direction = 1
-        self.alien_distance = 16 # distance that a line of aliens descends 
+        self.alien_distance = 7 # distance that a line of aliens descends 
         self.alien_time_between_bullets = 900
-        self.alien_rows = 5 #5
-        self.alien_cols = 11 #11
-        self.alien_x_distance = 70 #60
-        self.alien_y_distance = 48 
-        self.aliens_x_offset = 70 
-        self.aliens_y_offset = 100
+        self.alien_rows = 2 #5
+        self.alien_cols = 2 #11
+        self.alien_x_distance = 42  
+        self.alien_y_distance = 29
+        self.aliens_x_offset = 42  
+        self.aliens_y_offset = 60
    
         # Extra alien settings
-        self.EXTRALASER = pygame.USEREVENT + 1
         self.range_a = 800
         self.range_b = 1600
         self.extra_spawn_time = randint (self.range_a, self.range_b)
-        self.extra_speed = 3
+        self.extra_speed = 1.8
         self.extra_list_points = [100, 200, 500, 800, 1000]
         self.extra_point = 0
 
-        self.BOSSLASER = pygame.USEREVENT + 4
-
-        
+              
         self.initialize_dynamic_settings()
 
     def load_hiscore(self):
@@ -110,6 +109,7 @@ class Settings:
    
     def initialize_dynamic_settings(self):
         
+        self.title_active = True
         # load hiscore file
         self.load_hiscore()
         # Initialize level and lives variables
@@ -118,31 +118,32 @@ class Settings:
         self.score = 0
         # player ship
         self.shoots_allowed = 1
+        self.thruster_time = 5
         # alien fleet
-        self.alien_speed = 1.3
+        self.alien_speed = 0.78 
         self.alien_bullets_allowed = 1
-        self.alien_speedup_scale = 1.04
-        self.alien_laser_speed = 5
+        self.alien_laser_speed = 3
         # extra alien settings
-        pygame.time.set_timer(self.EXTRALASER, 800)
+        self.extra_shoot_interval = 1000
+        self.last_extra_shoot = pygame.time.get_ticks()
         self.activate_extra_shot = False
         self.extra_bullets_allowed = 1
-        self.extra_laser_speed = 4
+        self.extra_laser_speed = 2.4
         
         # boss settings
-        pygame.time.set_timer(self.BOSSLASER, 400)
-        self.boss_speed = 5
+        self.boss_shoot_interval = 600
+        self.last_boss_shoot = pygame.time.get_ticks()
+        self.boss_speed = 3
         self.boss_direction = 1
-        self.boss_bullets_speed = 10
+        self.boss_bullets_speed = 6
         self.boss_bullets_allowed = 1
         self.boss_hits = 0
-        self.boss_total_hits = 15
+        self.boss_total_hits = 10 #10
+        self.boss_speedup_scale = 0.5
         self.start_boss_update = False
         self.executed_boss_animation = False
         self.boss_executed = False
        
-        
-        
         # flag for moving start or not
         self.moving_stars = False
         # flag for colors stars on title menu

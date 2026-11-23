@@ -46,20 +46,18 @@ class Player (Sprite):
             self.game.s.ship_last_thrust = False
                      
          
-    def thruster_on(self): 
-        if self.game.i == 0:
-            time = 8
-        else: time = 15
+    def thruster_on(self):
         self.current_sprite += 0.5
         if self.current_sprite >= len (self.player_sprites):
             self.current_sprite = 0
         self.image = self.player_sprites[int(self.current_sprite)]
 
-        if self.game.ship_boost_time (time, True):
+        if self.game.ship_boost_time (self.game.s.thruster_time, True):
             self.game.s.ship_thruster_on = False
             self.game.ship_thruster_sound.stop()
             self.play_thruster_sound = False
             self.image = self.player_sprites[0]
+            self.game.s.thruster_time = 15
 
     def update (self):
         self.get_input()
