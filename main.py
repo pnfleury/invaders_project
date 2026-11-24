@@ -988,6 +988,7 @@ async def main():
         platform.window.canvas.style.imageRendering = "pixelated"
         platform.document.body.style.background = "#000000"
     invaders = Game()
+   
     while invaders.running:
         pygame.mouse.set_visible(False)
         await invaders.curr_menu.display_menu()

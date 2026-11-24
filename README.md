@@ -1,7 +1,7 @@
 # <img src="screenshots/extra.png" alt="Logo" width="60" height=""> ATTACK ON SOLAR SYSTEM
 ## Um jogo no estilo do antigo arcade "space invaders".
 
-### Status: 🧪 versão atual - [v0.3.1-beta](https://github.com/pnfleury/invaders_project/releases/tag/v0.3.1-beta)
+### Status: 🧪 versão atual - v0.4.0-beta
 
 ### Objetivo
 - Este é meu primeiro jogo e meu objetivo é fazer um jogo completo com estagios, pontuação, vidas, tela inicial, salvar as iniciais, menu de pausa, tela final do jogo, efeitos sonoros, musica e tudo mais que um jogo precisa.
@@ -24,9 +24,8 @@ ESC para dar pausa e sair do jogo.
 ENTER para iniciar o jogo.
 v
 ### Config
-- Este jogo funciona na resolução de 1200 x 800 em tela cheia somente.
+- Este jogo funciona na resolução de 720 x 480.
 - Controle só com teclado.
-- Tela emulando monitores de tubo (CRT), como nos antigos arcades.
 
 ### Funcionalidades  
 - Já implementado:  
@@ -34,18 +33,23 @@ A maioria das funcionalidades, como graficos, menus, estagios, progressão de di
 - Em andamento:  
 No momento estou aprimorando a jogabilidade adicionando outras implementações que um jogo deste tipo normalmente não possui, para deixa-lo mais interessante.  
 - Futuro:   
-Aprimorar a jogabilidade  
-Inserir musica durante o jogo e refazer todos os efeitos sonoros.
+Adaptação para jogar no celular e controle por joystick.  
 
 ### Tecnologias usadas
-- Python versão 3.13.7  
-- Modulo Pygame versão 2.6.1
+- Python versão 3.15.2  
+- Modulo pygame-ce 2.5.8
+- Pygbag 0.9.3 para rodar direto no navegador.
 
 ### Screenshots
-![Tela inicial](screenshots/tela_principal.jpg)  
-![Tela hiscore](screenshots/tela_hiscores.jpg)  
-![Tela 1 jogo](screenshots/tela1_jogo.jpg)  
-![Tela 2 jogo](screenshots/tela2_jogo.jpg)  
+![Tela inicial](screenshots/tela_principal.jpg)   
+![Tela 1 jogo](screenshots/tela1_jogo.jpg)
+![Tela hiscore](screenshots/tela_hiscores.jpg)   
+
+
+### PARA JOGAR
+Direto nos navegadores.
+- [pnfleury.itch.io](https://pnfleury.itch.io/)
+-  https://pnfleury.github.io/invaders_project/
 
 
 
@@ -55,7 +59,7 @@ Paulo Fleury
 
 ### Observações
 - Nenhuma IA ajudou no desenvolvimento deste jogo.
-- Muitos detalhes ainda vão ser implementados.
+- Muitos detalhes podem ser implementados.
 
 ### Contato
 - email: pnfleury@gmail.com  
