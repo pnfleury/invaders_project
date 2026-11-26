@@ -8,24 +8,26 @@ class Alien(Sprite):
         super().__init__()
         
         self.game = game
-        file_path = 'assets/graphics/' + color + '.png'
+        file_path = 'assets/graphics/' + color +'/sprite_0.png'
         self.sprites = []
         self.value = 0
         self.sprites.append(pygame.image.load(self.game.resource_path(file_path)).convert_alpha())
 
         if color == 'red': 
-            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_red/sprite_1.png')).convert_alpha())
-            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_red/sprite_2.png')).convert_alpha())
-            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_red/sprite_3.png')).convert_alpha())
-            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_red/sprite_4.png')).convert_alpha())
+            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/red/sprite_1.png')).convert_alpha())
+            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/red/sprite_2.png')).convert_alpha())
+            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/red/sprite_3.png')).convert_alpha())
+            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/red/sprite_4.png')).convert_alpha())
             self.value = 100
         elif color == "green": 
-            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_green/sprite_1.png')).convert_alpha())
-            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_green/sprite_2.png')).convert_alpha())
+            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/green/sprite_1.png')).convert_alpha())
+            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/green/sprite_2.png')).convert_alpha())
             self.value = 200
-        else: 
-            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_prata/sprite_1.png')).convert_alpha())
-            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_prata/sprite_2.png')).convert_alpha())
+        elif color == "silver": 
+            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/silver/sprite_1.png')).convert_alpha())
+            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/silver/sprite_2.png')).convert_alpha())
+            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/silver/sprite_3.png')).convert_alpha())
+            self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/silver/sprite_4.png')).convert_alpha())
             self.value = 300
         
         self.current_sprite = 0
@@ -53,13 +55,11 @@ class Extra(Sprite):
         super().__init__()
         self.game = game
         self.sprites = []
-        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/extra.png')).convert_alpha())
-        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/extra1.png')).convert_alpha())
-        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/extra2.png')).convert_alpha())
-        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/extra3.png')).convert_alpha())
-        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/extra4.png')).convert_alpha())
-        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/extra5.png')).convert_alpha())
-
+        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/sprite_0.png')).convert_alpha())
+        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/sprite_1.png')).convert_alpha())
+        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/sprite_2.png')).convert_alpha())
+        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/sprite_3.png')).convert_alpha())
+        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/alien_extra/sprite_4.png')).convert_alpha())
        
         self.current_sprite = 0
         self.image = self.sprites[self.current_sprite]
@@ -105,13 +105,12 @@ class Boss(Sprite):
         super().__init__()
         self.game = game
         self.sprites = []
-        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/boss_earth/sprite_0.png')).convert_alpha())
-        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/boss_earth/sprite_1.png')).convert_alpha())
-        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/boss_earth/sprite_2.png')).convert_alpha())
-        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/boss_earth/sprite_3.png')).convert_alpha())
-        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/boss_earth/sprite_4.png')).convert_alpha())
-        self.sprites.append(pygame.image.load(self.game.resource_path('assets/graphics/boss_earth/sprite_5.png')).convert_alpha())
-    
+        self.sprites.append(pygame.transform.scale_by(self.game.extra_sprite.sprites[0], 3.0))
+        self.sprites.append(pygame.transform.scale_by(self.game.extra_sprite.sprites[1], 3.0))
+        self.sprites.append(pygame.transform.scale_by(self.game.extra_sprite.sprites[2], 3.0))
+        self.sprites.append(pygame.transform.scale_by(self.game.extra_sprite.sprites[3], 3.0))
+        self.sprites.append(pygame.transform.scale_by(self.game.extra_sprite.sprites[4], 3.0))
+       
         self.current_sprite = 0
         self.image = self.sprites[self.current_sprite]
               

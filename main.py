@@ -19,7 +19,7 @@ class Game:
         self.clock = pygame.time.Clock()
         
         # initialize screen
-        self.screen =  pygame.display.set_mode((self.s.screen_width, self.s.screen_heigth))
+        self.screen =  pygame.display.set_mode((self.s.screen_width, self.s.screen_heigth), self.s.flags)
         pygame.display.set_caption("Attack on Solar System")
         self.screen_rect = self.screen.get_rect()
 
@@ -253,7 +253,7 @@ class Game:
                 x = col_index * self.s.alien_x_distance + self.s.aliens_x_offset
                 y = row_index * self.s.alien_y_distance + self.s.aliens_y_offset
                 
-                if row_index == 0: alien_sprite = Alien('yellow', x, y, self)
+                if row_index == 0: alien_sprite = Alien('silver', x, y, self)
                 elif 1 <= row_index <=2: alien_sprite = Alien('green', x, y, self)
                 else: alien_sprite = Alien('red', x, y, self)
                 self.aliens.add(alien_sprite)    
